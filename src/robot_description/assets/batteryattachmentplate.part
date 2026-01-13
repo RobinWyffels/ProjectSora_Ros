@@ -1,0 +1,13 @@
+{
+    "configuration": "default",
+    "documentId": "1bcd0b375ffec5e3aa19613e",
+    "documentMicroversion": "e2515b7c4200da07b5f10d75",
+    "elementId": "81acc6feab2c0d88dd49b9f9",
+    "fullConfiguration": "default",
+    "id": "MFb8ss9J4zIiIx3ty",
+    "isStandardContent": false,
+    "name": "BatteryAttachmentPlate <1>",
+    "partId": "JHD",
+    "suppressed": false,
+    "type": "Part"
+}

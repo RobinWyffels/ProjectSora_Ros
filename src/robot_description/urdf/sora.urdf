@@ -1,0 +1,1575 @@
+<?xml version='1.0' encoding='utf-8'?>
+<robot name="sora">
+  
+  <link name="baseplate">
+    <inertial>
+      <origin xyz="0.119135 0 0.0201995" rpy="0 0 0" />
+      <mass value="7.5335" />
+      <inertia ixx="0.0807944" ixy="2.24408e-07" ixz="-0.00609972" iyy="0.184527" iyz="6.1332e-08" izz="0.249357" />
+    </inertial>
+    
+    <visual>
+      <origin xyz="0.3085 -0.1 0.024" rpy="-1.5708 0 3.14159" />
+      <geometry>
+        <mesh filename="package://robot_description/assets/motor.stl" />
+      </geometry>
+      <material name="motor_material">
+        <color rgba="0.647059 0.647059 0.647059 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0.3085 -0.1 0.024" rpy="-1.5708 0 3.14159" />
+      <geometry>
+        <mesh filename="package://robot_description/assets/motor.stl" />
+      </geometry>
+    </collision>
+    
+    <visual>
+      <origin xyz="0.3085 -0.1 0.024" rpy="-1.5708 0 3.14159" />
+      <geometry>
+        <mesh filename="package://robot_description/assets/motorcap.stl" />
+      </geometry>
+      <material name="motorcap_material">
+        <color rgba="0.231373 0.380392 0.705882 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0.3085 -0.1 0.024" rpy="-1.5708 0 3.14159" />
+      <geometry>
+        <mesh filename="package://robot_description/assets/motorcap.stl" />
+      </geometry>
+    </collision>
+    
+    <visual>
+      <origin xyz="0.3085 -0.1 0.024" rpy="-1.5708 0 3.14159" />
+      <geometry>
+        <mesh filename="package://robot_description/assets/gearhousing.stl" />
+      </geometry>
+      <material name="gearhousing_material">
+        <color rgba="0.615686 0.811765 0.929412 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0.3085 -0.1 0.024" rpy="-1.5708 0 3.14159" />
+      <geometry>
+        <mesh filename="package://robot_description/assets/gearhousing.stl" />
+      </geometry>
+    </collision>
+    
+    <visual>
+      <origin xyz="-0.0835 -0.1 0.024" rpy="1.5708 0 0" />
+      <geometry>
+        <mesh filename="package://robot_description/assets/motor.stl" />
+      </geometry>
+      <material name="motor_2_material">
+        <color rgba="0.647059 0.647059 0.647059 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="-0.0835 -0.1 0.024" rpy="1.5708 0 0" />
+      <geometry>
+        <mesh filename="package://robot_description/assets/motor.stl" />
+      </geometry>
+    </collision>
+    
+    <visual>
+      <origin xyz="-0.0835 -0.1 0.024" rpy="1.5708 0 0" />
+      <geometry>
+        <mesh filename="package://robot_description/assets/motorcap.stl" />
+      </geometry>
+      <material name="motorcap_2_material">
+        <color rgba="0.231373 0.380392 0.705882 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="-0.0835 -0.1 0.024" rpy="1.5708 0 0" />
+      <geometry>
+        <mesh filename="package://robot_description/assets/motorcap.stl" />
+      </geometry>
+    </collision>
+    
+    <visual>
+      <origin xyz="-0.0835 -0.1 0.024" rpy="1.5708 0 0" />
+      <geometry>
+        <mesh filename="package://robot_description/assets/gearhousing.stl" />
+      </geometry>
+      <material name="gearhousing_2_material">
+        <color rgba="0.615686 0.811765 0.929412 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="-0.0835 -0.1 0.024" rpy="1.5708 0 0" />
+      <geometry>
+        <mesh filename="package://robot_description/assets/gearhousing.stl" />
+      </geometry>
+    </collision>
+    
+    <visual>
+      <origin xyz="-0.0835 0.1 0.024" rpy="-1.5708 0 0" />
+      <geometry>
+        <mesh filename="package://robot_description/assets/motor.stl" />
+      </geometry>
+      <material name="motor_3_material">
+        <color rgba="0.647059 0.647059 0.647059 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="-0.0835 0.1 0.024" rpy="-1.5708 0 0" />
+      <geometry>
+        <mesh filename="package://robot_description/assets/motor.stl" />
+      </geometry>
+    </collision>
+    
+    <visual>
+      <origin xyz="-0.0835 0.1 0.024" rpy="-1.5708 0 0" />
+      <geometry>
+        <mesh filename="package://robot_description/assets/motorcap.stl" />
+      </geometry>
+      <material name="motorcap_3_material">
+        <color rgba="0.231373 0.380392 0.705882 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="-0.0835 0.1 0.024" rpy="-1.5708 0 0" />
+      <geometry>
+        <mesh filename="package://robot_description/assets/motorcap.stl" />
+      </geometry>
+    </collision>
+    
+    <visual>
+      <origin xyz="-0.0835 0.1 0.024" rpy="-1.5708 0 0" />
+      <geometry>
+        <mesh filename="package://robot_description/assets/gearhousing.stl" />
+      </geometry>
+      <material name="gearhousing_3_material">
+        <color rgba="0.615686 0.811765 0.929412 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="-0.0835 0.1 0.024" rpy="-1.5708 0 0" />
+      <geometry>
+        <mesh filename="package://robot_description/assets/gearhousing.stl" />
+      </geometry>
+    </collision>
+    
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://robot_description/assets/shell_middle_left.stl" />
+      </geometry>
+      <material name="shell_middle_left_material">
+        <color rgba="0.34902 0.376471 0.4 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://robot_description/assets/shell_middle_left.stl" />
+      </geometry>
+    </collision>
+    
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://robot_description/assets/shell_middle_right.stl" />
+      </geometry>
+      <material name="shell_middle_right_material">
+        <color rgba="0.34902 0.376471 0.4 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://robot_description/assets/shell_middle_right.stl" />
+      </geometry>
+    </collision>
+    
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://robot_description/assets/shell_backhpanel_left.stl" />
+      </geometry>
+      <material name="shell_backhpanel_left_material">
+        <color rgba="0.34902 0.376471 0.4 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://robot_description/assets/shell_backhpanel_left.stl" />
+      </geometry>
+    </collision>
+    
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://robot_description/assets/shell_front_left.stl" />
+      </geometry>
+      <material name="shell_front_left_material">
+        <color rgba="0.34902 0.376471 0.4 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://robot_description/assets/shell_front_left.stl" />
+      </geometry>
+    </collision>
+    
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://robot_description/assets/shell_back_right.stl" />
+      </geometry>
+      <material name="shell_back_right_material">
+        <color rgba="0.34902 0.376471 0.4 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://robot_description/assets/shell_back_right.stl" />
+      </geometry>
+    </collision>
+    
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://robot_description/assets/shell_middlebridge.stl" />
+      </geometry>
+      <material name="shell_middlebridge_material">
+        <color rgba="0.34902 0.376471 0.4 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://robot_description/assets/shell_middlebridge.stl" />
+      </geometry>
+    </collision>
+    
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://robot_description/assets/shell_backhpanel_right.stl" />
+      </geometry>
+      <material name="shell_backhpanel_right_material">
+        <color rgba="0.34902 0.376471 0.4 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://robot_description/assets/shell_backhpanel_right.stl" />
+      </geometry>
+    </collision>
+    
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://robot_description/assets/shell_front_right.stl" />
+      </geometry>
+      <material name="shell_front_right_material">
+        <color rgba="0.34902 0.376471 0.4 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://robot_description/assets/shell_front_right.stl" />
+      </geometry>
+    </collision>
+    
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://robot_description/assets/shell_back_left.stl" />
+      </geometry>
+      <material name="shell_back_left_material">
+        <color rgba="0.34902 0.376471 0.4 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://robot_description/assets/shell_back_left.stl" />
+      </geometry>
+    </collision>
+    
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://robot_description/assets/baseplate.stl" />
+      </geometry>
+      <material name="baseplate_material">
+        <color rgba="0.917647 0.917647 0.917647 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://robot_description/assets/baseplate.stl" />
+      </geometry>
+    </collision>
+    
+    <visual>
+      <origin xyz="0.225 -0.005 0" rpy="0 0 3.14159" />
+      <geometry>
+        <mesh filename="package://robot_description/assets/motormount_fl_br.stl" />
+      </geometry>
+      <material name="motormount_fl_br_material">
+        <color rgba="0.917647 0.917647 0.917647 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0.225 -0.005 0" rpy="0 0 3.14159" />
+      <geometry>
+        <mesh filename="package://robot_description/assets/motormount_fl_br.stl" />
+      </geometry>
+    </collision>
+    
+    <visual>
+      <origin xyz="0.25185 0.14685 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://robot_description/assets/liftpilar_front_left.stl" />
+      </geometry>
+      <material name="liftpilar_front_left_material">
+        <color rgba="0.917647 0.917647 0.917647 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0.25185 0.14685 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://robot_description/assets/liftpilar_front_left.stl" />
+      </geometry>
+    </collision>
+    
+    <visual>
+      <origin xyz="-0.109 -0.005 -0.05" rpy="0 0 3.14159" />
+      <geometry>
+        <mesh filename="package://robot_description/assets/motormount_fr_bl.stl" />
+      </geometry>
+      <material name="motormount_fr_bl_material">
+        <color rgba="0.917647 0.917647 0.917647 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="-0.109 -0.005 -0.05" rpy="0 0 3.14159" />
+      <geometry>
+        <mesh filename="package://robot_description/assets/motormount_fr_bl.stl" />
+      </geometry>
+    </collision>
+    
+    <visual>
+      <origin xyz="0.334 0.005 -0.05" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://robot_description/assets/motormount_fr_bl.stl" />
+      </geometry>
+      <material name="motormount_fr_bl_2_material">
+        <color rgba="0.917647 0.917647 0.917647 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0.334 0.005 -0.05" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://robot_description/assets/motormount_fr_bl.stl" />
+      </geometry>
+    </collision>
+    
+    <visual>
+      <origin xyz="0.2655 0 0.059" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://robot_description/assets/batteryattachmentplate.stl" />
+      </geometry>
+      <material name="batteryattachmentplate_material">
+        <color rgba="0.917647 0.917647 0.917647 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0.2655 0 0.059" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://robot_description/assets/batteryattachmentplate.stl" />
+      </geometry>
+    </collision>
+    
+    <visual>
+      <origin xyz="0 0.005 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://robot_description/assets/motormount_fl_br.stl" />
+      </geometry>
+      <material name="motormount_fl_br_2_material">
+        <color rgba="0.917647 0.917647 0.917647 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0.005 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://robot_description/assets/motormount_fl_br.stl" />
+      </geometry>
+    </collision>
+    
+    <visual>
+      <origin xyz="0.25185 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://robot_description/assets/liftpilar_front_left.stl" />
+      </geometry>
+      <material name="liftpilar_front_left_2_material">
+        <color rgba="0.917647 0.917647 0.917647 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0.25185 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://robot_description/assets/liftpilar_front_left.stl" />
+      </geometry>
+    </collision>
+    
+    <visual>
+      <origin xyz="0.260975 0.03615 0.09585" rpy="3.14159 0 1.5708" />
+      <geometry>
+        <mesh filename="package://robot_description/assets/stepper17hs4023.stl" />
+      </geometry>
+      <material name="stepper17hs4023_material">
+        <color rgba="0.917647 0.917647 0.917647 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0.260975 0.03615 0.09585" rpy="3.14159 0 1.5708" />
+      <geometry>
+        <mesh filename="package://robot_description/assets/stepper17hs4023.stl" />
+      </geometry>
+    </collision>
+    
+    <visual>
+      <origin xyz="0.260975 -0.03615 0.09585" rpy="3.14159 0 1.5708" />
+      <geometry>
+        <mesh filename="package://robot_description/assets/stepper17hs4023.stl" />
+      </geometry>
+      <material name="stepper17hs4023_2_material">
+        <color rgba="0.917647 0.917647 0.917647 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0.260975 -0.03615 0.09585" rpy="3.14159 0 1.5708" />
+      <geometry>
+        <mesh filename="package://robot_description/assets/stepper17hs4023.stl" />
+      </geometry>
+    </collision>
+    
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://robot_description/assets/batterycompartment.stl" />
+      </geometry>
+      <material name="batterycompartment_material">
+        <color rgba="0.917647 0.917647 0.917647 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://robot_description/assets/batterycompartment.stl" />
+      </geometry>
+    </collision>
+    
+    <visual>
+      <origin xyz="0 0.14685 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://robot_description/assets/liftpilar_front_left.stl" />
+      </geometry>
+      <material name="liftpilar_front_left_3_material">
+        <color rgba="0.917647 0.917647 0.917647 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0.14685 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://robot_description/assets/liftpilar_front_left.stl" />
+      </geometry>
+    </collision>
+    
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://robot_description/assets/liftpilar_front_left.stl" />
+      </geometry>
+      <material name="liftpilar_front_left_4_material">
+        <color rgba="0.917647 0.917647 0.917647 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://robot_description/assets/liftpilar_front_left.stl" />
+      </geometry>
+    </collision>
+    
+    <visual>
+      <origin xyz="0.3085 0.1 0.024" rpy="1.5708 0 3.14159" />
+      <geometry>
+        <mesh filename="package://robot_description/assets/motor.stl" />
+      </geometry>
+      <material name="motor_4_material">
+        <color rgba="0.647059 0.647059 0.647059 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0.3085 0.1 0.024" rpy="1.5708 0 3.14159" />
+      <geometry>
+        <mesh filename="package://robot_description/assets/motor.stl" />
+      </geometry>
+    </collision>
+    
+    <visual>
+      <origin xyz="0.3085 0.1 0.024" rpy="1.5708 0 3.14159" />
+      <geometry>
+        <mesh filename="package://robot_description/assets/motorcap.stl" />
+      </geometry>
+      <material name="motorcap_4_material">
+        <color rgba="0.231373 0.380392 0.705882 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0.3085 0.1 0.024" rpy="1.5708 0 3.14159" />
+      <geometry>
+        <mesh filename="package://robot_description/assets/motorcap.stl" />
+      </geometry>
+    </collision>
+    
+    <visual>
+      <origin xyz="0.3085 0.1 0.024" rpy="1.5708 0 3.14159" />
+      <geometry>
+        <mesh filename="package://robot_description/assets/gearhousing.stl" />
+      </geometry>
+      <material name="gearhousing_4_material">
+        <color rgba="0.615686 0.811765 0.929412 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0.3085 0.1 0.024" rpy="1.5708 0 3.14159" />
+      <geometry>
+        <mesh filename="package://robot_description/assets/gearhousing.stl" />
+      </geometry>
+    </collision>
+  </link>
+  
+  <link name="mecanum_wheel___right">
+    <inertial>
+      <origin xyz="0 0 -0.0129199" rpy="0 0 0" />
+      <mass value="0.152526" />
+      <inertia ixx="0.000118996" ixy="-5.72853e-10" ixz="5.70856e-10" iyy="0.000118997" iyz="2.24738e-10" izz="0.000205979" />
+    </inertial>
+    
+    <visual>
+      <origin xyz="-0.000310488 -0.0383357 -0.0121103" rpy="-0.74927 4.18434e-05 -1.5708" />
+      <geometry>
+        <mesh filename="package://robot_description/assets/roller.stl" />
+      </geometry>
+      <material name="roller_material">
+        <color rgba="0.792157 0.819608 0.933333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="-0.000310488 -0.0383357 -0.0121103" rpy="-0.74927 4.18434e-05 -1.5708" />
+      <geometry>
+        <mesh filename="package://robot_description/assets/roller.stl" />
+      </geometry>
+    </collision>
+    
+    <visual>
+      <origin xyz="-0.0330444 0.0194367 -0.0121103" rpy="-2.35641 0.271242 -0.26189" />
+      <geometry>
+        <mesh filename="package://robot_description/assets/roller.stl" />
+      </geometry>
+      <material name="roller_2_material">
+        <color rgba="0.792157 0.819608 0.933333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="-0.0330444 0.0194367 -0.0121103" rpy="-2.35641 0.271242 -0.26189" />
+      <geometry>
+        <mesh filename="package://robot_description/assets/roller.stl" />
+      </geometry>
+    </collision>
+    
+    <visual>
+      <origin xyz="0.0134033 0.0359176 -0.0121103" rpy="-0.812012 -0.352295 1.5708" />
+      <geometry>
+        <mesh filename="package://robot_description/assets/roller.stl" />
+      </geometry>
+      <material name="roller_3_material">
+        <color rgba="0.792157 0.819608 0.933333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0.0134033 0.0359176 -0.0121103" rpy="-0.812012 -0.352295 1.5708" />
+      <geometry>
+        <mesh filename="package://robot_description/assets/roller.stl" />
+      </geometry>
+    </collision>
+    
+    <visual>
+      <origin xyz="0.0333549 0.018899 -0.0121103" rpy="-1.19596 -0.749657 1.5708" />
+      <geometry>
+        <mesh filename="package://robot_description/assets/roller.stl" />
+      </geometry>
+      <material name="roller_4_material">
+        <color rgba="0.792157 0.819608 0.933333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0.0333549 0.018899 -0.0121103" rpy="-1.19596 -0.749657 1.5708" />
+      <geometry>
+        <mesh filename="package://robot_description/assets/roller.stl" />
+      </geometry>
+    </collision>
+    
+    <visual>
+      <origin xyz="-0.0128198 0.03613 -0.0121103" rpy="-2.03979 0.702002 -0.316223" />
+      <geometry>
+        <mesh filename="package://robot_description/assets/roller.stl" />
+      </geometry>
+      <material name="roller_5_material">
+        <color rgba="0.792157 0.819608 0.933333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="-0.0128198 0.03613 -0.0121103" rpy="-2.03979 0.702002 -0.316223" />
+      <geometry>
+        <mesh filename="package://robot_description/assets/roller.stl" />
+      </geometry>
+    </collision>
+    
+    <visual>
+      <origin xyz="0 0 -0.0284" rpy="-1.5708 0 0" />
+      <geometry>
+        <mesh filename="package://robot_description/assets/wheelhub.stl" />
+      </geometry>
+      <material name="wheelhub_material">
+        <color rgba="0.854902 0.854902 0.854902 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 -0.0284" rpy="-1.5708 0 0" />
+      <geometry>
+        <mesh filename="package://robot_description/assets/wheelhub.stl" />
+      </geometry>
+    </collision>
+    
+    <visual>
+      <origin xyz="-0.0378072 -0.00635115 -0.0121103" rpy="-2.38875 -0.087437 0.0929364" />
+      <geometry>
+        <mesh filename="package://robot_description/assets/roller.stl" />
+      </geometry>
+      <material name="roller_6_material">
+        <color rgba="0.792157 0.819608 0.933333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="-0.0378072 -0.00635115 -0.0121103" rpy="-2.38875 -0.087437 0.0929364" />
+      <geometry>
+        <mesh filename="package://robot_description/assets/roller.stl" />
+      </geometry>
+    </collision>
+    
+    <visual>
+      <origin xyz="0 0 -0.0124" rpy="-1.5708 0 0" />
+      <geometry>
+        <mesh filename="package://robot_description/assets/rim_inside.stl" />
+      </geometry>
+      <material name="rim_inside_material">
+        <color rgba="0.101961 0.101961 0.101961 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 -0.0124" rpy="-1.5708 0 0" />
+      <geometry>
+        <mesh filename="package://robot_description/assets/rim_inside.stl" />
+      </geometry>
+    </collision>
+    
+    <visual>
+      <origin xyz="-0.0248796 -0.0291673 -0.0121103" rpy="-0.975317 -0.604636 -1.5708" />
+      <geometry>
+        <mesh filename="package://robot_description/assets/roller.stl" />
+      </geometry>
+      <material name="roller_7_material">
+        <color rgba="0.792157 0.819608 0.933333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="-0.0248796 -0.0291673 -0.0121103" rpy="-0.975317 -0.604636 -1.5708" />
+      <geometry>
+        <mesh filename="package://robot_description/assets/roller.stl" />
+      </geometry>
+    </collision>
+    
+    <visual>
+      <origin xyz="0.0244039 -0.0295664 -0.0121103" rpy="-2.26632 0.479593 2.77397" />
+      <geometry>
+        <mesh filename="package://robot_description/assets/roller.stl" />
+      </geometry>
+      <material name="roller_8_material">
+        <color rgba="0.792157 0.819608 0.933333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0.0244039 -0.0295664 -0.0121103" rpy="-2.26632 0.479593 2.77397" />
+      <geometry>
+        <mesh filename="package://robot_description/assets/roller.stl" />
+      </geometry>
+    </collision>
+    
+    <visual>
+      <origin xyz="0.0376994 -0.00696269 -0.0121103" rpy="-2.38875 0.0873977 3.0487" />
+      <geometry>
+        <mesh filename="package://robot_description/assets/roller.stl" />
+      </geometry>
+      <material name="roller_9_material">
+        <color rgba="0.792157 0.819608 0.933333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0.0376994 -0.00696269 -0.0121103" rpy="-2.38875 0.0873977 3.0487" />
+      <geometry>
+        <mesh filename="package://robot_description/assets/roller.stl" />
+      </geometry>
+    </collision>
+    
+    <visual>
+      <origin xyz="0 0 -0.0124" rpy="1.5708 0 3.14159" />
+      <geometry>
+        <mesh filename="package://robot_description/assets/rim_outside.stl" />
+      </geometry>
+      <material name="rim_outside_material">
+        <color rgba="0.101961 0.101961 0.101961 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 -0.0124" rpy="1.5708 0 3.14159" />
+      <geometry>
+        <mesh filename="package://robot_description/assets/rim_outside.stl" />
+      </geometry>
+    </collision>
+  </link>
+  
+  <joint name="Wheel_FR" type="continuous">
+    <origin xyz="-0.0925 0.14 0.024" rpy="1.5708 0 0" />
+    <parent link="baseplate" />
+    <child link="mecanum_wheel___right" />
+    <axis xyz="0 0 1" />
+  </joint>
+  
+  <link name="mecanum_wheel___left">
+    <inertial>
+      <origin xyz="0 0 -0.0129199" rpy="0 0 0" />
+      <mass value="0.152525" />
+      <inertia ixx="0.000118996" ixy="-6.21386e-10" ixz="-1.00056e-09" iyy="0.000118995" iyz="-2.08104e-12" izz="0.00020598" />
+    </inertial>
+    
+    <visual>
+      <origin xyz="-0.0134033 0.0359176 -0.0121103" rpy="-0.812012 0.352295 -1.5708" />
+      <geometry>
+        <mesh filename="package://robot_description/assets/roller__2.stl" />
+      </geometry>
+      <material name="roller_10_material">
+        <color rgba="0.792157 0.819608 0.933333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="-0.0134033 0.0359176 -0.0121103" rpy="-0.812012 0.352295 -1.5708" />
+      <geometry>
+        <mesh filename="package://robot_description/assets/roller__2.stl" />
+      </geometry>
+    </collision>
+    
+    <visual>
+      <origin xyz="0.0330444 0.0194367 -0.0121103" rpy="-2.35641 -0.271242 0.26189" />
+      <geometry>
+        <mesh filename="package://robot_description/assets/roller__2.stl" />
+      </geometry>
+      <material name="roller_11_material">
+        <color rgba="0.792157 0.819608 0.933333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0.0330444 0.0194367 -0.0121103" rpy="-2.35641 -0.271242 0.26189" />
+      <geometry>
+        <mesh filename="package://robot_description/assets/roller__2.stl" />
+      </geometry>
+    </collision>
+    
+    <visual>
+      <origin xyz="0.0378072 -0.00635115 -0.0121103" rpy="-2.38875 0.087437 -0.0929364" />
+      <geometry>
+        <mesh filename="package://robot_description/assets/roller__2.stl" />
+      </geometry>
+      <material name="roller_12_material">
+        <color rgba="0.792157 0.819608 0.933333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0.0378072 -0.00635115 -0.0121103" rpy="-2.38875 0.087437 -0.0929364" />
+      <geometry>
+        <mesh filename="package://robot_description/assets/roller__2.stl" />
+      </geometry>
+    </collision>
+    
+    <visual>
+      <origin xyz="-0.0244039 -0.0295664 -0.0121103" rpy="-2.26632 -0.479593 -2.77397" />
+      <geometry>
+        <mesh filename="package://robot_description/assets/roller__2.stl" />
+      </geometry>
+      <material name="roller_13_material">
+        <color rgba="0.792157 0.819608 0.933333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="-0.0244039 -0.0295664 -0.0121103" rpy="-2.26632 -0.479593 -2.77397" />
+      <geometry>
+        <mesh filename="package://robot_description/assets/roller__2.stl" />
+      </geometry>
+    </collision>
+    
+    <visual>
+      <origin xyz="0.0248796 -0.0291673 -0.0121103" rpy="-0.975317 0.604636 1.5708" />
+      <geometry>
+        <mesh filename="package://robot_description/assets/roller__2.stl" />
+      </geometry>
+      <material name="roller_14_material">
+        <color rgba="0.792157 0.819608 0.933333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0.0248796 -0.0291673 -0.0121103" rpy="-0.975317 0.604636 1.5708" />
+      <geometry>
+        <mesh filename="package://robot_description/assets/roller__2.stl" />
+      </geometry>
+    </collision>
+    
+    <visual>
+      <origin xyz="0 0 -0.0124" rpy="1.5708 0 3.14159" />
+      <geometry>
+        <mesh filename="package://robot_description/assets/rim_inside__2.stl" />
+      </geometry>
+      <material name="rim_inside_2_material">
+        <color rgba="0.101961 0.101961 0.101961 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 -0.0124" rpy="1.5708 0 3.14159" />
+      <geometry>
+        <mesh filename="package://robot_description/assets/rim_inside__2.stl" />
+      </geometry>
+    </collision>
+    
+    <visual>
+      <origin xyz="0 0 -0.0124" rpy="-1.5708 0 0" />
+      <geometry>
+        <mesh filename="package://robot_description/assets/rim_outside__2.stl" />
+      </geometry>
+      <material name="rim_outside_2_material">
+        <color rgba="0.101961 0.101961 0.101961 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 -0.0124" rpy="-1.5708 0 0" />
+      <geometry>
+        <mesh filename="package://robot_description/assets/rim_outside__2.stl" />
+      </geometry>
+    </collision>
+    
+    <visual>
+      <origin xyz="0 0 -0.0284" rpy="-1.5708 0 0" />
+      <geometry>
+        <mesh filename="package://robot_description/assets/wheelhub__2.stl" />
+      </geometry>
+      <material name="wheelhub_2_material">
+        <color rgba="0.854902 0.854902 0.854902 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 -0.0284" rpy="-1.5708 0 0" />
+      <geometry>
+        <mesh filename="package://robot_description/assets/wheelhub__2.stl" />
+      </geometry>
+    </collision>
+    
+    <visual>
+      <origin xyz="-0.0333549 0.018899 -0.0121103" rpy="-2.3564 0.271285 2.87967" />
+      <geometry>
+        <mesh filename="package://robot_description/assets/roller__2.stl" />
+      </geometry>
+      <material name="roller_15_material">
+        <color rgba="0.792157 0.819608 0.933333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="-0.0333549 0.018899 -0.0121103" rpy="-2.3564 0.271285 2.87967" />
+      <geometry>
+        <mesh filename="package://robot_description/assets/roller__2.stl" />
+      </geometry>
+    </collision>
+    
+    <visual>
+      <origin xyz="-0.0376994 -0.00696269 -0.0121103" rpy="-2.38875 -0.0873977 -3.0487" />
+      <geometry>
+        <mesh filename="package://robot_description/assets/roller__2.stl" />
+      </geometry>
+      <material name="roller_16_material">
+        <color rgba="0.792157 0.819608 0.933333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="-0.0376994 -0.00696269 -0.0121103" rpy="-2.38875 -0.0873977 -3.0487" />
+      <geometry>
+        <mesh filename="package://robot_description/assets/roller__2.stl" />
+      </geometry>
+    </collision>
+    
+    <visual>
+      <origin xyz="0.0128198 0.03613 -0.0121103" rpy="-0.812039 -0.352365 -1.5708" />
+      <geometry>
+        <mesh filename="package://robot_description/assets/roller__2.stl" />
+      </geometry>
+      <material name="roller_17_material">
+        <color rgba="0.792157 0.819608 0.933333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0.0128198 0.03613 -0.0121103" rpy="-0.812039 -0.352365 -1.5708" />
+      <geometry>
+        <mesh filename="package://robot_description/assets/roller__2.stl" />
+      </geometry>
+    </collision>
+    
+    <visual>
+      <origin xyz="0.000310488 -0.0383357 -0.0121103" rpy="-0.74927 -4.18434e-05 1.5708" />
+      <geometry>
+        <mesh filename="package://robot_description/assets/roller__2.stl" />
+      </geometry>
+      <material name="roller_18_material">
+        <color rgba="0.792157 0.819608 0.933333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0.000310488 -0.0383357 -0.0121103" rpy="-0.74927 -4.18434e-05 1.5708" />
+      <geometry>
+        <mesh filename="package://robot_description/assets/roller__2.stl" />
+      </geometry>
+    </collision>
+  </link>
+  
+  <joint name="Wheel_FL" type="continuous">
+    <origin xyz="-0.0925 -0.14 0.024" rpy="-1.5708 0 0" />
+    <parent link="baseplate" />
+    <child link="mecanum_wheel___left" />
+    <axis xyz="0 0 1" />
+  </joint>
+  
+  <link name="mecanum_wheel___left_2">
+    <inertial>
+      <origin xyz="0 0 -0.0129199" rpy="0 0 0" />
+      <mass value="0.152525" />
+      <inertia ixx="0.000118996" ixy="-6.21386e-10" ixz="1.00056e-09" iyy="0.000118995" iyz="2.08104e-12" izz="0.00020598" />
+    </inertial>
+    
+    <visual>
+      <origin xyz="0.0134033 -0.0359176 -0.0121103" rpy="-0.812012 0.352295 1.5708" />
+      <geometry>
+        <mesh filename="package://robot_description/assets/roller__2.stl" />
+      </geometry>
+      <material name="roller_19_material">
+        <color rgba="0.792157 0.819608 0.933333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0.0134033 -0.0359176 -0.0121103" rpy="-0.812012 0.352295 1.5708" />
+      <geometry>
+        <mesh filename="package://robot_description/assets/roller__2.stl" />
+      </geometry>
+    </collision>
+    
+    <visual>
+      <origin xyz="-0.0330444 -0.0194367 -0.0121103" rpy="-2.35641 -0.271242 -2.8797" />
+      <geometry>
+        <mesh filename="package://robot_description/assets/roller__2.stl" />
+      </geometry>
+      <material name="roller_20_material">
+        <color rgba="0.792157 0.819608 0.933333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="-0.0330444 -0.0194367 -0.0121103" rpy="-2.35641 -0.271242 -2.8797" />
+      <geometry>
+        <mesh filename="package://robot_description/assets/roller__2.stl" />
+      </geometry>
+    </collision>
+    
+    <visual>
+      <origin xyz="-0.0378072 0.00635115 -0.0121103" rpy="-2.38875 0.087437 3.04866" />
+      <geometry>
+        <mesh filename="package://robot_description/assets/roller__2.stl" />
+      </geometry>
+      <material name="roller_21_material">
+        <color rgba="0.792157 0.819608 0.933333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="-0.0378072 0.00635115 -0.0121103" rpy="-2.38875 0.087437 3.04866" />
+      <geometry>
+        <mesh filename="package://robot_description/assets/roller__2.stl" />
+      </geometry>
+    </collision>
+    
+    <visual>
+      <origin xyz="0.0244039 0.0295664 -0.0121103" rpy="-2.26632 -0.479593 0.367624" />
+      <geometry>
+        <mesh filename="package://robot_description/assets/roller__2.stl" />
+      </geometry>
+      <material name="roller_22_material">
+        <color rgba="0.792157 0.819608 0.933333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0.0244039 0.0295664 -0.0121103" rpy="-2.26632 -0.479593 0.367624" />
+      <geometry>
+        <mesh filename="package://robot_description/assets/roller__2.stl" />
+      </geometry>
+    </collision>
+    
+    <visual>
+      <origin xyz="-0.0248796 0.0291673 -0.0121103" rpy="-0.975317 0.604636 -1.5708" />
+      <geometry>
+        <mesh filename="package://robot_description/assets/roller__2.stl" />
+      </geometry>
+      <material name="roller_23_material">
+        <color rgba="0.792157 0.819608 0.933333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="-0.0248796 0.0291673 -0.0121103" rpy="-0.975317 0.604636 -1.5708" />
+      <geometry>
+        <mesh filename="package://robot_description/assets/roller__2.stl" />
+      </geometry>
+    </collision>
+    
+    <visual>
+      <origin xyz="0 0 -0.0124" rpy="1.5708 0 0" />
+      <geometry>
+        <mesh filename="package://robot_description/assets/rim_inside__2.stl" />
+      </geometry>
+      <material name="rim_inside_3_material">
+        <color rgba="0.101961 0.101961 0.101961 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 -0.0124" rpy="1.5708 0 0" />
+      <geometry>
+        <mesh filename="package://robot_description/assets/rim_inside__2.stl" />
+      </geometry>
+    </collision>
+    
+    <visual>
+      <origin xyz="0 0 -0.0124" rpy="-1.5708 0 3.14159" />
+      <geometry>
+        <mesh filename="package://robot_description/assets/rim_outside__2.stl" />
+      </geometry>
+      <material name="rim_outside_3_material">
+        <color rgba="0.101961 0.101961 0.101961 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 -0.0124" rpy="-1.5708 0 3.14159" />
+      <geometry>
+        <mesh filename="package://robot_description/assets/rim_outside__2.stl" />
+      </geometry>
+    </collision>
+    
+    <visual>
+      <origin xyz="0 0 -0.0284" rpy="-1.5708 0 3.14159" />
+      <geometry>
+        <mesh filename="package://robot_description/assets/wheelhub__2.stl" />
+      </geometry>
+      <material name="wheelhub_3_material">
+        <color rgba="0.854902 0.854902 0.854902 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 -0.0284" rpy="-1.5708 0 3.14159" />
+      <geometry>
+        <mesh filename="package://robot_description/assets/wheelhub__2.stl" />
+      </geometry>
+    </collision>
+    
+    <visual>
+      <origin xyz="0.0333549 -0.018899 -0.0121103" rpy="-2.3564 0.271285 -0.261923" />
+      <geometry>
+        <mesh filename="package://robot_description/assets/roller__2.stl" />
+      </geometry>
+      <material name="roller_24_material">
+        <color rgba="0.792157 0.819608 0.933333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0.0333549 -0.018899 -0.0121103" rpy="-2.3564 0.271285 -0.261923" />
+      <geometry>
+        <mesh filename="package://robot_description/assets/roller__2.stl" />
+      </geometry>
+    </collision>
+    
+    <visual>
+      <origin xyz="0.0376994 0.00696269 -0.0121103" rpy="-2.38875 -0.0873977 0.0928956" />
+      <geometry>
+        <mesh filename="package://robot_description/assets/roller__2.stl" />
+      </geometry>
+      <material name="roller_25_material">
+        <color rgba="0.792157 0.819608 0.933333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0.0376994 0.00696269 -0.0121103" rpy="-2.38875 -0.0873977 0.0928956" />
+      <geometry>
+        <mesh filename="package://robot_description/assets/roller__2.stl" />
+      </geometry>
+    </collision>
+    
+    <visual>
+      <origin xyz="-0.0128198 -0.03613 -0.0121103" rpy="-0.812039 -0.352365 1.5708" />
+      <geometry>
+        <mesh filename="package://robot_description/assets/roller__2.stl" />
+      </geometry>
+      <material name="roller_26_material">
+        <color rgba="0.792157 0.819608 0.933333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="-0.0128198 -0.03613 -0.0121103" rpy="-0.812039 -0.352365 1.5708" />
+      <geometry>
+        <mesh filename="package://robot_description/assets/roller__2.stl" />
+      </geometry>
+    </collision>
+    
+    <visual>
+      <origin xyz="-0.000310488 0.0383357 -0.0121103" rpy="-0.74927 -4.18434e-05 -1.5708" />
+      <geometry>
+        <mesh filename="package://robot_description/assets/roller__2.stl" />
+      </geometry>
+      <material name="roller_27_material">
+        <color rgba="0.792157 0.819608 0.933333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="-0.000310488 0.0383357 -0.0121103" rpy="-0.74927 -4.18434e-05 -1.5708" />
+      <geometry>
+        <mesh filename="package://robot_description/assets/roller__2.stl" />
+      </geometry>
+    </collision>
+  </link>
+  
+  <joint name="Wheel_BR" type="continuous">
+    <origin xyz="0.3175 0.14 0.024" rpy="-1.5708 0 3.14159" />
+    <parent link="baseplate" />
+    <child link="mecanum_wheel___left_2" />
+    <axis xyz="0 0 1" />
+  </joint>
+  
+  <link name="mecanum_wheel___right_2">
+    <inertial>
+      <origin xyz="0 0 -0.0129199" rpy="0 0 0" />
+      <mass value="0.152526" />
+      <inertia ixx="0.000118996" ixy="-5.72853e-10" ixz="-5.70856e-10" iyy="0.000118997" iyz="-2.24738e-10" izz="0.000205979" />
+    </inertial>
+    
+    <visual>
+      <origin xyz="0.000310488 0.0383357 -0.0121103" rpy="-0.74927 4.18434e-05 1.5708" />
+      <geometry>
+        <mesh filename="package://robot_description/assets/roller.stl" />
+      </geometry>
+      <material name="roller_28_material">
+        <color rgba="0.792157 0.819608 0.933333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0.000310488 0.0383357 -0.0121103" rpy="-0.74927 4.18434e-05 1.5708" />
+      <geometry>
+        <mesh filename="package://robot_description/assets/roller.stl" />
+      </geometry>
+    </collision>
+    
+    <visual>
+      <origin xyz="0.0330444 -0.0194367 -0.0121103" rpy="-2.35641 0.271242 2.8797" />
+      <geometry>
+        <mesh filename="package://robot_description/assets/roller.stl" />
+      </geometry>
+      <material name="roller_29_material">
+        <color rgba="0.792157 0.819608 0.933333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0.0330444 -0.0194367 -0.0121103" rpy="-2.35641 0.271242 2.8797" />
+      <geometry>
+        <mesh filename="package://robot_description/assets/roller.stl" />
+      </geometry>
+    </collision>
+    
+    <visual>
+      <origin xyz="-0.0134033 -0.0359176 -0.0121103" rpy="-0.812012 -0.352295 -1.5708" />
+      <geometry>
+        <mesh filename="package://robot_description/assets/roller.stl" />
+      </geometry>
+      <material name="roller_30_material">
+        <color rgba="0.792157 0.819608 0.933333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="-0.0134033 -0.0359176 -0.0121103" rpy="-0.812012 -0.352295 -1.5708" />
+      <geometry>
+        <mesh filename="package://robot_description/assets/roller.stl" />
+      </geometry>
+    </collision>
+    
+    <visual>
+      <origin xyz="-0.0333549 -0.018899 -0.0121103" rpy="-1.19596 -0.749657 -1.5708" />
+      <geometry>
+        <mesh filename="package://robot_description/assets/roller.stl" />
+      </geometry>
+      <material name="roller_31_material">
+        <color rgba="0.792157 0.819608 0.933333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="-0.0333549 -0.018899 -0.0121103" rpy="-1.19596 -0.749657 -1.5708" />
+      <geometry>
+        <mesh filename="package://robot_description/assets/roller.stl" />
+      </geometry>
+    </collision>
+    
+    <visual>
+      <origin xyz="0.0128198 -0.03613 -0.0121103" rpy="-2.03979 0.702002 2.82537" />
+      <geometry>
+        <mesh filename="package://robot_description/assets/roller.stl" />
+      </geometry>
+      <material name="roller_32_material">
+        <color rgba="0.792157 0.819608 0.933333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0.0128198 -0.03613 -0.0121103" rpy="-2.03979 0.702002 2.82537" />
+      <geometry>
+        <mesh filename="package://robot_description/assets/roller.stl" />
+      </geometry>
+    </collision>
+    
+    <visual>
+      <origin xyz="0 0 -0.0284" rpy="-1.5708 0 -3.14159" />
+      <geometry>
+        <mesh filename="package://robot_description/assets/wheelhub.stl" />
+      </geometry>
+      <material name="wheelhub_4_material">
+        <color rgba="0.854902 0.854902 0.854902 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 -0.0284" rpy="-1.5708 0 -3.14159" />
+      <geometry>
+        <mesh filename="package://robot_description/assets/wheelhub.stl" />
+      </geometry>
+    </collision>
+    
+    <visual>
+      <origin xyz="0.0378072 0.00635115 -0.0121103" rpy="-2.38875 -0.087437 -3.04866" />
+      <geometry>
+        <mesh filename="package://robot_description/assets/roller.stl" />
+      </geometry>
+      <material name="roller_33_material">
+        <color rgba="0.792157 0.819608 0.933333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0.0378072 0.00635115 -0.0121103" rpy="-2.38875 -0.087437 -3.04866" />
+      <geometry>
+        <mesh filename="package://robot_description/assets/roller.stl" />
+      </geometry>
+    </collision>
+    
+    <visual>
+      <origin xyz="0 0 -0.0124" rpy="-1.5708 0 3.14159" />
+      <geometry>
+        <mesh filename="package://robot_description/assets/rim_inside.stl" />
+      </geometry>
+      <material name="rim_inside_4_material">
+        <color rgba="0.101961 0.101961 0.101961 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 -0.0124" rpy="-1.5708 0 3.14159" />
+      <geometry>
+        <mesh filename="package://robot_description/assets/rim_inside.stl" />
+      </geometry>
+    </collision>
+    
+    <visual>
+      <origin xyz="0.0248796 0.0291673 -0.0121103" rpy="-0.975317 -0.604636 1.5708" />
+      <geometry>
+        <mesh filename="package://robot_description/assets/roller.stl" />
+      </geometry>
+      <material name="roller_34_material">
+        <color rgba="0.792157 0.819608 0.933333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0.0248796 0.0291673 -0.0121103" rpy="-0.975317 -0.604636 1.5708" />
+      <geometry>
+        <mesh filename="package://robot_description/assets/roller.stl" />
+      </geometry>
+    </collision>
+    
+    <visual>
+      <origin xyz="-0.0244039 0.0295664 -0.0121103" rpy="-2.26632 0.479593 -0.367624" />
+      <geometry>
+        <mesh filename="package://robot_description/assets/roller.stl" />
+      </geometry>
+      <material name="roller_35_material">
+        <color rgba="0.792157 0.819608 0.933333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="-0.0244039 0.0295664 -0.0121103" rpy="-2.26632 0.479593 -0.367624" />
+      <geometry>
+        <mesh filename="package://robot_description/assets/roller.stl" />
+      </geometry>
+    </collision>
+    
+    <visual>
+      <origin xyz="-0.0376994 0.00696269 -0.0121103" rpy="-2.38875 0.0873977 -0.0928956" />
+      <geometry>
+        <mesh filename="package://robot_description/assets/roller.stl" />
+      </geometry>
+      <material name="roller_36_material">
+        <color rgba="0.792157 0.819608 0.933333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="-0.0376994 0.00696269 -0.0121103" rpy="-2.38875 0.0873977 -0.0928956" />
+      <geometry>
+        <mesh filename="package://robot_description/assets/roller.stl" />
+      </geometry>
+    </collision>
+    
+    <visual>
+      <origin xyz="0 0 -0.0124" rpy="1.5708 0 0" />
+      <geometry>
+        <mesh filename="package://robot_description/assets/rim_outside.stl" />
+      </geometry>
+      <material name="rim_outside_4_material">
+        <color rgba="0.101961 0.101961 0.101961 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 -0.0124" rpy="1.5708 0 0" />
+      <geometry>
+        <mesh filename="package://robot_description/assets/rim_outside.stl" />
+      </geometry>
+    </collision>
+  </link>
+  
+  <joint name="Wheel_BL" type="continuous">
+    <origin xyz="0.3175 -0.14 0.024" rpy="1.5708 0 3.14159" />
+    <parent link="baseplate" />
+    <child link="mecanum_wheel___right_2" />
+    <axis xyz="0 0 1" />
+  </joint>
+  
+  <link name="liftingmechanism">
+    <inertial>
+      <origin xyz="0.126142 5.49728e-05 -0.0137722" rpy="0 0 0" />
+      <mass value="0.0957418" />
+      <inertia ixx="7.04427e-05" ixy="7.5733e-10" ixz="3.42315e-07" iyy="0.000871632" iyz="1.32782e-07" izz="0.000819715" />
+    </inertial>
+    
+    <visual>
+      <origin xyz="0.126 0 -0.0725" rpy="3.14159 0 3.14159" />
+      <geometry>
+        <mesh filename="package://robot_description/assets/plug.stl" />
+      </geometry>
+      <material name="plug_material">
+        <color rgba="0.231373 0.380392 0.705882 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0.126 0 -0.0725" rpy="3.14159 0 3.14159" />
+      <geometry>
+        <mesh filename="package://robot_description/assets/plug.stl" />
+      </geometry>
+    </collision>
+    
+    <visual>
+      <origin xyz="0.1264 0 -0.0055" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://robot_description/assets/liftingspool.stl" />
+      </geometry>
+      <material name="liftingspool_material">
+        <color rgba="0.647059 0.647059 0.647059 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0.1264 0 -0.0055" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://robot_description/assets/liftingspool.stl" />
+      </geometry>
+    </collision>
+    
+    <visual>
+      <origin xyz="0.126 0 -0.0055" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://robot_description/assets/liftingplatform1.stl" />
+      </geometry>
+      <material name="liftingplatform1_material">
+        <color rgba="0.34902 0.376471 0.4 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0.126 0 -0.0055" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://robot_description/assets/liftingplatform1.stl" />
+      </geometry>
+    </collision>
+    
+    <visual>
+      <origin xyz="0.126 0 -0.0055" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://robot_description/assets/plug.stl" />
+      </geometry>
+      <material name="plug_2_material">
+        <color rgba="0.231373 0.380392 0.705882 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0.126 0 -0.0055" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://robot_description/assets/plug.stl" />
+      </geometry>
+    </collision>
+    
+    <visual>
+      <origin xyz="0.126 0 -0.0055" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://robot_description/assets/liftingplatform2.stl" />
+      </geometry>
+      <material name="liftingplatform2_material">
+        <color rgba="0.34902 0.376471 0.4 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0.126 0 -0.0055" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://robot_description/assets/liftingplatform2.stl" />
+      </geometry>
+    </collision>
+  </link>
+  
+  <joint name="Lift_Right" type="prismatic">
+    <origin xyz="-0.015775 0.073425 0.104" rpy="0 0 0" />
+    <parent link="baseplate" />
+    <child link="liftingmechanism" />
+    <axis xyz="0 0 1" />
+    <limit effort="10" velocity="10" lower="0" upper="0.022" />
+  </joint>
+  
+  <link name="liftingmechanism_2">
+    <inertial>
+      <origin xyz="0.126142 5.49728e-05 -0.0137722" rpy="0 0 0" />
+      <mass value="0.0957418" />
+      <inertia ixx="7.04427e-05" ixy="7.5733e-10" ixz="3.42315e-07" iyy="0.000871632" iyz="1.32782e-07" izz="0.000819715" />
+    </inertial>
+    
+    <visual>
+      <origin xyz="0.126 0 -0.0725" rpy="3.14159 0 3.14159" />
+      <geometry>
+        <mesh filename="package://robot_description/assets/plug.stl" />
+      </geometry>
+      <material name="plug_3_material">
+        <color rgba="0.231373 0.380392 0.705882 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0.126 0 -0.0725" rpy="3.14159 0 3.14159" />
+      <geometry>
+        <mesh filename="package://robot_description/assets/plug.stl" />
+      </geometry>
+    </collision>
+    
+    <visual>
+      <origin xyz="0.1264 0 -0.0055" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://robot_description/assets/liftingspool.stl" />
+      </geometry>
+      <material name="liftingspool_2_material">
+        <color rgba="0.647059 0.647059 0.647059 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0.1264 0 -0.0055" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://robot_description/assets/liftingspool.stl" />
+      </geometry>
+    </collision>
+    
+    <visual>
+      <origin xyz="0.126 0 -0.0055" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://robot_description/assets/liftingplatform1.stl" />
+      </geometry>
+      <material name="liftingplatform1_2_material">
+        <color rgba="0.34902 0.376471 0.4 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0.126 0 -0.0055" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://robot_description/assets/liftingplatform1.stl" />
+      </geometry>
+    </collision>
+    
+    <visual>
+      <origin xyz="0.126 0 -0.0055" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://robot_description/assets/plug.stl" />
+      </geometry>
+      <material name="plug_4_material">
+        <color rgba="0.231373 0.380392 0.705882 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0.126 0 -0.0055" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://robot_description/assets/plug.stl" />
+      </geometry>
+    </collision>
+    
+    <visual>
+      <origin xyz="0.126 0 -0.0055" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://robot_description/assets/liftingplatform2.stl" />
+      </geometry>
+      <material name="liftingplatform2_2_material">
+        <color rgba="0.34902 0.376471 0.4 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0.126 0 -0.0055" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://robot_description/assets/liftingplatform2.stl" />
+      </geometry>
+    </collision>
+  </link>
+  
+  <joint name="Lift_Left" type="prismatic">
+    <origin xyz="-0.015775 -0.073425 0.104" rpy="0 0 0" />
+    <parent link="baseplate" />
+    <child link="liftingmechanism_2" />
+    <axis xyz="0 0 1" />
+    <limit effort="10" velocity="10" lower="0" upper="0.022" />
+  </joint>
+</robot>
