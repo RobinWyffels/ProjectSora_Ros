@@ -1572,4 +1572,40 @@
     <axis xyz="0 0 1" />
     <limit effort="10" velocity="10" lower="0" upper="0.022" />
   </joint>
+
+  <ros2_control name="sora_system" type="system">
+    <hardware>
+      <!-- Stage 1: generic simulated hardware -->
+    <plugin>__HARDWARE_PLUGIN__</plugin>
+    </hardware>
+
+    <!-- Front Right wheel -->
+    <joint name="Wheel_FR">
+      <command_interface name="velocity"/>
+      <state_interface name="velocity"/>
+      <state_interface name="position"/>
+    </joint>
+
+    <!-- Front Left wheel -->
+    <joint name="Wheel_FL">
+      <command_interface name="velocity"/>
+      <state_interface name="velocity"/>
+      <state_interface name="position"/>
+    </joint>
+
+    <!-- Back Right wheel -->
+    <joint name="Wheel_BR">
+      <command_interface name="velocity"/>
+      <state_interface name="velocity"/>
+      <state_interface name="position"/>
+    </joint>
+
+    <!-- Back Left wheel -->
+    <joint name="Wheel_BL">
+      <command_interface name="velocity"/>
+      <state_interface name="velocity"/>
+      <state_interface name="position"/>
+    </joint>
+  </ros2_control>
+
 </robot>
