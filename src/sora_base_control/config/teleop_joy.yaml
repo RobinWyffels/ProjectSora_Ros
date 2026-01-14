@@ -1,0 +1,14 @@
+teleop_twist_joy:
+  ros__parameters:
+    enable_button: 0          # A button (index 0 on many Xbox mappings) - we will treat as toggle later
+    enable_turbo_button: -1   # disable turbo
+
+    axis_linear.x: 1          # left stick vertical
+    scale_linear.x: 1.0
+    axis_linear.y: 0          # left stick horizontal
+    scale_linear.y: 1.0
+
+    axis_angular.yaw: 3       # right stick horizontal
+    scale_angular.yaw: 1.0
+
+    require_enable_button: false   # for now: always enabled; we can add a toggle layer later
