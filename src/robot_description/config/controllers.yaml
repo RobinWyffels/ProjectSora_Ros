@@ -1,14 +1,20 @@
 controller_manager:
   ros__parameters:
-    update_rate: 50
+    update_rate: 50  # Hz
 
-    # Publishes joint_states
     joint_state_broadcaster:
       type: joint_state_broadcaster/JointStateBroadcaster
 
-    # Group velocity controller for 4 mecanum wheels
     velocity_controller:
       type: velocity_controllers/JointGroupVelocityController
+
+joint_state_broadcaster:
+  ros__parameters:
+    joints:
+      - Wheel_FR
+      - Wheel_FL
+      - Wheel_BR
+      - Wheel_BL
 
 velocity_controller:
   ros__parameters:

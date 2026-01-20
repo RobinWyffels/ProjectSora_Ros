@@ -1575,8 +1575,9 @@
 
   <ros2_control name="sora_system" type="system">
     <hardware>
-      <!-- Stage 1: generic simulated hardware -->
-    <plugin>__HARDWARE_PLUGIN__</plugin>
+      <plugin>mock_components/GenericSystem</plugin>
+      <param name="mock_sensor_commands">false</param>
+      <param name="state_following_offset">0.0</param>
     </hardware>
 
     <!-- Front Right wheel -->
