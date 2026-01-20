@@ -1,10 +1,12 @@
 # src/robot_description/launch/bringup.launch.py
 from launch import LaunchDescription
-from launch.actions import DeclareLaunchArgument, ExecuteProcess
-from launch.substitutions import LaunchConfiguration, PathJoinSubstitution, Command, FindExecutable
+from launch.actions import DeclareLaunchArgument, RegisterEventHandler, TimerAction
+from launch.event_handlers import OnProcessExit
+from launch.substitutions import LaunchConfiguration, PathJoinSubstitution, Command
 from launch_ros.substitutions import FindPackageShare
 from launch_ros.actions import Node
 from launch.conditions import IfCondition
+import os
 
 def generate_launch_description():
     # Declare arguments
@@ -40,30 +42,32 @@ def generate_launch_description():
         ]
     )
 
-    # Joint State Broadcaster Spawner - using ExecuteProcess
-    joint_state_broadcaster_spawner = ExecuteProcess(
-        cmd=[
-            FindExecutable(name='ros2'),
-            'control',
-            'load_controller',
-            '--set-state',
-            'active',
-            'joint_state_broadcaster'
-        ],
+    # Delayed controller spawning to ensure controller_manager is ready
+    joint_state_broadcaster_spawner = Node(
+        package='controller_manager',
+        executable='spawner',
+        arguments=['joint_state_broadcaster'],
         output='screen'
     )
 
-    # Velocity Controller Spawner - using ExecuteProcess
-    velocity_controller_spawner = ExecuteProcess(
-        cmd=[
-            FindExecutable(name='ros2'),
-            'control',
-            'load_controller',
-            '--set-state',
-            'active',
-            'velocity_controller'
-        ],
+    velocity_controller_spawner = Node(
+        package='controller_manager',
+        executable='spawner',
+        arguments=['velocity_controller'],
         output='screen'
+    )
+
+    # Delay spawning controllers
+    delayed_joint_state_broadcaster = TimerAction(
+        period=2.0,
+        actions=[joint_state_broadcaster_spawner]
+    )
+
+    delayed_velocity_controller = RegisterEventHandler(
+        event_handler=OnProcessExit(
+            target_action=joint_state_broadcaster_spawner,
+            on_exit=[velocity_controller_spawner]
+        )
     )
 
     # RViz (optional)
@@ -90,7 +94,7 @@ def generate_launch_description():
         ),
         robot_state_publisher,
         controller_manager,
-        joint_state_broadcaster_spawner,
-        velocity_controller_spawner,
+        delayed_joint_state_broadcaster,
+        delayed_velocity_controller,
         rviz_node
     ])
