@@ -1,7 +1,7 @@
 # src/robot_description/launch/bringup.launch.py
 from launch import LaunchDescription
-from launch.actions import DeclareLaunchArgument
-from launch.substitutions import LaunchConfiguration, PathJoinSubstitution, Command
+from launch.actions import DeclareLaunchArgument, ExecuteProcess
+from launch.substitutions import LaunchConfiguration, PathJoinSubstitution, Command, FindExecutable
 from launch_ros.substitutions import FindPackageShare
 from launch_ros.actions import Node
 from launch.conditions import IfCondition
@@ -40,22 +40,30 @@ def generate_launch_description():
         ]
     )
 
-    # Joint State Broadcaster Spawner
-    joint_state_broadcaster_spawner = Node(
-        package='controller_manager',
-        executable='spawner',
-        arguments=['joint_state_broadcaster', '-c', '/controller_manager'],
-        output='screen',
-        parameters=[]  # Empty parameter list to prevent auto param file generation
+    # Joint State Broadcaster Spawner - using ExecuteProcess
+    joint_state_broadcaster_spawner = ExecuteProcess(
+        cmd=[
+            FindExecutable(name='ros2'),
+            'control',
+            'load_controller',
+            '--set-state',
+            'active',
+            'joint_state_broadcaster'
+        ],
+        output='screen'
     )
 
-    # Velocity Controller Spawner
-    velocity_controller_spawner = Node(
-        package='controller_manager',
-        executable='spawner',
-        arguments=['velocity_controller', '-c', '/controller_manager'],
-        output='screen',
-        parameters=[]  # Empty parameter list to prevent auto param file generation
+    # Velocity Controller Spawner - using ExecuteProcess
+    velocity_controller_spawner = ExecuteProcess(
+        cmd=[
+            FindExecutable(name='ros2'),
+            'control',
+            'load_controller',
+            '--set-state',
+            'active',
+            'velocity_controller'
+        ],
+        output='screen'
     )
 
     # RViz (optional)
