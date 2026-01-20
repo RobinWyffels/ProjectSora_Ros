@@ -45,7 +45,8 @@ def generate_launch_description():
         package='controller_manager',
         executable='spawner',
         arguments=['joint_state_broadcaster', '-c', '/controller_manager'],
-        output='screen'
+        output='screen',
+        parameters=[]  # Empty parameter list to prevent auto param file generation
     )
 
     # Velocity Controller Spawner
@@ -53,7 +54,8 @@ def generate_launch_description():
         package='controller_manager',
         executable='spawner',
         arguments=['velocity_controller', '-c', '/controller_manager'],
-        output='screen'
+        output='screen',
+        parameters=[]  # Empty parameter list to prevent auto param file generation
     )
 
     # RViz (optional)
