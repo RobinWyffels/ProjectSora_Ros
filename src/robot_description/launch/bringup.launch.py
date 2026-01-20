@@ -6,7 +6,6 @@ from launch.substitutions import LaunchConfiguration, PathJoinSubstitution, Comm
 from launch_ros.substitutions import FindPackageShare
 from launch_ros.actions import Node
 from launch.conditions import IfCondition
-import os
 
 def generate_launch_description():
     # Declare arguments
@@ -31,29 +30,35 @@ def generate_launch_description():
         }]
     )
 
-    # Controller Manager
+    # Controller Manager - DO NOT pass controllers_config here in Jazzy
     controller_manager = Node(
         package='controller_manager',
         executable='ros2_control_node',
-        parameters=[controllers_config, {'use_sim_time': use_sim_time}],
+        parameters=[{'use_sim_time': use_sim_time}],
         output='screen',
         remappings=[
             ('/controller_manager/robot_description', '/robot_description'),
         ]
     )
 
-    # Delayed controller spawning to ensure controller_manager is ready
+    # Spawners with explicit parameter file paths
     joint_state_broadcaster_spawner = Node(
         package='controller_manager',
         executable='spawner',
-        arguments=['joint_state_broadcaster'],
+        arguments=[
+            'joint_state_broadcaster',
+            '--param-file', controllers_config
+        ],
         output='screen'
     )
 
     velocity_controller_spawner = Node(
         package='controller_manager',
         executable='spawner',
-        arguments=['velocity_controller'],
+        arguments=[
+            'velocity_controller',
+            '--param-file', controllers_config
+        ],
         output='screen'
     )
 
