@@ -1,23 +1,24 @@
 controller_manager:
   ros__parameters:
     update_rate: 50  # Hz
-
+    
     joint_state_broadcaster:
       type: joint_state_broadcaster/JointStateBroadcaster
-
+      
     velocity_controller:
       type: velocity_controllers/JointGroupVelocityController
 
 joint_state_broadcaster:
   ros__parameters:
+    type: joint_state_broadcaster/JointStateBroadcaster
     use_local_topics: false
 
 velocity_controller:
   ros__parameters:
+    type: velocity_controllers/JointGroupVelocityController
     joints:
       - Wheel_FR
       - Wheel_FL
       - Wheel_BR
       - Wheel_BL
-    
     interface_name: velocity
