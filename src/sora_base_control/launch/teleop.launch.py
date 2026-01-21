@@ -49,4 +49,12 @@ def generate_launch_description():
             output='screen',
             parameters=[{'use_sim_time': use_sim_time}]
         ),
+
+        # Motor driver node
+        Node(
+            package='sora_motor_driver',
+            executable='motor_driver_node',
+            name='motor_driver_node',
+            output='screen'
+        ),
     ])
