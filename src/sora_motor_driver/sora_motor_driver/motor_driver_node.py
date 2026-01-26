@@ -7,6 +7,7 @@ class MotorDriverNode(Node):
     def __init__(self):
         super().__init__('motor_driver_node')
         self.kit = MotorKit(address=0x60)  # Bonnet default I2C address
+        self.max_throttle = 0.3  # Set max throttle (adjust as needed)
 
         self.subscription = self.create_subscription(
             Float64MultiArray,
@@ -22,8 +23,8 @@ class MotorDriverNode(Node):
             self.get_logger().error('Expected 4 wheel velocities, got %d' % len(msg.data))
             return
 
-        # Clamp and scale velocities to [-1.0, 1.0] for throttle
-        throttles = [max(min(v, 1.0), -1.0) for v in msg.data]
+        # Scale velocities to [-max_throttle, max_throttle]
+        throttles = [max(min(v, 1.0), -1.0) * self.max_throttle for v in msg.data]
 
         # Assign to motors: M1=FL, M2=FR, M3=BR, M4=BL
         self.kit.motor1.throttle = throttles[1]  # FL
