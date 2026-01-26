@@ -7,7 +7,7 @@ class MotorDriverNode(Node):
     def __init__(self):
         super().__init__('motor_driver_node')
         self.kit = MotorKit(address=0x60)  # Bonnet default I2C address
-        self.max_throttle = 0.3  # Set max throttle (adjust as needed)
+        self.max_throttle = 1.0  # Set max throttle (adjust as needed)
 
         self.subscription = self.create_subscription(
             Float64MultiArray,
