@@ -11,7 +11,7 @@ setup(
             ['resource/' + package_name]),
         ('share/' + package_name, ['package.xml']),
     ],
-    install_requires=['setuptools', 'smbus2'],
+    install_requires=['setuptools', 'adafruit-circuitpython-motorkit'],
     zip_safe=True,
     maintainer='wslsora',
     maintainer_email='robin.wyffels@student.hogent.be',

@@ -1,19 +1,12 @@
 import rclpy
 from rclpy.node import Node
 from std_msgs.msg import Float64MultiArray
-from smbus2 import SMBus
-
-# I2C addresses
-FRONT_ADDR = 0x2E
-BACK_ADDR = 0x2D
-
-# Motor mapping: [FR, FL, BR, BL]
-# Each driver: A = right, B = left
+from adafruit_motorkit import MotorKit
 
 class MotorDriverNode(Node):
     def __init__(self):
         super().__init__('motor_driver_node')
-        self.bus = SMBus(1)  # I2C bus 1 on Raspberry Pi
+        self.kit = MotorKit(address=0x60)  # Bonnet default I2C address
 
         self.subscription = self.create_subscription(
             Float64MultiArray,
@@ -21,7 +14,7 @@ class MotorDriverNode(Node):
             self.listener_callback,
             10
         )
-        self.get_logger().info('Motor driver node started')
+        self.get_logger().info('Motor driver node started (Adafruit Bonnet)')
 
     def listener_callback(self, msg):
         # Expecting [FR, FL, BR, BL]
@@ -29,26 +22,22 @@ class MotorDriverNode(Node):
             self.get_logger().error('Expected 4 wheel velocities, got %d' % len(msg.data))
             return
 
-        # Map velocities to PWM values (-255 to 255)
-        pwm = [int(max(min(v * 100, 255), -255)) for v in msg.data]
+        # Clamp and scale velocities to [-1.0, 1.0] for throttle
+        throttles = [max(min(v, 1.0), -1.0) for v in msg.data]
 
-        # Front driver: FR (A), FL (B)
-        self.set_motor(FRONT_ADDR, pwm[0], pwm[1])
-        # Back driver: BR (A), BL (B)
-        self.set_motor(BACK_ADDR, pwm[2], pwm[3])
+        # Assign to motors: M1=FL, M2=FR, M3=BR, M4=BL
+        self.kit.motor1.throttle = throttles[1]  # FL
+        self.kit.motor2.throttle = throttles[0]  # FR
+        self.kit.motor3.throttle = throttles[2]  # BR
+        self.kit.motor4.throttle = throttles[3]  # BL
 
-    def set_motor(self, addr, right, left):
-        # Protocol: [A_PWM, A_DIR, B_PWM, B_DIR]
-        # Direction: 0 = forward, 1 = backward
-        def encode(val):
-            return abs(val), 0 if val >= 0 else 1
-
-        a_pwm, a_dir = encode(right)
-        b_pwm, b_dir = encode(left)
-        try:
-            self.bus.write_i2c_block_data(addr, 0x00, [a_pwm, a_dir, b_pwm, b_dir])
-        except Exception as e:
-            self.get_logger().error(f'I2C error to addr {hex(addr)}: {e}')
+    def destroy_node(self):
+        # Stop all motors on shutdown
+        self.kit.motor1.throttle = 0
+        self.kit.motor2.throttle = 0
+        self.kit.motor3.throttle = 0
+        self.kit.motor4.throttle = 0
+        super().destroy_node()
 
 def main(args=None):
     rclpy.init(args=args)
@@ -59,7 +48,6 @@ def main(args=None):
         pass
     finally:
         node.destroy_node()
-        node.bus.close()
         rclpy.shutdown()
 
 if __name__ == '__main__':
