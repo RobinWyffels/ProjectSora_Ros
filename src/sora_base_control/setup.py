@@ -17,7 +17,7 @@ setup(
         # And this if you have config files
         ('share/' + package_name + '/config', ['config/teleop_joy.yaml']),
     ],
-    install_requires=['setuptools'],
+    install_requires=['setuptools', 'RPi.GPIO'],
     zip_safe=True,
     maintainer='robin',
     maintainer_email='your@email',
