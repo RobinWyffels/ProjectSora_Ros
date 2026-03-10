@@ -59,12 +59,19 @@ class MecanumKinematics(Node):
         w_br = (1.0 / self.r) * (vx - vy + L * wz)
         w_bl = (1.0 / self.r) * (vx + vy - L * wz)
 
+        # Normalize wheel speeds if any exceed magnitude 1.0
+        max_mag = max(abs(w_fr), abs(w_fl), abs(w_br), abs(w_bl), 1.0)
+        w_fr /= max_mag
+        w_fl /= max_mag
+        w_br /= max_mag
+        w_bl /= max_mag
+
         # Create command message
         cmd = Float64MultiArray()
         cmd.data = [w_fr, w_fl, w_br, w_bl]
 
         self.wheel_cmd_pub.publish(cmd)
-        
+
         # Debug logging (can be commented out)
         # self.get_logger().info(f'Wheel velocities: FR={w_fr:.2f}, FL={w_fl:.2f}, BR={w_br:.2f}, BL={w_bl:.2f}')
 
