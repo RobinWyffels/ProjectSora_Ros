@@ -55,9 +55,9 @@ class MecanumKinematics(Node):
         # Mecanum inverse kinematics
         # FR: front-right, FL: front-left, BR: back-right, BL: back-left
         w_fr = (1.0 / self.r) * (vx + vy + L * wz)
-        w_fl = (1.0 / self.r) * (vx - vy - L * wz)
-        w_br = (1.0 / self.r) * (vx - vy + L * wz)
-        w_bl = (1.0 / self.r) * (vx + vy - L * wz)
+        w_fl = (1.0 / self.r) * (vx - vy + L * wz)
+        w_br = (1.0 / self.r) * (vx - vy - L * wz)
+        w_bl = (1.0 / self.r) * (vx + vy + L * wz)
 
         # Normalize wheel speeds if any exceed magnitude 1.0
         max_mag = max(abs(w_fr), abs(w_fl), abs(w_br), abs(w_bl), 1.0)
