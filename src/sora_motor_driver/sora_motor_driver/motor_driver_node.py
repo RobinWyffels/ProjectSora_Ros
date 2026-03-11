@@ -9,7 +9,7 @@ class MotorDriverNode(Node):
         super().__init__('motor_driver_node')
 
         # Open GPIO chip
-        self.h = lgpio.gpiochip_open(0)  # 0 is usually the main GPIO chip
+        self.h = lgpio.gpiochip_open(4)  # on Raspberry Pi, GPIO 0-27 are on chip 4 (BCM numbering)
 
         # Pin definitions (BCM numbering)
         self.DIR_FR = 6   # MDD10A One M1 (FR)
