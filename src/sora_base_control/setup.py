@@ -11,13 +11,11 @@ setup(
             ['resource/' + package_name]),
         ('share/' + package_name, ['package.xml']),
 
-        # THIS LINE IS REQUIRED
         ('share/' + package_name + '/launch', ['launch/teleop.launch.py']),
 
-        # And this if you have config files
         ('share/' + package_name + '/config', ['config/teleop_joy.yaml']),
     ],
-    install_requires=['setuptools', 'RPi.GPIO'],
+    install_requires=['setuptools'],
     zip_safe=True,
     maintainer='robin',
     maintainer_email='your@email',

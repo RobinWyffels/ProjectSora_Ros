@@ -3,7 +3,7 @@
 <package format="3">
   <name>sora_motor_driver</name>
   <version>0.0.0</version>
-  <description>Motor driver node for TB6612FNG I2C shields</description>
+  <description>Motor driver node for Cytron MDD10A using lgpio</description>
   <maintainer email="robin.wyffels@student.hogent.be">wslsora</maintainer>
   <license>Apache-2.0</license>
 

@@ -11,11 +11,11 @@ setup(
             ['resource/' + package_name]),
         ('share/' + package_name, ['package.xml']),
     ],
-    install_requires=['setuptools', 'adafruit-circuitpython-motorkit'],
+    install_requires=['setuptools', 'lgpio'],
     zip_safe=True,
     maintainer='wslsora',
     maintainer_email='robin.wyffels@student.hogent.be',
-    description='Motor driver node for TB6612FNG I2C shields',
+    description='Motor driver node for Cytron MDD10A using lgpio',
     license='Apache-2.0',
     entry_points={
         'console_scripts': [

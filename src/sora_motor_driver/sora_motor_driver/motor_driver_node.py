@@ -1,15 +1,16 @@
 import rclpy
 from rclpy.node import Node
 from std_msgs.msg import Float64MultiArray
-import RPi.GPIO as GPIO
+import lgpio
+import time
 
 class MotorDriverNode(Node):
     def __init__(self):
         super().__init__('motor_driver_node')
-        
-        # GPIO setup
-        GPIO.setmode(GPIO.BCM)
-        
+
+        # Open GPIO chip
+        self.h = lgpio.gpiochip_open(0)  # 0 is usually the main GPIO chip
+
         # Pin definitions (BCM numbering)
         self.DIR_FR = 6   # MDD10A One M1 (FR)
         self.PWM_FR = 13
@@ -19,23 +20,23 @@ class MotorDriverNode(Node):
         self.PWM_BR = 16
         self.DIR_BL = 20  # MDD10A Two M2 (BL)
         self.PWM_BL = 21
-        
+
         # Set pins as outputs
-        GPIO.setup([self.DIR_FR, self.PWM_FR, self.DIR_FL, self.PWM_FL,
-                    self.DIR_BR, self.PWM_BR, self.DIR_BL, self.PWM_BL], GPIO.OUT)
-        
+        for pin in [self.DIR_FR, self.PWM_FR, self.DIR_FL, self.PWM_FL,
+                    self.DIR_BR, self.PWM_BR, self.DIR_BL, self.PWM_BL]:
+            lgpio.gpio_claim_output(self.h, pin)
+
         # Initialize PWM (1000 Hz frequency)
-        self.pwm_fr = GPIO.PWM(self.PWM_FR, 1000)
-        self.pwm_fl = GPIO.PWM(self.PWM_FL, 1000)
-        self.pwm_br = GPIO.PWM(self.PWM_BR, 1000)
-        self.pwm_bl = GPIO.PWM(self.PWM_BL, 1000)
-        
+        self.pwm_freq = 1000
+        self.pwm_fr = self.PWM_FR
+        self.pwm_fl = self.PWM_FL
+        self.pwm_br = self.PWM_BR
+        self.pwm_bl = self.PWM_BL
+
         # Start PWM at 0% duty cycle
-        self.pwm_fr.start(0)
-        self.pwm_fl.start(0)
-        self.pwm_br.start(0)
-        self.pwm_bl.start(0)
-        
+        for pwm_pin in [self.pwm_fr, self.pwm_fl, self.pwm_br, self.pwm_bl]:
+            lgpio.tx_pwm(self.h, pwm_pin, self.pwm_freq, 0)
+
         self.max_throttle = 1.0  # Max throttle (adjust as needed)
 
         # Ramping parameters
@@ -54,7 +55,7 @@ class MotorDriverNode(Node):
         # Timer for ramping
         self.timer = self.create_timer(self.timer_period, self.ramp_timer_callback)
 
-        self.get_logger().info('Motor driver node started (Cytron MDD10A)')
+        self.get_logger().info('Motor driver node started (Cytron MDD10A, using lgpio)')
 
     def listener_callback(self, msg):
         # Expecting [FR, FL, BR, BL]
@@ -67,13 +68,14 @@ class MotorDriverNode(Node):
 
     def ramp_timer_callback(self):
         # Helper function to set motor direction and speed
-        def set_motor(dir_pin, pwm_obj, throttle):
+        def set_motor(dir_pin, pwm_pin, throttle):
             if throttle >= 0:
-                GPIO.output(dir_pin, GPIO.HIGH)  # Forward
-                pwm_obj.ChangeDutyCycle(abs(throttle) * 100)  # Duty cycle 0-100%
+                lgpio.gpio_write(self.h, dir_pin, 1)  # Forward
             else:
-                GPIO.output(dir_pin, GPIO.LOW)   # Backward
-                pwm_obj.ChangeDutyCycle(abs(throttle) * 100)
+                lgpio.gpio_write(self.h, dir_pin, 0)  # Backward
+            # Duty cycle: 0-100
+            duty = int(abs(throttle) * 100)
+            lgpio.tx_pwm(self.h, pwm_pin, self.pwm_freq, duty)
 
         # Ramp each motor's throttle toward its target
         for i in range(4):
@@ -91,11 +93,9 @@ class MotorDriverNode(Node):
 
     def destroy_node(self):
         # Stop all motors and cleanup
-        self.pwm_fr.stop()
-        self.pwm_fl.stop()
-        self.pwm_br.stop()
-        self.pwm_bl.stop()
-        GPIO.cleanup()
+        for pwm_pin in [self.pwm_fr, self.pwm_fl, self.pwm_br, self.pwm_bl]:
+            lgpio.tx_pwm(self.h, pwm_pin, self.pwm_freq, 0)
+        lgpio.gpiochip_close(self.h)
         super().destroy_node()
 
 def main(args=None):
