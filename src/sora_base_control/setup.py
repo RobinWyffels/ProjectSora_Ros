@@ -11,8 +11,10 @@ setup(
             ['resource/' + package_name]),
         ('share/' + package_name, ['package.xml']),
 
-        ('share/' + package_name + '/launch', ['launch/teleop.launch.py']),
-
+        ('share/' + package_name + '/launch', [
+            'launch/teleop.launch.py',
+            'launch/motor_debug.launch.py',
+        ]),
         ('share/' + package_name + '/config', ['config/teleop_joy.yaml']),
     ],
     install_requires=['setuptools'],

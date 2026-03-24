@@ -40,7 +40,7 @@ def generate_launch_description():
             executable='mecanum_kinematics',
             name='mecanum_kinematics',
             output='screen',
-            parameters=[{'use_sim_time': use_sim_time}],
+            parameters=[{'use_sim_time': use_sim_time}], 
             remappings=[
                 ('/velocity_controller/commands', '/velocity_controller/commands_raw')
             ]
