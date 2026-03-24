@@ -72,7 +72,7 @@ class MecanumKinematics(Node):
 
         self.wheel_cmd_pub.publish(cmd)
 
-        # Debug logging (can be commented out)
+        # Debug logging
         # self.get_logger().info(f'Wheel velocities: FR={w_fr:.2f}, FL={w_fl:.2f}, BR={w_br:.2f}, BL={w_bl:.2f}')
 
 def main(args=None):

@@ -24,6 +24,7 @@ setup(
     entry_points={
         'console_scripts': [
             'mecanum_kinematics = sora_base_control.mecanum_kinematics:main',
+            'motor_debug_mux = sora_base_control.motor_debug_mux:main',
         ],
     },
 )
