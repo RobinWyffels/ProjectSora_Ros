@@ -2,12 +2,12 @@
     "configuration": "default",
     "documentId": "1bcd0b375ffec5e3aa19613e",
     "documentMicroversion": "a6a0239923be726d76942c5c",
-    "elementId": "a3e102250e3168d6d21d61f1",
+    "elementId": "6553bb8ddc9df5f06c722bc0",
     "fullConfiguration": "default",
-    "id": "MyHCBuk4qiXHh60OE",
+    "id": "Mpd15cPbmIiYhfgI5",
     "isStandardContent": false,
-    "name": "Rim_Outside <1>",
-    "partId": "JFP",
+    "name": "Shell_Side_Back_Left <1>",
+    "partId": "RyHX",
     "suppressed": false,
     "type": "Part"
 }

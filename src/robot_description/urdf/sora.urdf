@@ -1,305 +1,441 @@
 <?xml version='1.0' encoding='utf-8'?>
 <robot name="sora">
-  
+
+  <link name="base_link"/>
+
+  <joint name="base_link_to_baseplate" type="fixed">
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <parent link="base_link"/>
+    <child link="baseplate"/>
+  </joint>
+
   <link name="baseplate">
     <inertial>
-      <origin xyz="0.119135 0 0.0201995" rpy="0 0 0" />
-      <mass value="7.5335" />
-      <inertia ixx="0.0807944" ixy="2.24408e-07" ixz="-0.00609972" iyy="0.184527" iyz="6.1332e-08" izz="0.249357" />
+      <origin xyz="0.117939 0.00018036 0.0392215" rpy="0 0 0" />
+      <mass value="5.17808" />
+      <inertia ixx="0.0693187" ixy="-0.000427403" ixz="-0.00362029" iyy="0.154619" iyz="-7.03717e-06" izz="0.204272" />
     </inertial>
     
     <visual>
-      <origin xyz="0.3085 -0.1 0.024" rpy="-1.5708 0 3.14159" />
+      <origin xyz="0.3085 -0.095 0.024" rpy="-1.5708 0 3.14159" />
       <geometry>
-        <mesh filename="package://robot_description/assets/motor.stl" />
+        <mesh filename="package://Sora/assets/motor.stl" />
       </geometry>
       <material name="motor_material">
         <color rgba="0.647059 0.647059 0.647059 1" />
       </material>
     </visual>
     <collision>
-      <origin xyz="0.3085 -0.1 0.024" rpy="-1.5708 0 3.14159" />
+      <origin xyz="0.3085 -0.095 0.024" rpy="-1.5708 0 3.14159" />
       <geometry>
-        <mesh filename="package://robot_description/assets/motor.stl" />
+        <mesh filename="package://Sora/assets/motor.stl" />
       </geometry>
     </collision>
     
     <visual>
-      <origin xyz="0.3085 -0.1 0.024" rpy="-1.5708 0 3.14159" />
+      <origin xyz="0.3085 -0.095 0.024" rpy="-1.5708 0 3.14159" />
       <geometry>
-        <mesh filename="package://robot_description/assets/motorcap.stl" />
+        <mesh filename="package://Sora/assets/motorcap.stl" />
       </geometry>
       <material name="motorcap_material">
         <color rgba="0.231373 0.380392 0.705882 1" />
       </material>
     </visual>
     <collision>
-      <origin xyz="0.3085 -0.1 0.024" rpy="-1.5708 0 3.14159" />
+      <origin xyz="0.3085 -0.095 0.024" rpy="-1.5708 0 3.14159" />
       <geometry>
-        <mesh filename="package://robot_description/assets/motorcap.stl" />
+        <mesh filename="package://Sora/assets/motorcap.stl" />
       </geometry>
     </collision>
     
     <visual>
-      <origin xyz="0.3085 -0.1 0.024" rpy="-1.5708 0 3.14159" />
+      <origin xyz="0.3085 -0.095 0.024" rpy="-1.5708 0 3.14159" />
       <geometry>
-        <mesh filename="package://robot_description/assets/gearhousing.stl" />
+        <mesh filename="package://Sora/assets/gearhousing.stl" />
       </geometry>
       <material name="gearhousing_material">
         <color rgba="0.615686 0.811765 0.929412 1" />
       </material>
     </visual>
     <collision>
-      <origin xyz="0.3085 -0.1 0.024" rpy="-1.5708 0 3.14159" />
+      <origin xyz="0.3085 -0.095 0.024" rpy="-1.5708 0 3.14159" />
       <geometry>
-        <mesh filename="package://robot_description/assets/gearhousing.stl" />
+        <mesh filename="package://Sora/assets/gearhousing.stl" />
       </geometry>
     </collision>
     
     <visual>
-      <origin xyz="-0.0835 -0.1 0.024" rpy="1.5708 0 0" />
+      <origin xyz="-0.0835 -0.095 0.024" rpy="1.5708 0 0" />
       <geometry>
-        <mesh filename="package://robot_description/assets/motor.stl" />
+        <mesh filename="package://Sora/assets/motor.stl" />
       </geometry>
       <material name="motor_2_material">
         <color rgba="0.647059 0.647059 0.647059 1" />
       </material>
     </visual>
     <collision>
-      <origin xyz="-0.0835 -0.1 0.024" rpy="1.5708 0 0" />
+      <origin xyz="-0.0835 -0.095 0.024" rpy="1.5708 0 0" />
       <geometry>
-        <mesh filename="package://robot_description/assets/motor.stl" />
+        <mesh filename="package://Sora/assets/motor.stl" />
       </geometry>
     </collision>
     
     <visual>
-      <origin xyz="-0.0835 -0.1 0.024" rpy="1.5708 0 0" />
+      <origin xyz="-0.0835 -0.095 0.024" rpy="1.5708 0 0" />
       <geometry>
-        <mesh filename="package://robot_description/assets/motorcap.stl" />
+        <mesh filename="package://Sora/assets/motorcap.stl" />
       </geometry>
       <material name="motorcap_2_material">
         <color rgba="0.231373 0.380392 0.705882 1" />
       </material>
     </visual>
     <collision>
-      <origin xyz="-0.0835 -0.1 0.024" rpy="1.5708 0 0" />
+      <origin xyz="-0.0835 -0.095 0.024" rpy="1.5708 0 0" />
       <geometry>
-        <mesh filename="package://robot_description/assets/motorcap.stl" />
+        <mesh filename="package://Sora/assets/motorcap.stl" />
       </geometry>
     </collision>
     
     <visual>
-      <origin xyz="-0.0835 -0.1 0.024" rpy="1.5708 0 0" />
+      <origin xyz="-0.0835 -0.095 0.024" rpy="1.5708 0 0" />
       <geometry>
-        <mesh filename="package://robot_description/assets/gearhousing.stl" />
+        <mesh filename="package://Sora/assets/gearhousing.stl" />
       </geometry>
       <material name="gearhousing_2_material">
         <color rgba="0.615686 0.811765 0.929412 1" />
       </material>
     </visual>
     <collision>
-      <origin xyz="-0.0835 -0.1 0.024" rpy="1.5708 0 0" />
+      <origin xyz="-0.0835 -0.095 0.024" rpy="1.5708 0 0" />
       <geometry>
-        <mesh filename="package://robot_description/assets/gearhousing.stl" />
+        <mesh filename="package://Sora/assets/gearhousing.stl" />
       </geometry>
     </collision>
     
     <visual>
-      <origin xyz="-0.0835 0.1 0.024" rpy="-1.5708 0 0" />
+      <origin xyz="-0.0835 0.095 0.024" rpy="-1.5708 0 0" />
       <geometry>
-        <mesh filename="package://robot_description/assets/motor.stl" />
+        <mesh filename="package://Sora/assets/motor.stl" />
       </geometry>
       <material name="motor_3_material">
         <color rgba="0.647059 0.647059 0.647059 1" />
       </material>
     </visual>
     <collision>
-      <origin xyz="-0.0835 0.1 0.024" rpy="-1.5708 0 0" />
+      <origin xyz="-0.0835 0.095 0.024" rpy="-1.5708 0 0" />
       <geometry>
-        <mesh filename="package://robot_description/assets/motor.stl" />
+        <mesh filename="package://Sora/assets/motor.stl" />
       </geometry>
     </collision>
     
     <visual>
-      <origin xyz="-0.0835 0.1 0.024" rpy="-1.5708 0 0" />
+      <origin xyz="-0.0835 0.095 0.024" rpy="-1.5708 0 0" />
       <geometry>
-        <mesh filename="package://robot_description/assets/motorcap.stl" />
+        <mesh filename="package://Sora/assets/motorcap.stl" />
       </geometry>
       <material name="motorcap_3_material">
         <color rgba="0.231373 0.380392 0.705882 1" />
       </material>
     </visual>
     <collision>
-      <origin xyz="-0.0835 0.1 0.024" rpy="-1.5708 0 0" />
+      <origin xyz="-0.0835 0.095 0.024" rpy="-1.5708 0 0" />
       <geometry>
-        <mesh filename="package://robot_description/assets/motorcap.stl" />
+        <mesh filename="package://Sora/assets/motorcap.stl" />
       </geometry>
     </collision>
     
     <visual>
-      <origin xyz="-0.0835 0.1 0.024" rpy="-1.5708 0 0" />
+      <origin xyz="-0.0835 0.095 0.024" rpy="-1.5708 0 0" />
       <geometry>
-        <mesh filename="package://robot_description/assets/gearhousing.stl" />
+        <mesh filename="package://Sora/assets/gearhousing.stl" />
       </geometry>
       <material name="gearhousing_3_material">
         <color rgba="0.615686 0.811765 0.929412 1" />
       </material>
     </visual>
     <collision>
-      <origin xyz="-0.0835 0.1 0.024" rpy="-1.5708 0 0" />
+      <origin xyz="-0.0835 0.095 0.024" rpy="-1.5708 0 0" />
       <geometry>
-        <mesh filename="package://robot_description/assets/gearhousing.stl" />
+        <mesh filename="package://Sora/assets/gearhousing.stl" />
       </geometry>
     </collision>
     
     <visual>
-      <origin xyz="0 0 0" rpy="0 0 0" />
+      <origin xyz="0 0 0.004" rpy="0 0 0" />
       <geometry>
-        <mesh filename="package://robot_description/assets/shell_middle_left.stl" />
+        <mesh filename="package://Sora/assets/shell_br.stl" />
       </geometry>
-      <material name="shell_middle_left_material">
-        <color rgba="0.34902 0.376471 0.4 1" />
+      <material name="shell_br_material">
+        <color rgba="0.301961 0.301961 0.301961 1" />
       </material>
     </visual>
     <collision>
-      <origin xyz="0 0 0" rpy="0 0 0" />
+      <origin xyz="0 0 0.004" rpy="0 0 0" />
       <geometry>
-        <mesh filename="package://robot_description/assets/shell_middle_left.stl" />
+        <mesh filename="package://Sora/assets/shell_br.stl" />
       </geometry>
     </collision>
     
     <visual>
-      <origin xyz="0 0 0" rpy="0 0 0" />
+      <origin xyz="0 0 0.004" rpy="0 0 0" />
       <geometry>
-        <mesh filename="package://robot_description/assets/shell_middle_right.stl" />
+        <mesh filename="package://Sora/assets/shell_bonnet.stl" />
       </geometry>
-      <material name="shell_middle_right_material">
-        <color rgba="0.34902 0.376471 0.4 1" />
+      <material name="shell_bonnet_material">
+        <color rgba="0.301961 0.301961 0.301961 1" />
       </material>
     </visual>
     <collision>
-      <origin xyz="0 0 0" rpy="0 0 0" />
+      <origin xyz="0 0 0.004" rpy="0 0 0" />
       <geometry>
-        <mesh filename="package://robot_description/assets/shell_middle_right.stl" />
+        <mesh filename="package://Sora/assets/shell_bonnet.stl" />
       </geometry>
     </collision>
     
     <visual>
-      <origin xyz="0 0 0" rpy="0 0 0" />
+      <origin xyz="0 0 0.004" rpy="0 0 0" />
       <geometry>
-        <mesh filename="package://robot_description/assets/shell_backhpanel_left.stl" />
+        <mesh filename="package://Sora/assets/shell_side_front_right.stl" />
       </geometry>
-      <material name="shell_backhpanel_left_material">
-        <color rgba="0.34902 0.376471 0.4 1" />
+      <material name="shell_side_front_right_material">
+        <color rgba="0.301961 0.301961 0.301961 1" />
       </material>
     </visual>
     <collision>
-      <origin xyz="0 0 0" rpy="0 0 0" />
+      <origin xyz="0 0 0.004" rpy="0 0 0" />
       <geometry>
-        <mesh filename="package://robot_description/assets/shell_backhpanel_left.stl" />
+        <mesh filename="package://Sora/assets/shell_side_front_right.stl" />
       </geometry>
     </collision>
     
     <visual>
-      <origin xyz="0 0 0" rpy="0 0 0" />
+      <origin xyz="0 0 0.004" rpy="0 0 0" />
       <geometry>
-        <mesh filename="package://robot_description/assets/shell_front_left.stl" />
+        <mesh filename="package://Sora/assets/shell_wing_right.stl" />
       </geometry>
-      <material name="shell_front_left_material">
-        <color rgba="0.34902 0.376471 0.4 1" />
+      <material name="shell_wing_right_material">
+        <color rgba="0.301961 0.301961 0.301961 1" />
       </material>
     </visual>
     <collision>
-      <origin xyz="0 0 0" rpy="0 0 0" />
+      <origin xyz="0 0 0.004" rpy="0 0 0" />
       <geometry>
-        <mesh filename="package://robot_description/assets/shell_front_left.stl" />
+        <mesh filename="package://Sora/assets/shell_wing_right.stl" />
       </geometry>
     </collision>
     
     <visual>
-      <origin xyz="0 0 0" rpy="0 0 0" />
+      <origin xyz="0 0 0.004" rpy="0 0 0" />
       <geometry>
-        <mesh filename="package://robot_description/assets/shell_back_right.stl" />
+        <mesh filename="package://Sora/assets/shell_headlight_left.stl" />
       </geometry>
-      <material name="shell_back_right_material">
-        <color rgba="0.34902 0.376471 0.4 1" />
+      <material name="shell_headlight_left_material">
+        <color rgba="0.301961 0.301961 0.301961 1" />
       </material>
     </visual>
     <collision>
-      <origin xyz="0 0 0" rpy="0 0 0" />
+      <origin xyz="0 0 0.004" rpy="0 0 0" />
       <geometry>
-        <mesh filename="package://robot_description/assets/shell_back_right.stl" />
+        <mesh filename="package://Sora/assets/shell_headlight_left.stl" />
       </geometry>
     </collision>
     
     <visual>
-      <origin xyz="0 0 0" rpy="0 0 0" />
+      <origin xyz="0 0 0.004" rpy="0 0 0" />
       <geometry>
-        <mesh filename="package://robot_description/assets/shell_middlebridge.stl" />
+        <mesh filename="package://Sora/assets/shell_lip_right.stl" />
       </geometry>
-      <material name="shell_middlebridge_material">
-        <color rgba="0.34902 0.376471 0.4 1" />
+      <material name="shell_lip_right_material">
+        <color rgba="0.301961 0.301961 0.301961 1" />
       </material>
     </visual>
     <collision>
-      <origin xyz="0 0 0" rpy="0 0 0" />
+      <origin xyz="0 0 0.004" rpy="0 0 0" />
       <geometry>
-        <mesh filename="package://robot_description/assets/shell_middlebridge.stl" />
+        <mesh filename="package://Sora/assets/shell_lip_right.stl" />
       </geometry>
     </collision>
     
     <visual>
-      <origin xyz="0 0 0" rpy="0 0 0" />
+      <origin xyz="0 0 0.004" rpy="0 0 0" />
       <geometry>
-        <mesh filename="package://robot_description/assets/shell_backhpanel_right.stl" />
+        <mesh filename="package://Sora/assets/shell_windshield_left.stl" />
       </geometry>
-      <material name="shell_backhpanel_right_material">
-        <color rgba="0.34902 0.376471 0.4 1" />
+      <material name="shell_windshield_left_material">
+        <color rgba="0.301961 0.301961 0.301961 1" />
       </material>
     </visual>
     <collision>
-      <origin xyz="0 0 0" rpy="0 0 0" />
+      <origin xyz="0 0 0.004" rpy="0 0 0" />
       <geometry>
-        <mesh filename="package://robot_description/assets/shell_backhpanel_right.stl" />
+        <mesh filename="package://Sora/assets/shell_windshield_left.stl" />
       </geometry>
     </collision>
     
     <visual>
-      <origin xyz="0 0 0" rpy="0 0 0" />
+      <origin xyz="0 0 0.004" rpy="0 0 0" />
       <geometry>
-        <mesh filename="package://robot_description/assets/shell_front_right.stl" />
+        <mesh filename="package://Sora/assets/shell_bridge_front.stl" />
       </geometry>
-      <material name="shell_front_right_material">
-        <color rgba="0.34902 0.376471 0.4 1" />
+      <material name="shell_bridge_front_material">
+        <color rgba="0.301961 0.301961 0.301961 1" />
       </material>
     </visual>
     <collision>
-      <origin xyz="0 0 0" rpy="0 0 0" />
+      <origin xyz="0 0 0.004" rpy="0 0 0" />
       <geometry>
-        <mesh filename="package://robot_description/assets/shell_front_right.stl" />
+        <mesh filename="package://Sora/assets/shell_bridge_front.stl" />
       </geometry>
     </collision>
     
     <visual>
-      <origin xyz="0 0 0" rpy="0 0 0" />
+      <origin xyz="0 0 0.004" rpy="0 0 0" />
       <geometry>
-        <mesh filename="package://robot_description/assets/shell_back_left.stl" />
+        <mesh filename="package://Sora/assets/shell_headlight_right.stl" />
       </geometry>
-      <material name="shell_back_left_material">
-        <color rgba="0.34902 0.376471 0.4 1" />
+      <material name="shell_headlight_right_material">
+        <color rgba="0.301961 0.301961 0.301961 1" />
       </material>
     </visual>
     <collision>
-      <origin xyz="0 0 0" rpy="0 0 0" />
+      <origin xyz="0 0 0.004" rpy="0 0 0" />
       <geometry>
-        <mesh filename="package://robot_description/assets/shell_back_left.stl" />
+        <mesh filename="package://Sora/assets/shell_headlight_right.stl" />
+      </geometry>
+    </collision>
+    
+    <visual>
+      <origin xyz="0 0 0.004" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://Sora/assets/shell_bl.stl" />
+      </geometry>
+      <material name="shell_bl_material">
+        <color rgba="0.301961 0.301961 0.301961 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0.004" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://Sora/assets/shell_bl.stl" />
+      </geometry>
+    </collision>
+    
+    <visual>
+      <origin xyz="0 0 0.004" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://Sora/assets/shell_windshield_right.stl" />
+      </geometry>
+      <material name="shell_windshield_right_material">
+        <color rgba="0.301961 0.301961 0.301961 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0.004" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://Sora/assets/shell_windshield_right.stl" />
+      </geometry>
+    </collision>
+    
+    <visual>
+      <origin xyz="0 0 0.004" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://Sora/assets/shell_side_front_left.stl" />
+      </geometry>
+      <material name="shell_side_front_left_material">
+        <color rgba="0.301961 0.301961 0.301961 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0.004" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://Sora/assets/shell_side_front_left.stl" />
+      </geometry>
+    </collision>
+    
+    <visual>
+      <origin xyz="0 0 0.004" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://Sora/assets/shell_wing_left.stl" />
+      </geometry>
+      <material name="shell_wing_left_material">
+        <color rgba="0.301961 0.301961 0.301961 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0.004" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://Sora/assets/shell_wing_left.stl" />
+      </geometry>
+    </collision>
+    
+    <visual>
+      <origin xyz="0 0 0.004" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://Sora/assets/shell_lip_left.stl" />
+      </geometry>
+      <material name="shell_lip_left_material">
+        <color rgba="0.301961 0.301961 0.301961 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0.004" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://Sora/assets/shell_lip_left.stl" />
+      </geometry>
+    </collision>
+    
+    <visual>
+      <origin xyz="0 0 0.004" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://Sora/assets/shell_side_back_right.stl" />
+      </geometry>
+      <material name="shell_side_back_right_material">
+        <color rgba="0.301961 0.301961 0.301961 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0.004" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://Sora/assets/shell_side_back_right.stl" />
+      </geometry>
+    </collision>
+    
+    <visual>
+      <origin xyz="0 0 0.004" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://Sora/assets/shell_side_back_left.stl" />
+      </geometry>
+      <material name="shell_side_back_left_material">
+        <color rgba="0.301961 0.301961 0.301961 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0.004" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://Sora/assets/shell_side_back_left.stl" />
+      </geometry>
+    </collision>
+    
+    <visual>
+      <origin xyz="0 0 0.004" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://Sora/assets/shell_bridge_back.stl" />
+      </geometry>
+      <material name="shell_bridge_back_material">
+        <color rgba="0.301961 0.301961 0.301961 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0.004" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://Sora/assets/shell_bridge_back.stl" />
       </geometry>
     </collision>
     
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="package://robot_description/assets/baseplate.stl" />
+        <mesh filename="package://Sora/assets/baseplate.stl" />
       </geometry>
       <material name="baseplate_material">
         <color rgba="0.917647 0.917647 0.917647 1" />
@@ -308,30 +444,30 @@
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="package://robot_description/assets/baseplate.stl" />
+        <mesh filename="package://Sora/assets/baseplate.stl" />
       </geometry>
     </collision>
     
     <visual>
-      <origin xyz="0.225 -0.005 0" rpy="0 0 3.14159" />
+      <origin xyz="0.225 -0.01 0" rpy="0 0 3.14159" />
       <geometry>
-        <mesh filename="package://robot_description/assets/motormount_fl_br.stl" />
+        <mesh filename="package://Sora/assets/motormount_fl_br.stl" />
       </geometry>
       <material name="motormount_fl_br_material">
         <color rgba="0.917647 0.917647 0.917647 1" />
       </material>
     </visual>
     <collision>
-      <origin xyz="0.225 -0.005 0" rpy="0 0 3.14159" />
+      <origin xyz="0.225 -0.01 0" rpy="0 0 3.14159" />
       <geometry>
-        <mesh filename="package://robot_description/assets/motormount_fl_br.stl" />
+        <mesh filename="package://Sora/assets/motormount_fl_br.stl" />
       </geometry>
     </collision>
     
     <visual>
       <origin xyz="0.25185 0.14685 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="package://robot_description/assets/liftpilar_front_left.stl" />
+        <mesh filename="package://Sora/assets/liftpilar_front_left.stl" />
       </geometry>
       <material name="liftpilar_front_left_material">
         <color rgba="0.917647 0.917647 0.917647 1" />
@@ -340,78 +476,62 @@
     <collision>
       <origin xyz="0.25185 0.14685 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="package://robot_description/assets/liftpilar_front_left.stl" />
+        <mesh filename="package://Sora/assets/liftpilar_front_left.stl" />
       </geometry>
     </collision>
     
     <visual>
-      <origin xyz="-0.109 -0.005 -0.05" rpy="0 0 3.14159" />
+      <origin xyz="-0.109 -0.01 -0.05" rpy="0 0 3.14159" />
       <geometry>
-        <mesh filename="package://robot_description/assets/motormount_fr_bl.stl" />
+        <mesh filename="package://Sora/assets/motormount_fr_bl.stl" />
       </geometry>
       <material name="motormount_fr_bl_material">
         <color rgba="0.917647 0.917647 0.917647 1" />
       </material>
     </visual>
     <collision>
-      <origin xyz="-0.109 -0.005 -0.05" rpy="0 0 3.14159" />
+      <origin xyz="-0.109 -0.01 -0.05" rpy="0 0 3.14159" />
       <geometry>
-        <mesh filename="package://robot_description/assets/motormount_fr_bl.stl" />
+        <mesh filename="package://Sora/assets/motormount_fr_bl.stl" />
       </geometry>
     </collision>
     
     <visual>
-      <origin xyz="0.334 0.005 -0.05" rpy="0 0 0" />
+      <origin xyz="0.334 0.01 -0.05" rpy="0 0 0" />
       <geometry>
-        <mesh filename="package://robot_description/assets/motormount_fr_bl.stl" />
+        <mesh filename="package://Sora/assets/motormount_fr_bl.stl" />
       </geometry>
       <material name="motormount_fr_bl_2_material">
         <color rgba="0.917647 0.917647 0.917647 1" />
       </material>
     </visual>
     <collision>
-      <origin xyz="0.334 0.005 -0.05" rpy="0 0 0" />
+      <origin xyz="0.334 0.01 -0.05" rpy="0 0 0" />
       <geometry>
-        <mesh filename="package://robot_description/assets/motormount_fr_bl.stl" />
+        <mesh filename="package://Sora/assets/motormount_fr_bl.stl" />
       </geometry>
     </collision>
     
     <visual>
-      <origin xyz="0.2655 0 0.059" rpy="0 0 0" />
+      <origin xyz="0 0.01 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="package://robot_description/assets/batteryattachmentplate.stl" />
-      </geometry>
-      <material name="batteryattachmentplate_material">
-        <color rgba="0.917647 0.917647 0.917647 1" />
-      </material>
-    </visual>
-    <collision>
-      <origin xyz="0.2655 0 0.059" rpy="0 0 0" />
-      <geometry>
-        <mesh filename="package://robot_description/assets/batteryattachmentplate.stl" />
-      </geometry>
-    </collision>
-    
-    <visual>
-      <origin xyz="0 0.005 0" rpy="0 0 0" />
-      <geometry>
-        <mesh filename="package://robot_description/assets/motormount_fl_br.stl" />
+        <mesh filename="package://Sora/assets/motormount_fl_br.stl" />
       </geometry>
       <material name="motormount_fl_br_2_material">
         <color rgba="0.917647 0.917647 0.917647 1" />
       </material>
     </visual>
     <collision>
-      <origin xyz="0 0.005 0" rpy="0 0 0" />
+      <origin xyz="0 0.01 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="package://robot_description/assets/motormount_fl_br.stl" />
+        <mesh filename="package://Sora/assets/motormount_fl_br.stl" />
       </geometry>
     </collision>
     
     <visual>
       <origin xyz="0.25185 0 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="package://robot_description/assets/liftpilar_front_left.stl" />
+        <mesh filename="package://Sora/assets/liftpilar_front_left.stl" />
       </geometry>
       <material name="liftpilar_front_left_2_material">
         <color rgba="0.917647 0.917647 0.917647 1" />
@@ -420,62 +540,46 @@
     <collision>
       <origin xyz="0.25185 0 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="package://robot_description/assets/liftpilar_front_left.stl" />
+        <mesh filename="package://Sora/assets/liftpilar_front_left.stl" />
       </geometry>
     </collision>
     
     <visual>
-      <origin xyz="0.260975 0.03615 0.09585" rpy="3.14159 0 1.5708" />
+      <origin xyz="0.260975 0.03615 0.09335" rpy="0 0 -1.5708" />
       <geometry>
-        <mesh filename="package://robot_description/assets/stepper17hs4023.stl" />
+        <mesh filename="package://Sora/assets/stepper17hs4023.stl" />
       </geometry>
       <material name="stepper17hs4023_material">
         <color rgba="0.917647 0.917647 0.917647 1" />
       </material>
     </visual>
     <collision>
-      <origin xyz="0.260975 0.03615 0.09585" rpy="3.14159 0 1.5708" />
+      <origin xyz="0.260975 0.03615 0.09335" rpy="0 0 -1.5708" />
       <geometry>
-        <mesh filename="package://robot_description/assets/stepper17hs4023.stl" />
+        <mesh filename="package://Sora/assets/stepper17hs4023.stl" />
       </geometry>
     </collision>
     
     <visual>
-      <origin xyz="0.260975 -0.03615 0.09585" rpy="3.14159 0 1.5708" />
+      <origin xyz="0.260975 -0.03615 0.09335" rpy="0 0 -1.5708" />
       <geometry>
-        <mesh filename="package://robot_description/assets/stepper17hs4023.stl" />
+        <mesh filename="package://Sora/assets/stepper17hs4023.stl" />
       </geometry>
       <material name="stepper17hs4023_2_material">
         <color rgba="0.917647 0.917647 0.917647 1" />
       </material>
     </visual>
     <collision>
-      <origin xyz="0.260975 -0.03615 0.09585" rpy="3.14159 0 1.5708" />
+      <origin xyz="0.260975 -0.03615 0.09335" rpy="0 0 -1.5708" />
       <geometry>
-        <mesh filename="package://robot_description/assets/stepper17hs4023.stl" />
-      </geometry>
-    </collision>
-    
-    <visual>
-      <origin xyz="0 0 0" rpy="0 0 0" />
-      <geometry>
-        <mesh filename="package://robot_description/assets/batterycompartment.stl" />
-      </geometry>
-      <material name="batterycompartment_material">
-        <color rgba="0.917647 0.917647 0.917647 1" />
-      </material>
-    </visual>
-    <collision>
-      <origin xyz="0 0 0" rpy="0 0 0" />
-      <geometry>
-        <mesh filename="package://robot_description/assets/batterycompartment.stl" />
+        <mesh filename="package://Sora/assets/stepper17hs4023.stl" />
       </geometry>
     </collision>
     
     <visual>
       <origin xyz="0 0.14685 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="package://robot_description/assets/liftpilar_front_left.stl" />
+        <mesh filename="package://Sora/assets/liftpilar_front_left.stl" />
       </geometry>
       <material name="liftpilar_front_left_3_material">
         <color rgba="0.917647 0.917647 0.917647 1" />
@@ -484,14 +588,14 @@
     <collision>
       <origin xyz="0 0.14685 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="package://robot_description/assets/liftpilar_front_left.stl" />
+        <mesh filename="package://Sora/assets/liftpilar_front_left.stl" />
       </geometry>
     </collision>
     
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="package://robot_description/assets/liftpilar_front_left.stl" />
+        <mesh filename="package://Sora/assets/liftpilar_front_left.stl" />
       </geometry>
       <material name="liftpilar_front_left_4_material">
         <color rgba="0.917647 0.917647 0.917647 1" />
@@ -500,55 +604,151 @@
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="package://robot_description/assets/liftpilar_front_left.stl" />
+        <mesh filename="package://Sora/assets/liftpilar_front_left.stl" />
       </geometry>
     </collision>
     
     <visual>
-      <origin xyz="0.3085 0.1 0.024" rpy="1.5708 0 3.14159" />
+      <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="package://robot_description/assets/motor.stl" />
+        <mesh filename="package://Sora/assets/defuser.stl" />
+      </geometry>
+      <material name="defuser_material">
+        <color rgba="0.647059 0.647059 0.647059 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://Sora/assets/defuser.stl" />
+      </geometry>
+    </collision>
+    
+    <visual>
+      <origin xyz="-0.138525 -0.00287516 0.134866" rpy="1.5708 0 -3.14159" />
+      <geometry>
+        <mesh filename="package://Sora/assets/t_mini_pro____20230720.stl" />
+      </geometry>
+      <material name="t_mini_pro____20230720_material">
+        <color rgba="0.792157 0.819608 0.933333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="-0.138525 -0.00287516 0.134866" rpy="1.5708 0 -3.14159" />
+      <geometry>
+        <mesh filename="package://Sora/assets/t_mini_pro____20230720.stl" />
+      </geometry>
+    </collision>
+    
+    <visual>
+      <origin xyz="-0.138525 -0.00287516 0.134916" rpy="1.5708 0 -3.14159" />
+      <geometry>
+        <mesh filename="package://Sora/assets/t_mini_pro____20230720__2.stl" />
+      </geometry>
+      <material name="t_mini_pro____20230720_2_material">
+        <color rgba="0.792157 0.819608 0.933333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="-0.138525 -0.00287516 0.134916" rpy="1.5708 0 -3.14159" />
+      <geometry>
+        <mesh filename="package://Sora/assets/t_mini_pro____20230720__2.stl" />
+      </geometry>
+    </collision>
+    
+    <visual>
+      <origin xyz="-0.138525 -0.00268259 0.134757" rpy="1.5708 0 -3.14159" />
+      <geometry>
+        <mesh filename="package://Sora/assets/t_mini_pro____20230720__3.stl" />
+      </geometry>
+      <material name="t_mini_pro____20230720_3_material">
+        <color rgba="0.792157 0.819608 0.933333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="-0.138525 -0.00268259 0.134757" rpy="1.5708 0 -3.14159" />
+      <geometry>
+        <mesh filename="package://Sora/assets/t_mini_pro____20230720__3.stl" />
+      </geometry>
+    </collision>
+    
+    <visual>
+      <origin xyz="-0.138525 -0.00287516 0.134916" rpy="1.5708 0 -3.14159" />
+      <geometry>
+        <mesh filename="package://Sora/assets/t_mini_pro____20230720__4.stl" />
+      </geometry>
+      <material name="t_mini_pro____20230720_4_material">
+        <color rgba="0.792157 0.819608 0.933333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="-0.138525 -0.00287516 0.134916" rpy="1.5708 0 -3.14159" />
+      <geometry>
+        <mesh filename="package://Sora/assets/t_mini_pro____20230720__4.stl" />
+      </geometry>
+    </collision>
+    
+    <visual>
+      <origin xyz="0.3085 0.095 0.024" rpy="1.5708 0 3.14159" />
+      <geometry>
+        <mesh filename="package://Sora/assets/motor.stl" />
       </geometry>
       <material name="motor_4_material">
         <color rgba="0.647059 0.647059 0.647059 1" />
       </material>
     </visual>
     <collision>
-      <origin xyz="0.3085 0.1 0.024" rpy="1.5708 0 3.14159" />
+      <origin xyz="0.3085 0.095 0.024" rpy="1.5708 0 3.14159" />
       <geometry>
-        <mesh filename="package://robot_description/assets/motor.stl" />
+        <mesh filename="package://Sora/assets/motor.stl" />
       </geometry>
     </collision>
     
     <visual>
-      <origin xyz="0.3085 0.1 0.024" rpy="1.5708 0 3.14159" />
+      <origin xyz="0.3085 0.095 0.024" rpy="1.5708 0 3.14159" />
       <geometry>
-        <mesh filename="package://robot_description/assets/motorcap.stl" />
+        <mesh filename="package://Sora/assets/motorcap.stl" />
       </geometry>
       <material name="motorcap_4_material">
         <color rgba="0.231373 0.380392 0.705882 1" />
       </material>
     </visual>
     <collision>
-      <origin xyz="0.3085 0.1 0.024" rpy="1.5708 0 3.14159" />
+      <origin xyz="0.3085 0.095 0.024" rpy="1.5708 0 3.14159" />
       <geometry>
-        <mesh filename="package://robot_description/assets/motorcap.stl" />
+        <mesh filename="package://Sora/assets/motorcap.stl" />
       </geometry>
     </collision>
     
     <visual>
-      <origin xyz="0.3085 0.1 0.024" rpy="1.5708 0 3.14159" />
+      <origin xyz="0.3085 0.095 0.024" rpy="1.5708 0 3.14159" />
       <geometry>
-        <mesh filename="package://robot_description/assets/gearhousing.stl" />
+        <mesh filename="package://Sora/assets/gearhousing.stl" />
       </geometry>
       <material name="gearhousing_4_material">
         <color rgba="0.615686 0.811765 0.929412 1" />
       </material>
     </visual>
     <collision>
-      <origin xyz="0.3085 0.1 0.024" rpy="1.5708 0 3.14159" />
+      <origin xyz="0.3085 0.095 0.024" rpy="1.5708 0 3.14159" />
       <geometry>
-        <mesh filename="package://robot_description/assets/gearhousing.stl" />
+        <mesh filename="package://Sora/assets/gearhousing.stl" />
+      </geometry>
+    </collision>
+    
+    <visual>
+      <origin xyz="-0.13825 -0.0065 0.0685" rpy="0 0 1.5708" />
+      <geometry>
+        <mesh filename="package://Sora/assets/zed_m_step.stl" />
+      </geometry>
+      <material name="zed_m_step_material">
+        <color rgba="0.627451 0.627451 0.627451 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="-0.13825 -0.0065 0.0685" rpy="0 0 1.5708" />
+      <geometry>
+        <mesh filename="package://Sora/assets/zed_m_step.stl" />
       </geometry>
     </collision>
   </link>
@@ -557,207 +757,208 @@
     <inertial>
       <origin xyz="0 0 -0.0129199" rpy="0 0 0" />
       <mass value="0.152526" />
-      <inertia ixx="0.000118996" ixy="-5.72853e-10" ixz="5.70856e-10" iyy="0.000118997" iyz="2.24738e-10" izz="0.000205979" />
+      <inertia ixx="0.000118996" ixy="6.72618e-10" ixz="2.91486e-10" iyy="0.000118996" iyz="-5.39833e-10" izz="0.000205979" />
     </inertial>
     
     <visual>
-      <origin xyz="-0.000310488 -0.0383357 -0.0121103" rpy="-0.74927 4.18434e-05 -1.5708" />
+      <origin xyz="-0.038097 -0.00428282 -0.0121103" rpy="-0.74927 4.18434e-05 -3.02154" />
       <geometry>
-        <mesh filename="package://robot_description/assets/roller.stl" />
+        <mesh filename="package://Sora/assets/roller.stl" />
       </geometry>
       <material name="roller_material">
         <color rgba="0.792157 0.819608 0.933333 1" />
       </material>
     </visual>
     <collision>
-      <origin xyz="-0.000310488 -0.0383357 -0.0121103" rpy="-0.74927 4.18434e-05 -1.5708" />
+      <origin xyz="-0.038097 -0.00428282 -0.0121103" rpy="-0.74927 4.18434e-05 -3.02154" />
       <geometry>
-        <mesh filename="package://robot_description/assets/roller.stl" />
+        <mesh filename="package://Sora/assets/roller.stl" />
       </geometry>
     </collision>
     
     <visual>
-      <origin xyz="-0.0330444 0.0194367 -0.0121103" rpy="-2.35641 0.271242 -0.26189" />
+      <origin xyz="0.0153394 0.0351343 -0.0121103" rpy="-2.35641 0.271242 -1.71264" />
       <geometry>
-        <mesh filename="package://robot_description/assets/roller.stl" />
+        <mesh filename="package://Sora/assets/roller.stl" />
       </geometry>
       <material name="roller_2_material">
         <color rgba="0.792157 0.819608 0.933333 1" />
       </material>
     </visual>
     <collision>
-      <origin xyz="-0.0330444 0.0194367 -0.0121103" rpy="-2.35641 0.271242 -0.26189" />
+      <origin xyz="0.0153394 0.0351343 -0.0121103" rpy="-2.35641 0.271242 -1.71264" />
       <geometry>
-        <mesh filename="package://robot_description/assets/roller.stl" />
+        <mesh filename="package://Sora/assets/roller.stl" />
       </geometry>
     </collision>
     
     <visual>
-      <origin xyz="0.0134033 0.0359176 -0.0121103" rpy="-0.812012 -0.352295 1.5708" />
+      <origin xyz="0.0372642 -0.00900539 -0.0121103" rpy="-0.812012 -0.352295 0.120048" />
       <geometry>
-        <mesh filename="package://robot_description/assets/roller.stl" />
+        <mesh filename="package://Sora/assets/roller.stl" />
       </geometry>
       <material name="roller_3_material">
         <color rgba="0.792157 0.819608 0.933333 1" />
       </material>
     </visual>
     <collision>
-      <origin xyz="0.0134033 0.0359176 -0.0121103" rpy="-0.812012 -0.352295 1.5708" />
+      <origin xyz="0.0372642 -0.00900539 -0.0121103" rpy="-0.812012 -0.352295 0.120048" />
       <geometry>
-        <mesh filename="package://robot_description/assets/roller.stl" />
+        <mesh filename="package://Sora/assets/roller.stl" />
       </geometry>
     </collision>
     
     <visual>
-      <origin xyz="0.0333549 0.018899 -0.0121103" rpy="-1.19596 -0.749657 1.5708" />
+      <origin xyz="0.0227575 -0.0308515 -0.0121103" rpy="-1.19596 -0.749657 0.120048" />
       <geometry>
-        <mesh filename="package://robot_description/assets/roller.stl" />
+        <mesh filename="package://Sora/assets/roller.stl" />
       </geometry>
       <material name="roller_4_material">
         <color rgba="0.792157 0.819608 0.933333 1" />
       </material>
     </visual>
     <collision>
-      <origin xyz="0.0333549 0.018899 -0.0121103" rpy="-1.19596 -0.749657 1.5708" />
+      <origin xyz="0.0227575 -0.0308515 -0.0121103" rpy="-1.19596 -0.749657 0.120048" />
       <geometry>
-        <mesh filename="package://robot_description/assets/roller.stl" />
+        <mesh filename="package://Sora/assets/roller.stl" />
       </geometry>
     </collision>
     
     <visual>
-      <origin xyz="-0.0128198 0.03613 -0.0121103" rpy="-2.03979 0.702002 -0.316223" />
+      <origin xyz="0.0343346 0.0170545 -0.0121103" rpy="-2.03979 0.702002 -1.76697" />
       <geometry>
-        <mesh filename="package://robot_description/assets/roller.stl" />
+        <mesh filename="package://Sora/assets/roller.stl" />
       </geometry>
       <material name="roller_5_material">
         <color rgba="0.792157 0.819608 0.933333 1" />
       </material>
     </visual>
     <collision>
-      <origin xyz="-0.0128198 0.03613 -0.0121103" rpy="-2.03979 0.702002 -0.316223" />
+      <origin xyz="0.0343346 0.0170545 -0.0121103" rpy="-2.03979 0.702002 -1.76697" />
       <geometry>
-        <mesh filename="package://robot_description/assets/roller.stl" />
+        <mesh filename="package://Sora/assets/roller.stl" />
       </geometry>
     </collision>
     
     <visual>
-      <origin xyz="0 0 -0.0284" rpy="-1.5708 0 0" />
+      <origin xyz="0 0 -0.0284" rpy="-1.5708 0 -1.45075" />
       <geometry>
-        <mesh filename="package://robot_description/assets/wheelhub.stl" />
+        <mesh filename="package://Sora/assets/wheelhub.stl" />
       </geometry>
       <material name="wheelhub_material">
         <color rgba="0.854902 0.854902 0.854902 1" />
       </material>
     </visual>
     <collision>
-      <origin xyz="0 0 -0.0284" rpy="-1.5708 0 0" />
+      <origin xyz="0 0 -0.0284" rpy="-1.5708 0 -1.45075" />
       <geometry>
-        <mesh filename="package://robot_description/assets/wheelhub.stl" />
+        <mesh filename="package://Sora/assets/wheelhub.stl" />
       </geometry>
     </collision>
     
     <visual>
-      <origin xyz="-0.0378072 -0.00635115 -0.0121103" rpy="-2.38875 -0.087437 0.0929364" />
+      <origin xyz="-0.0108332 0.0367745 -0.0121103" rpy="-2.38875 -0.087437 -1.35781" />
       <geometry>
-        <mesh filename="package://robot_description/assets/roller.stl" />
+        <mesh filename="package://Sora/assets/roller.stl" />
       </geometry>
       <material name="roller_6_material">
         <color rgba="0.792157 0.819608 0.933333 1" />
       </material>
     </visual>
     <collision>
-      <origin xyz="-0.0378072 -0.00635115 -0.0121103" rpy="-2.38875 -0.087437 0.0929364" />
+      <origin xyz="-0.0108332 0.0367745 -0.0121103" rpy="-2.38875 -0.087437 -1.35781" />
       <geometry>
-        <mesh filename="package://robot_description/assets/roller.stl" />
+        <mesh filename="package://Sora/assets/roller.stl" />
       </geometry>
     </collision>
     
     <visual>
-      <origin xyz="0 0 -0.0124" rpy="-1.5708 0 0" />
+      <origin xyz="0 0 -0.0124" rpy="-1.5708 0 -1.45075" />
       <geometry>
-        <mesh filename="package://robot_description/assets/rim_inside.stl" />
+        <mesh filename="package://Sora/assets/rim_inside.stl" />
       </geometry>
       <material name="rim_inside_material">
         <color rgba="0.101961 0.101961 0.101961 1" />
       </material>
     </visual>
     <collision>
-      <origin xyz="0 0 -0.0124" rpy="-1.5708 0 0" />
+      <origin xyz="0 0 -0.0124" rpy="-1.5708 0 -1.45075" />
       <geometry>
-        <mesh filename="package://robot_description/assets/rim_inside.stl" />
+        <mesh filename="package://Sora/assets/rim_inside.stl" />
       </geometry>
     </collision>
     
     <visual>
-      <origin xyz="-0.0248796 -0.0291673 -0.0121103" rpy="-0.975317 -0.604636 -1.5708" />
+      <origin xyz="-0.0319369 0.0212074 -0.0121103" rpy="-0.975317 -0.604636 -3.02154" />
       <geometry>
-        <mesh filename="package://robot_description/assets/roller.stl" />
+        <mesh filename="package://Sora/assets/roller.stl" />
       </geometry>
       <material name="roller_7_material">
         <color rgba="0.792157 0.819608 0.933333 1" />
       </material>
     </visual>
     <collision>
-      <origin xyz="-0.0248796 -0.0291673 -0.0121103" rpy="-0.975317 -0.604636 -1.5708" />
+      <origin xyz="-0.0319369 0.0212074 -0.0121103" rpy="-0.975317 -0.604636 -3.02154" />
       <geometry>
-        <mesh filename="package://robot_description/assets/roller.stl" />
+        <mesh filename="package://Sora/assets/roller.stl" />
       </geometry>
     </collision>
     
     <visual>
-      <origin xyz="0.0244039 -0.0295664 -0.0121103" rpy="-2.26632 0.479593 2.77397" />
+      <origin xyz="-0.026431 -0.0277691 -0.0121103" rpy="-2.26632 0.479593 1.32322" />
       <geometry>
-        <mesh filename="package://robot_description/assets/roller.stl" />
+        <mesh filename="package://Sora/assets/roller.stl" />
       </geometry>
       <material name="roller_8_material">
         <color rgba="0.792157 0.819608 0.933333 1" />
       </material>
     </visual>
     <collision>
-      <origin xyz="0.0244039 -0.0295664 -0.0121103" rpy="-2.26632 0.479593 2.77397" />
+      <origin xyz="-0.026431 -0.0277691 -0.0121103" rpy="-2.26632 0.479593 1.32322" />
       <geometry>
-        <mesh filename="package://robot_description/assets/roller.stl" />
+        <mesh filename="package://Sora/assets/roller.stl" />
       </geometry>
     </collision>
     
     <visual>
-      <origin xyz="0.0376994 -0.00696269 -0.0121103" rpy="-2.38875 0.0873977 3.0487" />
+      <origin xyz="-0.00239771 -0.0382619 -0.0121103" rpy="-2.38875 0.0873977 1.59795" />
       <geometry>
-        <mesh filename="package://robot_description/assets/roller.stl" />
+        <mesh filename="package://Sora/assets/roller.stl" />
       </geometry>
       <material name="roller_9_material">
         <color rgba="0.792157 0.819608 0.933333 1" />
       </material>
     </visual>
     <collision>
-      <origin xyz="0.0376994 -0.00696269 -0.0121103" rpy="-2.38875 0.0873977 3.0487" />
+      <origin xyz="-0.00239771 -0.0382619 -0.0121103" rpy="-2.38875 0.0873977 1.59795" />
       <geometry>
-        <mesh filename="package://robot_description/assets/roller.stl" />
+        <mesh filename="package://Sora/assets/roller.stl" />
       </geometry>
     </collision>
     
     <visual>
-      <origin xyz="0 0 -0.0124" rpy="1.5708 0 3.14159" />
+      <origin xyz="0 0 -0.0124" rpy="1.5708 0 1.69084" />
       <geometry>
-        <mesh filename="package://robot_description/assets/rim_outside.stl" />
+        <mesh filename="package://Sora/assets/rim_outside.stl" />
       </geometry>
       <material name="rim_outside_material">
         <color rgba="0.101961 0.101961 0.101961 1" />
       </material>
     </visual>
     <collision>
-      <origin xyz="0 0 -0.0124" rpy="1.5708 0 3.14159" />
+      <origin xyz="0 0 -0.0124" rpy="1.5708 0 1.69084" />
       <geometry>
-        <mesh filename="package://robot_description/assets/rim_outside.stl" />
+        <mesh filename="package://Sora/assets/rim_outside.stl" />
       </geometry>
     </collision>
   </link>
   
-  <joint name="Wheel_FR" type="continuous">
-    <origin xyz="-0.0925 0.14 0.024" rpy="1.5708 0 0" />
+  <joint name="Wheel_FR" type="revolute">
+    <origin xyz="-0.0925 0.135 0.024" rpy="1.5708 0 0" />
     <parent link="baseplate" />
     <child link="mecanum_wheel___right" />
     <axis xyz="0 0 1" />
+    <limit effort="10" velocity="10" lower="-3.1415927" upper="3.1415927" />
   </joint>
   
   <link name="mecanum_wheel___left">
@@ -770,7 +971,7 @@
     <visual>
       <origin xyz="-0.0134033 0.0359176 -0.0121103" rpy="-0.812012 0.352295 -1.5708" />
       <geometry>
-        <mesh filename="package://robot_description/assets/roller__2.stl" />
+        <mesh filename="package://Sora/assets/roller__2.stl" />
       </geometry>
       <material name="roller_10_material">
         <color rgba="0.792157 0.819608 0.933333 1" />
@@ -779,14 +980,14 @@
     <collision>
       <origin xyz="-0.0134033 0.0359176 -0.0121103" rpy="-0.812012 0.352295 -1.5708" />
       <geometry>
-        <mesh filename="package://robot_description/assets/roller__2.stl" />
+        <mesh filename="package://Sora/assets/roller__2.stl" />
       </geometry>
     </collision>
     
     <visual>
       <origin xyz="0.0330444 0.0194367 -0.0121103" rpy="-2.35641 -0.271242 0.26189" />
       <geometry>
-        <mesh filename="package://robot_description/assets/roller__2.stl" />
+        <mesh filename="package://Sora/assets/roller__2.stl" />
       </geometry>
       <material name="roller_11_material">
         <color rgba="0.792157 0.819608 0.933333 1" />
@@ -795,14 +996,14 @@
     <collision>
       <origin xyz="0.0330444 0.0194367 -0.0121103" rpy="-2.35641 -0.271242 0.26189" />
       <geometry>
-        <mesh filename="package://robot_description/assets/roller__2.stl" />
+        <mesh filename="package://Sora/assets/roller__2.stl" />
       </geometry>
     </collision>
     
     <visual>
       <origin xyz="0.0378072 -0.00635115 -0.0121103" rpy="-2.38875 0.087437 -0.0929364" />
       <geometry>
-        <mesh filename="package://robot_description/assets/roller__2.stl" />
+        <mesh filename="package://Sora/assets/roller__2.stl" />
       </geometry>
       <material name="roller_12_material">
         <color rgba="0.792157 0.819608 0.933333 1" />
@@ -811,14 +1012,14 @@
     <collision>
       <origin xyz="0.0378072 -0.00635115 -0.0121103" rpy="-2.38875 0.087437 -0.0929364" />
       <geometry>
-        <mesh filename="package://robot_description/assets/roller__2.stl" />
+        <mesh filename="package://Sora/assets/roller__2.stl" />
       </geometry>
     </collision>
     
     <visual>
       <origin xyz="-0.0244039 -0.0295664 -0.0121103" rpy="-2.26632 -0.479593 -2.77397" />
       <geometry>
-        <mesh filename="package://robot_description/assets/roller__2.stl" />
+        <mesh filename="package://Sora/assets/roller__2.stl" />
       </geometry>
       <material name="roller_13_material">
         <color rgba="0.792157 0.819608 0.933333 1" />
@@ -827,14 +1028,14 @@
     <collision>
       <origin xyz="-0.0244039 -0.0295664 -0.0121103" rpy="-2.26632 -0.479593 -2.77397" />
       <geometry>
-        <mesh filename="package://robot_description/assets/roller__2.stl" />
+        <mesh filename="package://Sora/assets/roller__2.stl" />
       </geometry>
     </collision>
     
     <visual>
       <origin xyz="0.0248796 -0.0291673 -0.0121103" rpy="-0.975317 0.604636 1.5708" />
       <geometry>
-        <mesh filename="package://robot_description/assets/roller__2.stl" />
+        <mesh filename="package://Sora/assets/roller__2.stl" />
       </geometry>
       <material name="roller_14_material">
         <color rgba="0.792157 0.819608 0.933333 1" />
@@ -843,14 +1044,14 @@
     <collision>
       <origin xyz="0.0248796 -0.0291673 -0.0121103" rpy="-0.975317 0.604636 1.5708" />
       <geometry>
-        <mesh filename="package://robot_description/assets/roller__2.stl" />
+        <mesh filename="package://Sora/assets/roller__2.stl" />
       </geometry>
     </collision>
     
     <visual>
       <origin xyz="0 0 -0.0124" rpy="1.5708 0 3.14159" />
       <geometry>
-        <mesh filename="package://robot_description/assets/rim_inside__2.stl" />
+        <mesh filename="package://Sora/assets/rim_inside__2.stl" />
       </geometry>
       <material name="rim_inside_2_material">
         <color rgba="0.101961 0.101961 0.101961 1" />
@@ -859,14 +1060,14 @@
     <collision>
       <origin xyz="0 0 -0.0124" rpy="1.5708 0 3.14159" />
       <geometry>
-        <mesh filename="package://robot_description/assets/rim_inside__2.stl" />
+        <mesh filename="package://Sora/assets/rim_inside__2.stl" />
       </geometry>
     </collision>
     
     <visual>
       <origin xyz="0 0 -0.0124" rpy="-1.5708 0 0" />
       <geometry>
-        <mesh filename="package://robot_description/assets/rim_outside__2.stl" />
+        <mesh filename="package://Sora/assets/rim_outside__2.stl" />
       </geometry>
       <material name="rim_outside_2_material">
         <color rgba="0.101961 0.101961 0.101961 1" />
@@ -875,14 +1076,14 @@
     <collision>
       <origin xyz="0 0 -0.0124" rpy="-1.5708 0 0" />
       <geometry>
-        <mesh filename="package://robot_description/assets/rim_outside__2.stl" />
+        <mesh filename="package://Sora/assets/rim_outside__2.stl" />
       </geometry>
     </collision>
     
     <visual>
       <origin xyz="0 0 -0.0284" rpy="-1.5708 0 0" />
       <geometry>
-        <mesh filename="package://robot_description/assets/wheelhub__2.stl" />
+        <mesh filename="package://Sora/assets/wheelhub__2.stl" />
       </geometry>
       <material name="wheelhub_2_material">
         <color rgba="0.854902 0.854902 0.854902 1" />
@@ -891,14 +1092,14 @@
     <collision>
       <origin xyz="0 0 -0.0284" rpy="-1.5708 0 0" />
       <geometry>
-        <mesh filename="package://robot_description/assets/wheelhub__2.stl" />
+        <mesh filename="package://Sora/assets/wheelhub__2.stl" />
       </geometry>
     </collision>
     
     <visual>
       <origin xyz="-0.0333549 0.018899 -0.0121103" rpy="-2.3564 0.271285 2.87967" />
       <geometry>
-        <mesh filename="package://robot_description/assets/roller__2.stl" />
+        <mesh filename="package://Sora/assets/roller__2.stl" />
       </geometry>
       <material name="roller_15_material">
         <color rgba="0.792157 0.819608 0.933333 1" />
@@ -907,14 +1108,14 @@
     <collision>
       <origin xyz="-0.0333549 0.018899 -0.0121103" rpy="-2.3564 0.271285 2.87967" />
       <geometry>
-        <mesh filename="package://robot_description/assets/roller__2.stl" />
+        <mesh filename="package://Sora/assets/roller__2.stl" />
       </geometry>
     </collision>
     
     <visual>
       <origin xyz="-0.0376994 -0.00696269 -0.0121103" rpy="-2.38875 -0.0873977 -3.0487" />
       <geometry>
-        <mesh filename="package://robot_description/assets/roller__2.stl" />
+        <mesh filename="package://Sora/assets/roller__2.stl" />
       </geometry>
       <material name="roller_16_material">
         <color rgba="0.792157 0.819608 0.933333 1" />
@@ -923,14 +1124,14 @@
     <collision>
       <origin xyz="-0.0376994 -0.00696269 -0.0121103" rpy="-2.38875 -0.0873977 -3.0487" />
       <geometry>
-        <mesh filename="package://robot_description/assets/roller__2.stl" />
+        <mesh filename="package://Sora/assets/roller__2.stl" />
       </geometry>
     </collision>
     
     <visual>
       <origin xyz="0.0128198 0.03613 -0.0121103" rpy="-0.812039 -0.352365 -1.5708" />
       <geometry>
-        <mesh filename="package://robot_description/assets/roller__2.stl" />
+        <mesh filename="package://Sora/assets/roller__2.stl" />
       </geometry>
       <material name="roller_17_material">
         <color rgba="0.792157 0.819608 0.933333 1" />
@@ -939,14 +1140,14 @@
     <collision>
       <origin xyz="0.0128198 0.03613 -0.0121103" rpy="-0.812039 -0.352365 -1.5708" />
       <geometry>
-        <mesh filename="package://robot_description/assets/roller__2.stl" />
+        <mesh filename="package://Sora/assets/roller__2.stl" />
       </geometry>
     </collision>
     
     <visual>
       <origin xyz="0.000310488 -0.0383357 -0.0121103" rpy="-0.74927 -4.18434e-05 1.5708" />
       <geometry>
-        <mesh filename="package://robot_description/assets/roller__2.stl" />
+        <mesh filename="package://Sora/assets/roller__2.stl" />
       </geometry>
       <material name="roller_18_material">
         <color rgba="0.792157 0.819608 0.933333 1" />
@@ -955,223 +1156,225 @@
     <collision>
       <origin xyz="0.000310488 -0.0383357 -0.0121103" rpy="-0.74927 -4.18434e-05 1.5708" />
       <geometry>
-        <mesh filename="package://robot_description/assets/roller__2.stl" />
+        <mesh filename="package://Sora/assets/roller__2.stl" />
       </geometry>
     </collision>
   </link>
   
-  <joint name="Wheel_FL" type="continuous">
-    <origin xyz="-0.0925 -0.14 0.024" rpy="-1.5708 0 0" />
+  <joint name="Wheel_FL" type="revolute">
+    <origin xyz="-0.0925 -0.135 0.024" rpy="-1.5708 0 0" />
     <parent link="baseplate" />
     <child link="mecanum_wheel___left" />
     <axis xyz="0 0 1" />
+    <limit effort="10" velocity="10" lower="-3.1415927" upper="3.1415927" />
   </joint>
   
   <link name="mecanum_wheel___left_2">
     <inertial>
       <origin xyz="0 0 -0.0129199" rpy="0 0 0" />
       <mass value="0.152525" />
-      <inertia ixx="0.000118996" ixy="-6.21386e-10" ixz="1.00056e-09" iyy="0.000118995" iyz="2.08104e-12" izz="0.00020598" />
+      <inertia ixx="0.000118996" ixy="-3.86885e-10" ixz="9.70774e-10" iyy="0.000118995" iyz="2.42309e-10" izz="0.00020598" />
     </inertial>
     
     <visual>
-      <origin xyz="0.0134033 -0.0359176 -0.0121103" rpy="-0.812012 0.352295 1.5708" />
+      <origin xyz="0.0216369 -0.0316475 -0.0121103" rpy="-0.812012 0.352295 1.81332" />
       <geometry>
-        <mesh filename="package://robot_description/assets/roller__2.stl" />
+        <mesh filename="package://Sora/assets/roller__2.stl" />
       </geometry>
       <material name="roller_19_material">
         <color rgba="0.792157 0.819608 0.933333 1" />
       </material>
     </visual>
     <collision>
-      <origin xyz="0.0134033 -0.0359176 -0.0121103" rpy="-0.812012 0.352295 1.5708" />
+      <origin xyz="0.0216369 -0.0316475 -0.0121103" rpy="-0.812012 0.352295 1.81332" />
       <geometry>
-        <mesh filename="package://robot_description/assets/roller__2.stl" />
+        <mesh filename="package://Sora/assets/roller__2.stl" />
       </geometry>
     </collision>
     
     <visual>
-      <origin xyz="-0.0330444 -0.0194367 -0.0121103" rpy="-2.35641 -0.271242 -2.8797" />
+      <origin xyz="-0.0274095 -0.0268037 -0.0121103" rpy="-2.35641 -0.271242 -2.63718" />
       <geometry>
-        <mesh filename="package://robot_description/assets/roller__2.stl" />
+        <mesh filename="package://Sora/assets/roller__2.stl" />
       </geometry>
       <material name="roller_20_material">
         <color rgba="0.792157 0.819608 0.933333 1" />
       </material>
     </visual>
     <collision>
-      <origin xyz="-0.0330444 -0.0194367 -0.0121103" rpy="-2.35641 -0.271242 -2.8797" />
+      <origin xyz="-0.0274095 -0.0268037 -0.0121103" rpy="-2.35641 -0.271242 -2.63718" />
       <geometry>
-        <mesh filename="package://robot_description/assets/roller__2.stl" />
+        <mesh filename="package://Sora/assets/roller__2.stl" />
       </geometry>
     </collision>
     
     <visual>
-      <origin xyz="-0.0378072 0.00635115 -0.0121103" rpy="-2.38875 0.087437 3.04866" />
+      <origin xyz="-0.038226 -0.00291432 -0.0121103" rpy="-2.38875 0.087437 -2.992" />
       <geometry>
-        <mesh filename="package://robot_description/assets/roller__2.stl" />
+        <mesh filename="package://Sora/assets/roller__2.stl" />
       </geometry>
       <material name="roller_21_material">
         <color rgba="0.792157 0.819608 0.933333 1" />
       </material>
     </visual>
     <collision>
-      <origin xyz="-0.0378072 0.00635115 -0.0121103" rpy="-2.38875 0.087437 3.04866" />
+      <origin xyz="-0.038226 -0.00291432 -0.0121103" rpy="-2.38875 0.087437 -2.992" />
       <geometry>
-        <mesh filename="package://robot_description/assets/roller__2.stl" />
+        <mesh filename="package://Sora/assets/roller__2.stl" />
       </geometry>
     </collision>
     
     <visual>
-      <origin xyz="0.0244039 0.0295664 -0.0121103" rpy="-2.26632 -0.479593 0.367624" />
+      <origin xyz="0.0165891 0.0345619 -0.0121103" rpy="-2.26632 -0.479593 0.61015" />
       <geometry>
-        <mesh filename="package://robot_description/assets/roller__2.stl" />
+        <mesh filename="package://Sora/assets/roller__2.stl" />
       </geometry>
       <material name="roller_22_material">
         <color rgba="0.792157 0.819608 0.933333 1" />
       </material>
     </visual>
     <collision>
-      <origin xyz="0.0244039 0.0295664 -0.0121103" rpy="-2.26632 -0.479593 0.367624" />
+      <origin xyz="0.0165891 0.0345619 -0.0121103" rpy="-2.26632 -0.479593 0.61015" />
       <geometry>
-        <mesh filename="package://robot_description/assets/roller__2.stl" />
+        <mesh filename="package://Sora/assets/roller__2.stl" />
       </geometry>
     </collision>
     
     <visual>
-      <origin xyz="-0.0248796 0.0291673 -0.0121103" rpy="-0.975317 0.604636 -1.5708" />
+      <origin xyz="-0.0311561 0.0223387 -0.0121103" rpy="-0.975317 0.604636 -1.32827" />
       <geometry>
-        <mesh filename="package://robot_description/assets/roller__2.stl" />
+        <mesh filename="package://Sora/assets/roller__2.stl" />
       </geometry>
       <material name="roller_23_material">
         <color rgba="0.792157 0.819608 0.933333 1" />
       </material>
     </visual>
     <collision>
-      <origin xyz="-0.0248796 0.0291673 -0.0121103" rpy="-0.975317 0.604636 -1.5708" />
+      <origin xyz="-0.0311561 0.0223387 -0.0121103" rpy="-0.975317 0.604636 -1.32827" />
       <geometry>
-        <mesh filename="package://robot_description/assets/roller__2.stl" />
+        <mesh filename="package://Sora/assets/roller__2.stl" />
       </geometry>
     </collision>
     
     <visual>
-      <origin xyz="0 0 -0.0124" rpy="1.5708 0 0" />
+      <origin xyz="0 0 -0.0124" rpy="1.5708 0 0.242526" />
       <geometry>
-        <mesh filename="package://robot_description/assets/rim_inside__2.stl" />
+        <mesh filename="package://Sora/assets/rim_inside__2.stl" />
       </geometry>
       <material name="rim_inside_3_material">
         <color rgba="0.101961 0.101961 0.101961 1" />
       </material>
     </visual>
     <collision>
-      <origin xyz="0 0 -0.0124" rpy="1.5708 0 0" />
+      <origin xyz="0 0 -0.0124" rpy="1.5708 0 0.242526" />
       <geometry>
-        <mesh filename="package://robot_description/assets/rim_inside__2.stl" />
+        <mesh filename="package://Sora/assets/rim_inside__2.stl" />
       </geometry>
     </collision>
     
     <visual>
-      <origin xyz="0 0 -0.0124" rpy="-1.5708 0 3.14159" />
+      <origin xyz="0 0 -0.0124" rpy="-1.5708 0 -2.89907" />
       <geometry>
-        <mesh filename="package://robot_description/assets/rim_outside__2.stl" />
+        <mesh filename="package://Sora/assets/rim_outside__2.stl" />
       </geometry>
       <material name="rim_outside_3_material">
         <color rgba="0.101961 0.101961 0.101961 1" />
       </material>
     </visual>
     <collision>
-      <origin xyz="0 0 -0.0124" rpy="-1.5708 0 3.14159" />
+      <origin xyz="0 0 -0.0124" rpy="-1.5708 0 -2.89907" />
       <geometry>
-        <mesh filename="package://robot_description/assets/rim_outside__2.stl" />
+        <mesh filename="package://Sora/assets/rim_outside__2.stl" />
       </geometry>
     </collision>
     
     <visual>
-      <origin xyz="0 0 -0.0284" rpy="-1.5708 0 3.14159" />
+      <origin xyz="0 0 -0.0284" rpy="-1.5708 0 -2.89907" />
       <geometry>
-        <mesh filename="package://robot_description/assets/wheelhub__2.stl" />
+        <mesh filename="package://Sora/assets/wheelhub__2.stl" />
       </geometry>
       <material name="wheelhub_3_material">
         <color rgba="0.854902 0.854902 0.854902 1" />
       </material>
     </visual>
     <collision>
-      <origin xyz="0 0 -0.0284" rpy="-1.5708 0 3.14159" />
+      <origin xyz="0 0 -0.0284" rpy="-1.5708 0 -2.89907" />
       <geometry>
-        <mesh filename="package://robot_description/assets/wheelhub__2.stl" />
+        <mesh filename="package://Sora/assets/wheelhub__2.stl" />
       </geometry>
     </collision>
     
     <visual>
-      <origin xyz="0.0333549 -0.018899 -0.0121103" rpy="-2.3564 0.271285 -0.261923" />
+      <origin xyz="0.0369175 -0.0103355 -0.0121103" rpy="-2.3564 0.271285 -0.019397" />
       <geometry>
-        <mesh filename="package://robot_description/assets/roller__2.stl" />
+        <mesh filename="package://Sora/assets/roller__2.stl" />
       </geometry>
       <material name="roller_24_material">
         <color rgba="0.792157 0.819608 0.933333 1" />
       </material>
     </visual>
     <collision>
-      <origin xyz="0.0333549 -0.018899 -0.0121103" rpy="-2.3564 0.271285 -0.261923" />
+      <origin xyz="0.0369175 -0.0103355 -0.0121103" rpy="-2.3564 0.271285 -0.019397" />
       <geometry>
-        <mesh filename="package://robot_description/assets/roller__2.stl" />
+        <mesh filename="package://Sora/assets/roller__2.stl" />
       </geometry>
     </collision>
     
     <visual>
-      <origin xyz="0.0376994 0.00696269 -0.0121103" rpy="-2.38875 -0.0873977 0.0928956" />
+      <origin xyz="0.0349239 0.0158126 -0.0121103" rpy="-2.38875 -0.0873977 0.335421" />
       <geometry>
-        <mesh filename="package://robot_description/assets/roller__2.stl" />
+        <mesh filename="package://Sora/assets/roller__2.stl" />
       </geometry>
       <material name="roller_25_material">
         <color rgba="0.792157 0.819608 0.933333 1" />
       </material>
     </visual>
     <collision>
-      <origin xyz="0.0376994 0.00696269 -0.0121103" rpy="-2.38875 -0.0873977 0.0928956" />
+      <origin xyz="0.0349239 0.0158126 -0.0121103" rpy="-2.38875 -0.0873977 0.335421" />
       <geometry>
-        <mesh filename="package://robot_description/assets/roller__2.stl" />
+        <mesh filename="package://Sora/assets/roller__2.stl" />
       </geometry>
     </collision>
     
     <visual>
-      <origin xyz="-0.0128198 -0.03613 -0.0121103" rpy="-0.812039 -0.352365 1.5708" />
+      <origin xyz="-0.00376784 -0.0381513 -0.0121103" rpy="-0.812039 -0.352365 1.81332" />
       <geometry>
-        <mesh filename="package://robot_description/assets/roller__2.stl" />
+        <mesh filename="package://Sora/assets/roller__2.stl" />
       </geometry>
       <material name="roller_26_material">
         <color rgba="0.792157 0.819608 0.933333 1" />
       </material>
     </visual>
     <collision>
-      <origin xyz="-0.0128198 -0.03613 -0.0121103" rpy="-0.812039 -0.352365 1.5708" />
+      <origin xyz="-0.00376784 -0.0381513 -0.0121103" rpy="-0.812039 -0.352365 1.81332" />
       <geometry>
-        <mesh filename="package://robot_description/assets/roller__2.stl" />
+        <mesh filename="package://Sora/assets/roller__2.stl" />
       </geometry>
     </collision>
     
     <visual>
-      <origin xyz="-0.000310488 0.0383357 -0.0121103" rpy="-0.74927 -4.18434e-05 -1.5708" />
+      <origin xyz="-0.00950792 0.0371392 -0.0121103" rpy="-0.74927 -4.18434e-05 -1.32827" />
       <geometry>
-        <mesh filename="package://robot_description/assets/roller__2.stl" />
+        <mesh filename="package://Sora/assets/roller__2.stl" />
       </geometry>
       <material name="roller_27_material">
         <color rgba="0.792157 0.819608 0.933333 1" />
       </material>
     </visual>
     <collision>
-      <origin xyz="-0.000310488 0.0383357 -0.0121103" rpy="-0.74927 -4.18434e-05 -1.5708" />
+      <origin xyz="-0.00950792 0.0371392 -0.0121103" rpy="-0.74927 -4.18434e-05 -1.32827" />
       <geometry>
-        <mesh filename="package://robot_description/assets/roller__2.stl" />
+        <mesh filename="package://Sora/assets/roller__2.stl" />
       </geometry>
     </collision>
   </link>
   
-  <joint name="Wheel_BR" type="continuous">
-    <origin xyz="0.3175 0.14 0.024" rpy="-1.5708 0 3.14159" />
+  <joint name="Wheel_BR" type="revolute">
+    <origin xyz="0.3175 0.135 0.024" rpy="-1.5708 0 3.14159" />
     <parent link="baseplate" />
     <child link="mecanum_wheel___left_2" />
     <axis xyz="0 0 1" />
+    <limit effort="10" velocity="10" lower="-3.1415927" upper="3.1415927" />
   </joint>
   
   <link name="mecanum_wheel___right_2">
@@ -1184,7 +1387,7 @@
     <visual>
       <origin xyz="0.000310488 0.0383357 -0.0121103" rpy="-0.74927 4.18434e-05 1.5708" />
       <geometry>
-        <mesh filename="package://robot_description/assets/roller.stl" />
+        <mesh filename="package://Sora/assets/roller.stl" />
       </geometry>
       <material name="roller_28_material">
         <color rgba="0.792157 0.819608 0.933333 1" />
@@ -1193,14 +1396,14 @@
     <collision>
       <origin xyz="0.000310488 0.0383357 -0.0121103" rpy="-0.74927 4.18434e-05 1.5708" />
       <geometry>
-        <mesh filename="package://robot_description/assets/roller.stl" />
+        <mesh filename="package://Sora/assets/roller.stl" />
       </geometry>
     </collision>
     
     <visual>
       <origin xyz="0.0330444 -0.0194367 -0.0121103" rpy="-2.35641 0.271242 2.8797" />
       <geometry>
-        <mesh filename="package://robot_description/assets/roller.stl" />
+        <mesh filename="package://Sora/assets/roller.stl" />
       </geometry>
       <material name="roller_29_material">
         <color rgba="0.792157 0.819608 0.933333 1" />
@@ -1209,14 +1412,14 @@
     <collision>
       <origin xyz="0.0330444 -0.0194367 -0.0121103" rpy="-2.35641 0.271242 2.8797" />
       <geometry>
-        <mesh filename="package://robot_description/assets/roller.stl" />
+        <mesh filename="package://Sora/assets/roller.stl" />
       </geometry>
     </collision>
     
     <visual>
       <origin xyz="-0.0134033 -0.0359176 -0.0121103" rpy="-0.812012 -0.352295 -1.5708" />
       <geometry>
-        <mesh filename="package://robot_description/assets/roller.stl" />
+        <mesh filename="package://Sora/assets/roller.stl" />
       </geometry>
       <material name="roller_30_material">
         <color rgba="0.792157 0.819608 0.933333 1" />
@@ -1225,14 +1428,14 @@
     <collision>
       <origin xyz="-0.0134033 -0.0359176 -0.0121103" rpy="-0.812012 -0.352295 -1.5708" />
       <geometry>
-        <mesh filename="package://robot_description/assets/roller.stl" />
+        <mesh filename="package://Sora/assets/roller.stl" />
       </geometry>
     </collision>
     
     <visual>
       <origin xyz="-0.0333549 -0.018899 -0.0121103" rpy="-1.19596 -0.749657 -1.5708" />
       <geometry>
-        <mesh filename="package://robot_description/assets/roller.stl" />
+        <mesh filename="package://Sora/assets/roller.stl" />
       </geometry>
       <material name="roller_31_material">
         <color rgba="0.792157 0.819608 0.933333 1" />
@@ -1241,14 +1444,14 @@
     <collision>
       <origin xyz="-0.0333549 -0.018899 -0.0121103" rpy="-1.19596 -0.749657 -1.5708" />
       <geometry>
-        <mesh filename="package://robot_description/assets/roller.stl" />
+        <mesh filename="package://Sora/assets/roller.stl" />
       </geometry>
     </collision>
     
     <visual>
       <origin xyz="0.0128198 -0.03613 -0.0121103" rpy="-2.03979 0.702002 2.82537" />
       <geometry>
-        <mesh filename="package://robot_description/assets/roller.stl" />
+        <mesh filename="package://Sora/assets/roller.stl" />
       </geometry>
       <material name="roller_32_material">
         <color rgba="0.792157 0.819608 0.933333 1" />
@@ -1257,14 +1460,14 @@
     <collision>
       <origin xyz="0.0128198 -0.03613 -0.0121103" rpy="-2.03979 0.702002 2.82537" />
       <geometry>
-        <mesh filename="package://robot_description/assets/roller.stl" />
+        <mesh filename="package://Sora/assets/roller.stl" />
       </geometry>
     </collision>
     
     <visual>
       <origin xyz="0 0 -0.0284" rpy="-1.5708 0 -3.14159" />
       <geometry>
-        <mesh filename="package://robot_description/assets/wheelhub.stl" />
+        <mesh filename="package://Sora/assets/wheelhub.stl" />
       </geometry>
       <material name="wheelhub_4_material">
         <color rgba="0.854902 0.854902 0.854902 1" />
@@ -1273,14 +1476,14 @@
     <collision>
       <origin xyz="0 0 -0.0284" rpy="-1.5708 0 -3.14159" />
       <geometry>
-        <mesh filename="package://robot_description/assets/wheelhub.stl" />
+        <mesh filename="package://Sora/assets/wheelhub.stl" />
       </geometry>
     </collision>
     
     <visual>
       <origin xyz="0.0378072 0.00635115 -0.0121103" rpy="-2.38875 -0.087437 -3.04866" />
       <geometry>
-        <mesh filename="package://robot_description/assets/roller.stl" />
+        <mesh filename="package://Sora/assets/roller.stl" />
       </geometry>
       <material name="roller_33_material">
         <color rgba="0.792157 0.819608 0.933333 1" />
@@ -1289,14 +1492,14 @@
     <collision>
       <origin xyz="0.0378072 0.00635115 -0.0121103" rpy="-2.38875 -0.087437 -3.04866" />
       <geometry>
-        <mesh filename="package://robot_description/assets/roller.stl" />
+        <mesh filename="package://Sora/assets/roller.stl" />
       </geometry>
     </collision>
     
     <visual>
       <origin xyz="0 0 -0.0124" rpy="-1.5708 0 3.14159" />
       <geometry>
-        <mesh filename="package://robot_description/assets/rim_inside.stl" />
+        <mesh filename="package://Sora/assets/rim_inside.stl" />
       </geometry>
       <material name="rim_inside_4_material">
         <color rgba="0.101961 0.101961 0.101961 1" />
@@ -1305,14 +1508,14 @@
     <collision>
       <origin xyz="0 0 -0.0124" rpy="-1.5708 0 3.14159" />
       <geometry>
-        <mesh filename="package://robot_description/assets/rim_inside.stl" />
+        <mesh filename="package://Sora/assets/rim_inside.stl" />
       </geometry>
     </collision>
     
     <visual>
       <origin xyz="0.0248796 0.0291673 -0.0121103" rpy="-0.975317 -0.604636 1.5708" />
       <geometry>
-        <mesh filename="package://robot_description/assets/roller.stl" />
+        <mesh filename="package://Sora/assets/roller.stl" />
       </geometry>
       <material name="roller_34_material">
         <color rgba="0.792157 0.819608 0.933333 1" />
@@ -1321,14 +1524,14 @@
     <collision>
       <origin xyz="0.0248796 0.0291673 -0.0121103" rpy="-0.975317 -0.604636 1.5708" />
       <geometry>
-        <mesh filename="package://robot_description/assets/roller.stl" />
+        <mesh filename="package://Sora/assets/roller.stl" />
       </geometry>
     </collision>
     
     <visual>
       <origin xyz="-0.0244039 0.0295664 -0.0121103" rpy="-2.26632 0.479593 -0.367624" />
       <geometry>
-        <mesh filename="package://robot_description/assets/roller.stl" />
+        <mesh filename="package://Sora/assets/roller.stl" />
       </geometry>
       <material name="roller_35_material">
         <color rgba="0.792157 0.819608 0.933333 1" />
@@ -1337,14 +1540,14 @@
     <collision>
       <origin xyz="-0.0244039 0.0295664 -0.0121103" rpy="-2.26632 0.479593 -0.367624" />
       <geometry>
-        <mesh filename="package://robot_description/assets/roller.stl" />
+        <mesh filename="package://Sora/assets/roller.stl" />
       </geometry>
     </collision>
     
     <visual>
       <origin xyz="-0.0376994 0.00696269 -0.0121103" rpy="-2.38875 0.0873977 -0.0928956" />
       <geometry>
-        <mesh filename="package://robot_description/assets/roller.stl" />
+        <mesh filename="package://Sora/assets/roller.stl" />
       </geometry>
       <material name="roller_36_material">
         <color rgba="0.792157 0.819608 0.933333 1" />
@@ -1353,14 +1556,14 @@
     <collision>
       <origin xyz="-0.0376994 0.00696269 -0.0121103" rpy="-2.38875 0.0873977 -0.0928956" />
       <geometry>
-        <mesh filename="package://robot_description/assets/roller.stl" />
+        <mesh filename="package://Sora/assets/roller.stl" />
       </geometry>
     </collision>
     
     <visual>
       <origin xyz="0 0 -0.0124" rpy="1.5708 0 0" />
       <geometry>
-        <mesh filename="package://robot_description/assets/rim_outside.stl" />
+        <mesh filename="package://Sora/assets/rim_outside.stl" />
       </geometry>
       <material name="rim_outside_4_material">
         <color rgba="0.101961 0.101961 0.101961 1" />
@@ -1369,208 +1572,225 @@
     <collision>
       <origin xyz="0 0 -0.0124" rpy="1.5708 0 0" />
       <geometry>
-        <mesh filename="package://robot_description/assets/rim_outside.stl" />
+        <mesh filename="package://Sora/assets/rim_outside.stl" />
       </geometry>
     </collision>
   </link>
   
-  <joint name="Wheel_BL" type="continuous">
-    <origin xyz="0.3175 -0.14 0.024" rpy="1.5708 0 3.14159" />
+  <joint name="Wheel_BL" type="revolute">
+    <origin xyz="0.3175 -0.135 0.024" rpy="1.5708 0 3.14159" />
     <parent link="baseplate" />
     <child link="mecanum_wheel___right_2" />
     <axis xyz="0 0 1" />
+    <limit effort="10" velocity="10" lower="-3.1415927" upper="3.1415927" />
   </joint>
   
   <link name="liftingmechanism">
     <inertial>
-      <origin xyz="0.126142 5.49728e-05 -0.0137722" rpy="0 0 0" />
+      <origin xyz="0.126142 5.49728e-05 -0.0112722" rpy="0 0 0" />
       <mass value="0.0957418" />
       <inertia ixx="7.04427e-05" ixy="7.5733e-10" ixz="3.42315e-07" iyy="0.000871632" iyz="1.32782e-07" izz="0.000819715" />
     </inertial>
     
     <visual>
-      <origin xyz="0.126 0 -0.0725" rpy="3.14159 0 3.14159" />
+      <origin xyz="0.126 0 -0.07" rpy="3.14159 0 3.14159" />
       <geometry>
-        <mesh filename="package://robot_description/assets/plug.stl" />
+        <mesh filename="package://Sora/assets/plug.stl" />
       </geometry>
       <material name="plug_material">
         <color rgba="0.231373 0.380392 0.705882 1" />
       </material>
     </visual>
     <collision>
-      <origin xyz="0.126 0 -0.0725" rpy="3.14159 0 3.14159" />
+      <origin xyz="0.126 0 -0.07" rpy="3.14159 0 3.14159" />
       <geometry>
-        <mesh filename="package://robot_description/assets/plug.stl" />
+        <mesh filename="package://Sora/assets/plug.stl" />
       </geometry>
     </collision>
     
     <visual>
-      <origin xyz="0.1264 0 -0.0055" rpy="0 0 0" />
+      <origin xyz="0.1264 0 -0.003" rpy="0 0 0" />
       <geometry>
-        <mesh filename="package://robot_description/assets/liftingspool.stl" />
+        <mesh filename="package://Sora/assets/liftingspool.stl" />
       </geometry>
       <material name="liftingspool_material">
         <color rgba="0.647059 0.647059 0.647059 1" />
       </material>
     </visual>
     <collision>
-      <origin xyz="0.1264 0 -0.0055" rpy="0 0 0" />
+      <origin xyz="0.1264 0 -0.003" rpy="0 0 0" />
       <geometry>
-        <mesh filename="package://robot_description/assets/liftingspool.stl" />
+        <mesh filename="package://Sora/assets/liftingspool.stl" />
       </geometry>
     </collision>
     
     <visual>
-      <origin xyz="0.126 0 -0.0055" rpy="0 0 0" />
+      <origin xyz="0.126 0 -0.003" rpy="0 0 0" />
       <geometry>
-        <mesh filename="package://robot_description/assets/liftingplatform1.stl" />
+        <mesh filename="package://Sora/assets/liftingplatform1.stl" />
       </geometry>
       <material name="liftingplatform1_material">
         <color rgba="0.34902 0.376471 0.4 1" />
       </material>
     </visual>
     <collision>
-      <origin xyz="0.126 0 -0.0055" rpy="0 0 0" />
+      <origin xyz="0.126 0 -0.003" rpy="0 0 0" />
       <geometry>
-        <mesh filename="package://robot_description/assets/liftingplatform1.stl" />
+        <mesh filename="package://Sora/assets/liftingplatform1.stl" />
       </geometry>
     </collision>
     
     <visual>
-      <origin xyz="0.126 0 -0.0055" rpy="0 0 0" />
+      <origin xyz="0.126 0 -0.003" rpy="0 0 0" />
       <geometry>
-        <mesh filename="package://robot_description/assets/plug.stl" />
+        <mesh filename="package://Sora/assets/plug.stl" />
       </geometry>
       <material name="plug_2_material">
         <color rgba="0.231373 0.380392 0.705882 1" />
       </material>
     </visual>
     <collision>
-      <origin xyz="0.126 0 -0.0055" rpy="0 0 0" />
+      <origin xyz="0.126 0 -0.003" rpy="0 0 0" />
       <geometry>
-        <mesh filename="package://robot_description/assets/plug.stl" />
+        <mesh filename="package://Sora/assets/plug.stl" />
       </geometry>
     </collision>
     
     <visual>
-      <origin xyz="0.126 0 -0.0055" rpy="0 0 0" />
+      <origin xyz="0.126 0 -0.003" rpy="0 0 0" />
       <geometry>
-        <mesh filename="package://robot_description/assets/liftingplatform2.stl" />
+        <mesh filename="package://Sora/assets/liftingplatform2.stl" />
       </geometry>
       <material name="liftingplatform2_material">
         <color rgba="0.34902 0.376471 0.4 1" />
       </material>
     </visual>
     <collision>
-      <origin xyz="0.126 0 -0.0055" rpy="0 0 0" />
+      <origin xyz="0.126 0 -0.003" rpy="0 0 0" />
       <geometry>
-        <mesh filename="package://robot_description/assets/liftingplatform2.stl" />
+        <mesh filename="package://Sora/assets/liftingplatform2.stl" />
       </geometry>
     </collision>
   </link>
   
   <joint name="Lift_Right" type="prismatic">
-    <origin xyz="-0.015775 0.073425 0.104" rpy="0 0 0" />
+    <origin xyz="-0.015775 0.073425 0.1015" rpy="0 0 0" />
     <parent link="baseplate" />
     <child link="liftingmechanism" />
     <axis xyz="0 0 1" />
-    <limit effort="10" velocity="10" lower="0" upper="0.022" />
+    <limit effort="10" velocity="10" lower="0" upper="0.0195" />
   </joint>
   
   <link name="liftingmechanism_2">
     <inertial>
-      <origin xyz="0.126142 5.49728e-05 -0.0137722" rpy="0 0 0" />
+      <origin xyz="0.126142 5.49728e-05 -0.0112722" rpy="0 0 0" />
       <mass value="0.0957418" />
       <inertia ixx="7.04427e-05" ixy="7.5733e-10" ixz="3.42315e-07" iyy="0.000871632" iyz="1.32782e-07" izz="0.000819715" />
     </inertial>
     
     <visual>
-      <origin xyz="0.126 0 -0.0725" rpy="3.14159 0 3.14159" />
+      <origin xyz="0.126 0 -0.07" rpy="3.14159 0 3.14159" />
       <geometry>
-        <mesh filename="package://robot_description/assets/plug.stl" />
+        <mesh filename="package://Sora/assets/plug.stl" />
       </geometry>
       <material name="plug_3_material">
         <color rgba="0.231373 0.380392 0.705882 1" />
       </material>
     </visual>
     <collision>
-      <origin xyz="0.126 0 -0.0725" rpy="3.14159 0 3.14159" />
+      <origin xyz="0.126 0 -0.07" rpy="3.14159 0 3.14159" />
       <geometry>
-        <mesh filename="package://robot_description/assets/plug.stl" />
+        <mesh filename="package://Sora/assets/plug.stl" />
       </geometry>
     </collision>
     
     <visual>
-      <origin xyz="0.1264 0 -0.0055" rpy="0 0 0" />
+      <origin xyz="0.1264 0 -0.003" rpy="0 0 0" />
       <geometry>
-        <mesh filename="package://robot_description/assets/liftingspool.stl" />
+        <mesh filename="package://Sora/assets/liftingspool.stl" />
       </geometry>
       <material name="liftingspool_2_material">
         <color rgba="0.647059 0.647059 0.647059 1" />
       </material>
     </visual>
     <collision>
-      <origin xyz="0.1264 0 -0.0055" rpy="0 0 0" />
+      <origin xyz="0.1264 0 -0.003" rpy="0 0 0" />
       <geometry>
-        <mesh filename="package://robot_description/assets/liftingspool.stl" />
+        <mesh filename="package://Sora/assets/liftingspool.stl" />
       </geometry>
     </collision>
     
     <visual>
-      <origin xyz="0.126 0 -0.0055" rpy="0 0 0" />
+      <origin xyz="0.126 0 -0.003" rpy="0 0 0" />
       <geometry>
-        <mesh filename="package://robot_description/assets/liftingplatform1.stl" />
+        <mesh filename="package://Sora/assets/liftingplatform1.stl" />
       </geometry>
       <material name="liftingplatform1_2_material">
         <color rgba="0.34902 0.376471 0.4 1" />
       </material>
     </visual>
     <collision>
-      <origin xyz="0.126 0 -0.0055" rpy="0 0 0" />
+      <origin xyz="0.126 0 -0.003" rpy="0 0 0" />
       <geometry>
-        <mesh filename="package://robot_description/assets/liftingplatform1.stl" />
+        <mesh filename="package://Sora/assets/liftingplatform1.stl" />
       </geometry>
     </collision>
     
     <visual>
-      <origin xyz="0.126 0 -0.0055" rpy="0 0 0" />
+      <origin xyz="0.126 0 -0.003" rpy="0 0 0" />
       <geometry>
-        <mesh filename="package://robot_description/assets/plug.stl" />
+        <mesh filename="package://Sora/assets/plug.stl" />
       </geometry>
       <material name="plug_4_material">
         <color rgba="0.231373 0.380392 0.705882 1" />
       </material>
     </visual>
     <collision>
-      <origin xyz="0.126 0 -0.0055" rpy="0 0 0" />
+      <origin xyz="0.126 0 -0.003" rpy="0 0 0" />
       <geometry>
-        <mesh filename="package://robot_description/assets/plug.stl" />
+        <mesh filename="package://Sora/assets/plug.stl" />
       </geometry>
     </collision>
     
     <visual>
-      <origin xyz="0.126 0 -0.0055" rpy="0 0 0" />
+      <origin xyz="0.126 0 -0.003" rpy="0 0 0" />
       <geometry>
-        <mesh filename="package://robot_description/assets/liftingplatform2.stl" />
+        <mesh filename="package://Sora/assets/liftingplatform2.stl" />
       </geometry>
       <material name="liftingplatform2_2_material">
         <color rgba="0.34902 0.376471 0.4 1" />
       </material>
     </visual>
     <collision>
-      <origin xyz="0.126 0 -0.0055" rpy="0 0 0" />
+      <origin xyz="0.126 0 -0.003" rpy="0 0 0" />
       <geometry>
-        <mesh filename="package://robot_description/assets/liftingplatform2.stl" />
+        <mesh filename="package://Sora/assets/liftingplatform2.stl" />
       </geometry>
     </collision>
   </link>
   
   <joint name="Lift_Left" type="prismatic">
-    <origin xyz="-0.015775 -0.073425 0.104" rpy="0 0 0" />
+    <origin xyz="-0.015775 -0.073425 0.1015" rpy="0 0 0" />
     <parent link="baseplate" />
     <child link="liftingmechanism_2" />
     <axis xyz="0 0 1" />
-    <limit effort="10" velocity="10" lower="0" upper="0.022" />
+    <limit effort="10" velocity="10" lower="0" upper="0.0195" />
+  </joint>
+
+  <link name="laser_frame"/>
+
+  <joint name="base_link_to_laser" type="fixed">
+    <origin xyz="-0.135 0 0.115" rpy="0 0 0"/>
+    <parent link="base_link"/>
+    <child link="laser_frame"/>
+  </joint>
+
+  <link name="zed_camera_center"/>
+
+  <joint name="base_link_to_zed" type="fixed">
+    <origin xyz="-0.160  0  0.069" rpy="0 0 0"/>
+    <parent link="base_link"/>
+    <child link="zed_camera_center"/>
   </joint>
 
   <ros2_control name="sora_system" type="system">
