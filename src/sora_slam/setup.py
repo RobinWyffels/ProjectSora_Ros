@@ -9,7 +9,10 @@ setup(
     data_files=[
         ("share/ament_index/resource_index/packages", ["resource/" + package_name]),
         ("share/" + package_name, ["package.xml"]),
-        ("share/" + package_name + "/launch", ["launch/sora_slam_toolbox.launch.py"]),
+        ("share/" + package_name + "/launch", [
+            "launch/sora_slam_toolbox.launch.py",
+            "launch/sora_main_control.launch.py",
+        ]),
         ("share/" + package_name + "/config", ["config/slam_toolbox_params.yaml"]),
     ],
     install_requires=["setuptools"],
@@ -18,4 +21,9 @@ setup(
     maintainer_email="robin.wyffels@student.hogent.be",
     description="Sora mapping bringup (YDLidar + slam_toolbox).",
     license="Apache-2.0",
+    entry_points={
+        "console_scripts": [
+            "launch_control = sora_slam.launch_control:main",
+        ],
+    },
 )

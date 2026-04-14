@@ -13,6 +13,7 @@
   <depend>sensor_msgs</depend>
   <depend>joy</depend>
   <depend>teleop_twist_joy</depend>
+  <depend>sora_motor_driver</depend>
 
   <test_depend>ament_copyright</test_depend>
   <test_depend>ament_flake8</test_depend>
