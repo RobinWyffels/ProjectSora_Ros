@@ -16,7 +16,7 @@ def generate_launch_description():
     urdf_file = PathJoinSubstitution([robot_description_share, "urdf", "sora.urdf"])
 
     ydlidar_share = FindPackageShare("ydlidar_ros2_driver")
-    default_lidar_params = PathJoinSubstitution([ydlidar_share, "params", "Tmini-Plus-SH.yaml"])
+    default_lidar_params = PathJoinSubstitution([ydlidar_share, "params", "Tmini.yaml"])
 
     sora_slam_share = FindPackageShare("sora_slam")
     default_slam_params = PathJoinSubstitution([sora_slam_share, "config", "slam_toolbox_params.yaml"])
@@ -65,7 +65,7 @@ def generate_launch_description():
         DeclareLaunchArgument(
             "lidar_params_file",
             default_value=default_lidar_params,
-            description="YDLidar driver params (Tmini-Plus-SH.yaml by default).",
+            description="YDLidar driver params (Tmini.yaml by default).",
         ),
         DeclareLaunchArgument(
             "slam_params_file",
