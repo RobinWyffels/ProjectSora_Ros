@@ -32,7 +32,6 @@ def generate_launch_description():
         }],
     )
 
-    # Start driver node directly (do NOT publish a duplicate static TF)
     ydlidar_node = Node(
         package="ydlidar_ros2_driver",
         executable="ydlidar_ros2_driver_node",
@@ -48,6 +47,19 @@ def generate_launch_description():
         name="slam_toolbox",
         output="screen",
         parameters=[slam_params_file, {"use_sim_time": use_sim_time}],
+    )
+
+    lifecycle_manager_slam = Node(
+        package="lifecycle_manager",
+        executable="lifecycle_manager",
+        name="lifecycle_manager_slam",
+        output="screen",
+        arguments=["--ns", "slam"],
+        parameters=[{
+            "node_name": "slam_toolbox",
+            "node_type": "slam_toolbox",
+            "use_sim_time": use_sim_time,
+        }],
     )
 
     rviz_node = Node(
@@ -76,5 +88,6 @@ def generate_launch_description():
         robot_state_publisher,
         ydlidar_node,
         slam_toolbox,
+        lifecycle_manager_slam,
         rviz_node,
     ])
