@@ -50,15 +50,14 @@ def generate_launch_description():
     )
 
     lifecycle_manager_slam = Node(
-        package="lifecycle_manager",
+        package="nav2_lifecycle_manager",
         executable="lifecycle_manager",
         name="lifecycle_manager_slam",
         output="screen",
-        arguments=["--ns", "slam"],
         parameters=[{
-            "node_name": "slam_toolbox",
-            "node_type": "slam_toolbox",
             "use_sim_time": use_sim_time,
+            "autostart": True,
+            "node_names": ["slam_toolbox"],
         }],
     )
 
