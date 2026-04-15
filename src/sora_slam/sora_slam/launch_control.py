@@ -73,9 +73,9 @@ class LaunchControl(Node):
 
 		map_name = args[0]
 		try:
-			timeout_s = float(args[1]) if len(args) >= 2 else 10.0
+			timeout_s = float(args[1]) if len(args) >= 2 else 30.0
 		except ValueError:
-			timeout_s = 10.0
+			timeout_s = 30.0
 
 		# Run map saving in a separate thread so we don't block the ROS callback thread.
 		threading.Thread(
