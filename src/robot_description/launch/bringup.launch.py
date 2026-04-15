@@ -1,7 +1,8 @@
 # src/robot_description/launch/bringup.launch.py
 from launch import LaunchDescription
-from launch.actions import DeclareLaunchArgument, RegisterEventHandler, TimerAction, OpaqueFunction, LogWarning
+from launch.actions import DeclareLaunchArgument, RegisterEventHandler, TimerAction, OpaqueFunction
 from launch.event_handlers import OnProcessExit
+from launch.logging import get_logger
 from launch.substitutions import LaunchConfiguration, PathJoinSubstitution, Command
 from launch_ros.substitutions import FindPackageShare
 from launch_ros.actions import Node
@@ -46,15 +47,11 @@ def generate_launch_description():
         try:
             get_package_share_directory('joint_state_publisher')
         except PackageNotFoundError:
-            return [
-                LogWarning(
-                    msg=(
-                        "bringup.launch.py: 'use_joint_state_publisher' was true, but the ROS package "
-                        "'joint_state_publisher' is not installed. Skipping joint_state_publisher. "
-                        "(Install with: sudo apt install ros-$ROS_DISTRO-joint-state-publisher)"
-                    )
-                )
-            ]
+            get_logger('robot_description.bringup').warning(
+                "'use_joint_state_publisher' was true, but the ROS package 'joint_state_publisher' is not installed. "
+                "Skipping joint_state_publisher. (Install with: sudo apt install ros-$ROS_DISTRO-joint-state-publisher)"
+            )
+            return []
 
         return [
             Node(
