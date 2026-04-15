@@ -14,6 +14,14 @@ def generate_launch_description():
 	bringup_use_ros2_control = LaunchConfiguration("bringup_use_ros2_control")
 	bringup_use_joint_state_publisher = LaunchConfiguration("bringup_use_joint_state_publisher")
 	connect_zed_tf = LaunchConfiguration("connect_zed_tf")
+	zed_parent_frame = LaunchConfiguration("zed_parent_frame")
+	zed_child_frame = LaunchConfiguration("zed_child_frame")
+	zed_to_base_x = LaunchConfiguration("zed_to_base_x")
+	zed_to_base_y = LaunchConfiguration("zed_to_base_y")
+	zed_to_base_z = LaunchConfiguration("zed_to_base_z")
+	zed_to_base_roll = LaunchConfiguration("zed_to_base_roll")
+	zed_to_base_pitch = LaunchConfiguration("zed_to_base_pitch")
+	zed_to_base_yaw = LaunchConfiguration("zed_to_base_yaw")
 
 	bringup_launch = PathJoinSubstitution(
 		[FindPackageShare("robot_description"), "launch", "bringup.launch.py"]
@@ -46,24 +54,24 @@ def generate_launch_description():
 
 	# If the ZED publishes odom->zedm_base_link (common default), this bridges it to the
 	# robot model by making base_link a child of zedm_base_link (no TF conflicts).
-	# Assumes zedm_base_link is collocated with the physical camera center.
+	# Assumes the ZED "base" frame is collocated with the physical camera center.
 	zed_tf_bridge = Node(
 		package="tf2_ros",
 		executable="static_transform_publisher",
 		name="zed_tf_bridge",
 		output="screen",
 		condition=IfCondition(connect_zed_tf),
-		# parent: zedm_base_link, child: base_link
+		# parent: ZED base frame (e.g. zedm_base_link), child: base_link
 		# base_link->zed_camera_center in URDF is (0.160, 0.0, 0.069)
 		arguments=[
-			"-0.160",
-			"0",
-			"-0.069",
-			"0",
-			"0",
-			"0",
-			"zedm_base_link",
-			"base_link",
+			zed_to_base_x,
+			zed_to_base_y,
+			zed_to_base_z,
+			zed_to_base_yaw,
+			zed_to_base_pitch,
+			zed_to_base_roll,
+			zed_parent_frame,
+			zed_child_frame,
 		],
 	)
 
@@ -73,6 +81,46 @@ def generate_launch_description():
 			"connect_zed_tf",
 			default_value="false",
 			description="Publish a static TF zedm_base_link->base_link so the robot model follows the ZED odom/map tree",
+		),
+		DeclareLaunchArgument(
+			"zed_parent_frame",
+			default_value="zedm_base_link",
+			description="ZED frame that moves with odometry (commonly: zedm_base_link or zed_base_link)",
+		),
+		DeclareLaunchArgument(
+			"zed_child_frame",
+			default_value="base_link",
+			description="Robot base frame to attach under the ZED odom tree (usually base_link)",
+		),
+		DeclareLaunchArgument(
+			"zed_to_base_x",
+			default_value="-0.160",
+			description="Static TF translation x from zed_parent_frame to zed_child_frame (meters)",
+		),
+		DeclareLaunchArgument(
+			"zed_to_base_y",
+			default_value="0.0",
+			description="Static TF translation y from zed_parent_frame to zed_child_frame (meters)",
+		),
+		DeclareLaunchArgument(
+			"zed_to_base_z",
+			default_value="-0.069",
+			description="Static TF translation z from zed_parent_frame to zed_child_frame (meters)",
+		),
+		DeclareLaunchArgument(
+			"zed_to_base_roll",
+			default_value="0.0",
+			description="Static TF roll from zed_parent_frame to zed_child_frame (radians)",
+		),
+		DeclareLaunchArgument(
+			"zed_to_base_pitch",
+			default_value="0.0",
+			description="Static TF pitch from zed_parent_frame to zed_child_frame (radians)",
+		),
+		DeclareLaunchArgument(
+			"zed_to_base_yaw",
+			default_value="0.0",
+			description="Static TF yaw from zed_parent_frame to zed_child_frame (radians)",
 		),
 		DeclareLaunchArgument(
 			"bringup_use_ros2_control",

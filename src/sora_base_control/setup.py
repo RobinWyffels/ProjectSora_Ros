@@ -27,6 +27,7 @@ setup(
         'console_scripts': [
             'mecanum_kinematics = sora_base_control.mecanum_kinematics:main',
             'motor_debug_mux = sora_base_control.motor_debug_mux:main',
+            'cmd_vel_odometry = sora_base_control.cmd_vel_odometry:main',
         ],
     },
 )

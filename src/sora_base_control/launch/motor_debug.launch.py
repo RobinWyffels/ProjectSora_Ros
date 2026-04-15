@@ -3,9 +3,11 @@ from launch_ros.actions import Node
 from launch.actions import DeclareLaunchArgument
 from launch.substitutions import LaunchConfiguration, PathJoinSubstitution
 from launch_ros.substitutions import FindPackageShare
+from launch.conditions import IfCondition
 
 def generate_launch_description():
     use_sim_time = LaunchConfiguration('use_sim_time')
+    use_cmd_vel_odometry = LaunchConfiguration('use_cmd_vel_odometry')
     pkg_share = FindPackageShare('sora_base_control')
     teleop_config = PathJoinSubstitution([pkg_share, 'config', 'teleop_joy.yaml'])
 
@@ -14,6 +16,11 @@ def generate_launch_description():
             'use_sim_time',
             default_value='false',
             description='Use simulation time'
+        ),
+        DeclareLaunchArgument(
+            'use_cmd_vel_odometry',
+            default_value='false',
+            description='Publish open-loop odom (integrated from cmd_vel). Keep false when using ZED odometry.'
         ),
         Node(
             package='joy',
@@ -50,6 +57,15 @@ def generate_launch_description():
             executable='motor_debug_mux',
             name='motor_debug_mux',
             output='screen'
+        ),
+
+        Node(
+            package='sora_base_control',
+            executable='cmd_vel_odometry',
+            name='cmd_vel_odometry',
+            output='screen',
+            condition=IfCondition(use_cmd_vel_odometry),
+            parameters=[{'use_sim_time': use_sim_time}]
         ),
         Node(
             package='sora_motor_driver',
