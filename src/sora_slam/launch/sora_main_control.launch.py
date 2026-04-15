@@ -10,6 +10,8 @@ def generate_launch_description():
 	foxglove_port = LaunchConfiguration("foxglove_port")
 	foxglove_address = LaunchConfiguration("foxglove_address")
 	use_sim_time = LaunchConfiguration("use_sim_time")
+	bringup_use_ros2_control = LaunchConfiguration("bringup_use_ros2_control")
+	bringup_use_joint_state_publisher = LaunchConfiguration("bringup_use_joint_state_publisher")
 
 	bringup_launch = PathJoinSubstitution(
 		[FindPackageShare("robot_description"), "launch", "bringup.launch.py"]
@@ -19,6 +21,8 @@ def generate_launch_description():
 		launch_arguments={
 			"use_sim_time": use_sim_time,
 			"use_rviz": "false",
+			"use_ros2_control": bringup_use_ros2_control,
+			"use_joint_state_publisher": bringup_use_joint_state_publisher,
 		}.items(),
 	)
 
@@ -40,6 +44,16 @@ def generate_launch_description():
 
 	return LaunchDescription([
 		DeclareLaunchArgument("use_sim_time", default_value="false"),
+		DeclareLaunchArgument(
+			"bringup_use_ros2_control",
+			default_value="false",
+			description="Whether robot_description/bringup.launch.py starts ros2_control controllers",
+		),
+		DeclareLaunchArgument(
+			"bringup_use_joint_state_publisher",
+			default_value="true",
+			description="Publish zero joint states so the robot model renders in a stable pose",
+		),
 		DeclareLaunchArgument("foxglove_port", default_value="8765"),
 		DeclareLaunchArgument("foxglove_address", default_value="0.0.0.0"),
 		bringup,

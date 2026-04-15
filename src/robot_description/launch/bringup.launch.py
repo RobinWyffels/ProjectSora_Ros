@@ -11,6 +11,12 @@ def generate_launch_description():
     # Declare arguments
     use_sim_time = LaunchConfiguration('use_sim_time')
     use_rviz = LaunchConfiguration('use_rviz')
+
+    # When true, start ros2_control + spawners (hardware/control path)
+    use_ros2_control = LaunchConfiguration('use_ros2_control')
+
+    # When true, publish zero joint states for visualization (stable model pose)
+    use_joint_state_publisher = LaunchConfiguration('use_joint_state_publisher')
     
     pkg_share = FindPackageShare('robot_description')
     
@@ -30,10 +36,23 @@ def generate_launch_description():
         }]
     )
 
+    joint_state_publisher = Node(
+        package='joint_state_publisher',
+        executable='joint_state_publisher',
+        name='joint_state_publisher',
+        output='screen',
+        condition=IfCondition(use_joint_state_publisher),
+        parameters=[{
+            'robot_description': Command(['cat ', urdf_file]),
+            'use_sim_time': use_sim_time,
+        }],
+    )
+
     # Controller Manager - DO NOT pass controllers_config here in Jazzy
     controller_manager = Node(
         package='controller_manager',
         executable='ros2_control_node',
+        condition=IfCondition(use_ros2_control),
         parameters=[{'use_sim_time': use_sim_time}],
         output='screen',
         remappings=[
@@ -45,6 +64,7 @@ def generate_launch_description():
     joint_state_broadcaster_spawner = Node(
         package='controller_manager',
         executable='spawner',
+        condition=IfCondition(use_ros2_control),
         arguments=[
             'joint_state_broadcaster',
             '--param-file', controllers_config
@@ -55,6 +75,7 @@ def generate_launch_description():
     velocity_controller_spawner = Node(
         package='controller_manager',
         executable='spawner',
+        condition=IfCondition(use_ros2_control),
         arguments=[
             'velocity_controller',
             '--param-file', controllers_config
@@ -97,7 +118,18 @@ def generate_launch_description():
             default_value='false',
             description='Start RViz2'
         ),
+        DeclareLaunchArgument(
+            'use_ros2_control',
+            default_value='true',
+            description='Start ros2_control_node + controllers'
+        ),
+        DeclareLaunchArgument(
+            'use_joint_state_publisher',
+            default_value='false',
+            description='Publish zero joint states for visualization'
+        ),
         robot_state_publisher,
+        joint_state_publisher,
         controller_manager,
         delayed_joint_state_broadcaster,
         delayed_velocity_controller,
