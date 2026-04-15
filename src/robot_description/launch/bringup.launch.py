@@ -1,11 +1,13 @@
 # src/robot_description/launch/bringup.launch.py
 from launch import LaunchDescription
-from launch.actions import DeclareLaunchArgument, RegisterEventHandler, TimerAction
+from launch.actions import DeclareLaunchArgument, RegisterEventHandler, TimerAction, OpaqueFunction, LogWarning
 from launch.event_handlers import OnProcessExit
 from launch.substitutions import LaunchConfiguration, PathJoinSubstitution, Command
 from launch_ros.substitutions import FindPackageShare
 from launch_ros.actions import Node
 from launch.conditions import IfCondition
+
+from ament_index_python.packages import PackageNotFoundError, get_package_share_directory
 
 def generate_launch_description():
     # Declare arguments
@@ -36,17 +38,38 @@ def generate_launch_description():
         }]
     )
 
-    joint_state_publisher = Node(
-        package='joint_state_publisher',
-        executable='joint_state_publisher',
-        name='joint_state_publisher',
-        output='screen',
-        condition=IfCondition(use_joint_state_publisher),
-        parameters=[{
-            'robot_description': Command(['cat ', urdf_file]),
-            'use_sim_time': use_sim_time,
-        }],
-    )
+    def _maybe_create_joint_state_publisher(context, *args, **kwargs):
+        enabled = use_joint_state_publisher.perform(context).strip().lower() in {'1', 'true', 'yes', 'on'}
+        if not enabled:
+            return []
+
+        try:
+            get_package_share_directory('joint_state_publisher')
+        except PackageNotFoundError:
+            return [
+                LogWarning(
+                    msg=(
+                        "bringup.launch.py: 'use_joint_state_publisher' was true, but the ROS package "
+                        "'joint_state_publisher' is not installed. Skipping joint_state_publisher. "
+                        "(Install with: sudo apt install ros-$ROS_DISTRO-joint-state-publisher)"
+                    )
+                )
+            ]
+
+        return [
+            Node(
+                package='joint_state_publisher',
+                executable='joint_state_publisher',
+                name='joint_state_publisher',
+                output='screen',
+                parameters=[{
+                    'robot_description': Command(['cat ', urdf_file]),
+                    'use_sim_time': use_sim_time,
+                }],
+            )
+        ]
+
+    maybe_joint_state_publisher = OpaqueFunction(function=_maybe_create_joint_state_publisher)
 
     # Controller Manager - DO NOT pass controllers_config here in Jazzy
     controller_manager = Node(
@@ -129,7 +152,7 @@ def generate_launch_description():
             description='Publish zero joint states for visualization'
         ),
         robot_state_publisher,
-        joint_state_publisher,
+        maybe_joint_state_publisher,
         controller_manager,
         delayed_joint_state_broadcaster,
         delayed_velocity_controller,

@@ -46,13 +46,13 @@ def generate_launch_description():
 		DeclareLaunchArgument("use_sim_time", default_value="false"),
 		DeclareLaunchArgument(
 			"bringup_use_ros2_control",
-			default_value="false",
+			default_value="true",
 			description="Whether robot_description/bringup.launch.py starts ros2_control controllers",
 		),
 		DeclareLaunchArgument(
 			"bringup_use_joint_state_publisher",
-			default_value="true",
-			description="Publish zero joint states so the robot model renders in a stable pose",
+			default_value="false",
+			description="Publish zero joint states so the robot model renders in a stable pose (requires joint_state_publisher package)",
 		),
 		DeclareLaunchArgument("foxglove_port", default_value="8765"),
 		DeclareLaunchArgument("foxglove_address", default_value="0.0.0.0"),
