@@ -37,7 +37,7 @@ class LaunchControl(Node):
 		self.create_subscription(String, "/launch_control/command", self._on_command, 10)
 		self.get_logger().info(
 			"LaunchControl ready on /launch_control/command (std_msgs/String). "
-			"Use: 'start slam', 'stop slam', 'start teleop', 'stop teleop'."
+			"Use: 'start slam', 'stop slam', 'start teleop', 'stop teleop', 'save map <name> [timeout_s]'."
 		)
 
 	def _on_command(self, msg: String) -> None:
@@ -57,8 +57,79 @@ class LaunchControl(Node):
 			self.start(name)
 		elif verb == "stop":
 			self.stop(name)
+		elif verb == "save":
+			self.save(name, parts[2:])
 		else:
 			self.get_logger().warn(f"Unknown verb '{verb}' (use start/stop)")
+
+	def save(self, name: str, args: list[str]) -> None:
+		if name != "map":
+			self.get_logger().warn("Save format: 'save map <name> [timeout_s]'")
+			return
+
+		if not args:
+			self.get_logger().warn("Save format: 'save map <name> [timeout_s]'")
+			return
+
+		map_name = args[0]
+		try:
+			timeout_s = float(args[1]) if len(args) >= 2 else 10.0
+		except ValueError:
+			timeout_s = 10.0
+
+		# Run map saving in a separate thread so we don't block the ROS callback thread.
+		threading.Thread(
+			target=self._save_map_worker,
+			args=(map_name, timeout_s),
+			daemon=True,
+		).start()
+
+	def _save_map_worker(self, map_name: str, timeout_s: float) -> None:
+		maps_dir = os.path.expanduser("~/maps")
+		try:
+			os.makedirs(maps_dir, exist_ok=True)
+		except Exception as e:
+			self.get_logger().error(f"Failed to create maps dir '{maps_dir}': {e}")
+			return
+
+		# -f expects a base path without extension; it will create .yaml + .pgm.
+		map_base_path = os.path.join(maps_dir, map_name)
+
+		cmd = [
+			"ros2",
+			"run",
+			"nav2_map_server",
+			"map_saver_cli",
+			"-f",
+			map_base_path,
+			"--ros-args",
+			"-p",
+			f"save_map_timeout:={timeout_s}",
+		]
+
+		self.get_logger().info(
+			f"Saving map to '{map_base_path}' (timeout {timeout_s:.1f}s): {' '.join(cmd)}"
+		)
+		try:
+			result = subprocess.run(cmd, env=os.environ.copy(), capture_output=True, text=True)
+		except FileNotFoundError:
+			self.get_logger().error("Failed to run map_saver_cli: 'ros2' not found in PATH")
+			return
+		except Exception as e:
+			self.get_logger().error(f"Failed to run map_saver_cli: {e}")
+			return
+
+		if result.returncode == 0:
+			self.get_logger().info(f"Map saved: {map_base_path}.yaml + {map_base_path}.pgm")
+			return
+
+		stderr = (result.stderr or "").strip()
+		stdout = (result.stdout or "").strip()
+		if stdout:
+			self.get_logger().info(stdout)
+		if stderr:
+			self.get_logger().warn(stderr)
+		self.get_logger().error(f"Map save failed (exit {result.returncode})")
 
 	def start(self, name: str) -> None:
 		with self._lock:
