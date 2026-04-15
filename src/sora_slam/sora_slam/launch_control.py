@@ -24,6 +24,7 @@ class LaunchControl(Node):
 				"sora_slam",
 				"sora_slam_toolbox.launch.py",
 				"enable_rviz:=false",
+				"start_robot_state_publisher:=false",
 			],
 			"teleop": [
 				"ros2",

@@ -11,6 +11,7 @@ def generate_launch_description():
     lidar_params_file = LaunchConfiguration("lidar_params_file")
     slam_params_file = LaunchConfiguration("slam_params_file")
     enable_rviz = LaunchConfiguration("enable_rviz")
+    start_robot_state_publisher = LaunchConfiguration("start_robot_state_publisher")
 
     robot_description_share = FindPackageShare("robot_description")
     urdf_file = PathJoinSubstitution([robot_description_share, "urdf", "sora.urdf"])
@@ -26,6 +27,7 @@ def generate_launch_description():
         executable="robot_state_publisher",
         name="robot_state_publisher",
         output="screen",
+        condition=IfCondition(start_robot_state_publisher),
         parameters=[{
             "robot_description": Command(["cat ", urdf_file]),
             "use_sim_time": use_sim_time,
@@ -74,6 +76,12 @@ def generate_launch_description():
     return LaunchDescription([
         DeclareLaunchArgument("use_sim_time", default_value="false"),
         DeclareLaunchArgument("enable_rviz", default_value="false"),
+
+        DeclareLaunchArgument(
+            "start_robot_state_publisher",
+            default_value="true",
+            description="Start robot_state_publisher (set false if another bringup already publishes TF/URDF)",
+        ),
 
         DeclareLaunchArgument(
             "lidar_params_file",
