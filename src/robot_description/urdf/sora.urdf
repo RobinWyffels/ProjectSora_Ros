@@ -1785,12 +1785,12 @@
     <child link="laser_frame"/>
   </joint>
 
-  <link name="zed_camera_center"/>
+  <link name="zedm_camera_center"/>
 
   <joint name="base_link_to_zed" type="fixed">
     <origin xyz="0.160 0 0.069" rpy="0 0 0"/>
     <parent link="base_link"/>
-    <child link="zed_camera_center"/>
+    <child link="zedm_camera_center"/>
   </joint>
 
   <ros2_control name="sora_system" type="system">
