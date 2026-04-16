@@ -88,6 +88,18 @@ def generate_launch_description():
         condition=IfCondition(enable_rviz),
     )
 
+    # Must matches exactly what the ZED node publishes as its base frame
+    zed_child_frame = 'zedm_camera_center' 
+    
+    # bridge the robot's zed_mount to the ZED's base frame
+    zed_tf_node = Node(
+        package='tf2_ros',
+        executable='static_transform_publisher',
+        name='zed_to_base_link',
+        # Link the zed_mount from the URDF directly to the ZED's camera center
+        arguments=['0', '0', '0', '0', '0', '0', 'zed_mount', zed_child_frame]
+    )
+
     return LaunchDescription([
         DeclareLaunchArgument("use_sim_time", default_value="false"),
         DeclareLaunchArgument("enable_rviz", default_value="false"),
@@ -116,12 +128,12 @@ def generate_launch_description():
         ),
         DeclareLaunchArgument(
             "odom_frame",
-            default_value="base_link",
-            description="LiDAR-only mapping: set equal to base_frame so slam_toolbox publishes map->base_link (no external odom needed).",
+            default_value="odom", 
+            description="Odometry frame from Jetson ZED",
         ),
         DeclareLaunchArgument(
             "base_frame",
-            default_value="base_link",
+            default_value="base_link", 
             description="Robot base frame.",
         ),
 
@@ -130,4 +142,5 @@ def generate_launch_description():
         slam_toolbox,
         lifecycle_manager_slam,
         rviz_node,
+        zed_tf_node,
     ])
