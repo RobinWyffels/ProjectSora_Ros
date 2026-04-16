@@ -96,13 +96,12 @@ def generate_launch_description():
     # we must make the robot's base_link a CHILD of the camera's base frame!
     # The physical ZED mount is at x=0.160, z=0.069 from base_link. 
     # Therefore, base_link is at x=-0.160, z=-0.069 relative to the camera.
-    zed_tf_node = Node(
-        package='tf2_ros',
-        executable='static_transform_publisher',
-        name='zed_to_base_link',
-        # arguments: x, y, z, yaw, pitch, roll, parent, child
-        arguments=['-0.160', '0', '-0.069', '0', '0', '0', zed_parent_frame, 'base_link']
-    )
+    # zed_tf_node = Node(
+    #     package='tf2_ros',
+    #     executable='static_transform_publisher',
+    #     name='zed_to_base_link',
+    #     arguments=['-0.160', '0', '-0.069', '0', '0', '0', zed_parent_frame, 'base_link']
+    # )
 
     return LaunchDescription([
         DeclareLaunchArgument("use_sim_time", default_value="false"),
@@ -146,5 +145,5 @@ def generate_launch_description():
         slam_toolbox,
         lifecycle_manager_slam,
         rviz_node,
-        zed_tf_node,
+        # zed_tf_node,  # Disabled to prevent duplicate TF conflicts with Jetson
     ])
