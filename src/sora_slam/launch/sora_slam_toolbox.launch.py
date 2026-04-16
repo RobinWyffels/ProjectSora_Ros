@@ -13,11 +13,17 @@ def generate_launch_description():
     enable_rviz = LaunchConfiguration("enable_rviz")
     start_robot_state_publisher = LaunchConfiguration("start_robot_state_publisher")
 
+    # Frames can be overridden to avoid conflicts with other TF publishers (e.g. ZED on another machine).
+    # LiDAR-only mapping: set odom_frame==base_frame so slam_toolbox publishes map->base_link directly.
+    map_frame = LaunchConfiguration("map_frame")
+    odom_frame = LaunchConfiguration("odom_frame")
+    base_frame = LaunchConfiguration("base_frame")
+
     robot_description_share = FindPackageShare("robot_description")
     urdf_file = PathJoinSubstitution([robot_description_share, "urdf", "sora.urdf"])
 
     ydlidar_share = FindPackageShare("ydlidar_ros2_driver")
-    default_lidar_params = PathJoinSubstitution([ydlidar_share, "params", "ydlidar.yaml"])
+    default_lidar_params = PathJoinSubstitution([ydlidar_share, "params", "Tmini.yaml"])
 
     sora_slam_share = FindPackageShare("sora_slam")
     default_slam_params = PathJoinSubstitution([sora_slam_share, "config", "slam_toolbox_params.yaml"])
@@ -48,7 +54,15 @@ def generate_launch_description():
         executable="async_slam_toolbox_node",
         name="slam_toolbox",
         output="screen",
-        parameters=[slam_params_file, {"use_sim_time": use_sim_time}],
+        parameters=[
+            slam_params_file,
+            {
+                "use_sim_time": use_sim_time,
+                "map_frame": map_frame,
+                "odom_frame": odom_frame,
+                "base_frame": base_frame,
+            },
+        ],
     )
 
     lifecycle_manager_slam = Node(
@@ -86,12 +100,28 @@ def generate_launch_description():
         DeclareLaunchArgument(
             "lidar_params_file",
             default_value=default_lidar_params,
-            description="YDLidar driver params (ydlidar.yaml by default).",
+            description="YDLidar driver params (Tmini.yaml by default).",
         ),
         DeclareLaunchArgument(
             "slam_params_file",
             default_value=default_slam_params,
             description="slam_toolbox params yaml.",
+        ),
+
+        DeclareLaunchArgument(
+            "map_frame",
+            default_value="slam_map",
+            description="SLAM map frame (use slam_map to avoid TF conflicts with other map/odom publishers).",
+        ),
+        DeclareLaunchArgument(
+            "odom_frame",
+            default_value="base_link",
+            description="LiDAR-only mapping: set equal to base_frame so slam_toolbox publishes map->base_link (no external odom needed).",
+        ),
+        DeclareLaunchArgument(
+            "base_frame",
+            default_value="base_link",
+            description="Robot base frame.",
         ),
 
         robot_state_publisher,
