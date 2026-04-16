@@ -88,16 +88,20 @@ def generate_launch_description():
         condition=IfCondition(enable_rviz),
     )
 
-    # Must matches exactly what the ZED node publishes as its base frame
-    zed_child_frame = 'zedm_camera_center' 
+    # Must exactly match the ZED node's base_frame (this is what the Jetson ZED node considers its base)
+    zed_parent_frame = 'zedm_base_link' 
     
-    # bridge the robot's zed_mount to the ZED's base frame
+    # CRITICAL TF FIX: The Jetson publishes odom -> zedm_base_link. 
+    # To prevent 'zedm_base_link' from having two parents (which breaks Foxglove tracking),
+    # we must make the robot's base_link a CHILD of the camera's base frame!
+    # The physical ZED mount is at x=0.160, z=0.069 from base_link. 
+    # Therefore, base_link is at x=-0.160, z=-0.069 relative to the camera.
     zed_tf_node = Node(
         package='tf2_ros',
         executable='static_transform_publisher',
         name='zed_to_base_link',
-        # Link the zed_mount from the URDF directly to the ZED's camera center
-        arguments=['0', '0', '0', '0', '0', '0', 'zed_mount', zed_child_frame]
+        # arguments: x, y, z, yaw, pitch, roll, parent, child
+        arguments=['-0.160', '0', '-0.069', '0', '0', '0', zed_parent_frame, 'base_link']
     )
 
     return LaunchDescription([
