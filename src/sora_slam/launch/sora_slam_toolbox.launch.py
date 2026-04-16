@@ -23,6 +23,7 @@ def generate_launch_description():
     urdf_file = PathJoinSubstitution([robot_description_share, "urdf", "sora.urdf"])
 
     ydlidar_share = FindPackageShare("ydlidar_ros2_driver")
+    # Use the Tmini profile by default (stable front-facing scan for your setup).
     default_lidar_params = PathJoinSubstitution([ydlidar_share, "params", "Tmini.yaml"])
 
     sora_slam_share = FindPackageShare("sora_slam")
