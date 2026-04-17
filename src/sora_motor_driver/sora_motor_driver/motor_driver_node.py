@@ -37,10 +37,10 @@ class MotorDriverNode(Node):
         for pwm_pin in [self.pwm_fr, self.pwm_fl, self.pwm_br, self.pwm_bl]:
             lgpio.tx_pwm(self.h, pwm_pin, self.pwm_freq, 0)
 
-        self.max_throttle = 1.0  # Max throttle (adjust as needed)
+        self.max_throttle = 0.5  # Max throttle (adjust as needed)
 
         # Ramping parameters
-        self.ramp_rate = 1.0  # throttle units per second (1.0 = full scale in 1s)
+        self.ramp_rate = 0.5  # throttle units per second (1.0 = full scale in 1s)
         self.timer_period = 0.02  # seconds (50 Hz)
         self.current_throttles = [0.0, 0.0, 0.0, 0.0]  # [FR, FL, BR, BL]
         self.target_throttles = [0.0, 0.0, 0.0, 0.0]

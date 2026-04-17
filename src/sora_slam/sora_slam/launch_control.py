@@ -37,7 +37,7 @@ class LaunchControl(Node):
 		self.create_subscription(String, "/launch_control/command", self._on_command, 10)
 		self.get_logger().info(
 			"LaunchControl ready on /launch_control/command (std_msgs/String). "
-			"Use: 'start slam', 'stop slam', 'start teleop', 'stop teleop', 'save map <name> [timeout_s]'."
+			"Use: 'start slam', 'stop slam', 'start teleop', 'stop teleop', 'start nav <mapname>', 'stop nav', 'save map <name> [timeout_s]'."
 		)
 
 	def _on_command(self, msg: String) -> None:
@@ -54,7 +54,7 @@ class LaunchControl(Node):
 		name = parts[1]
 
 		if verb == "start":
-			self.start(name)
+			self.start(name, parts[2:])
 		elif verb == "stop":
 			self.stop(name)
 		elif verb == "save":
@@ -131,11 +131,11 @@ class LaunchControl(Node):
 			self.get_logger().warn(stderr)
 		self.get_logger().error(f"Map save failed (exit {result.returncode})")
 
-	def start(self, name: str) -> None:
+	def start(self, name: str, args: list[str]) -> None:
 		with self._lock:
-			if name not in self._commands:
+			if name not in self._commands and name != "nav":
 				self.get_logger().error(
-					f"Unknown launch '{name}'. Known: {sorted(self._commands.keys())}"
+					f"Unknown launch '{name}'. Known: {sorted(self._commands.keys()) + ['nav']}"
 				)
 				return
 
@@ -144,7 +144,31 @@ class LaunchControl(Node):
 				self.get_logger().info(f"'{name}' already running")
 				return
 
-			cmd = self._commands[name]
+			if name == "nav":
+				if not args:
+					self.get_logger().warn("Start nav format: 'start nav <mapname>'")
+					return
+				map_name = args[0]
+				map_path = os.path.expanduser(f"~/maps/{map_name}.yaml")
+				if not os.path.exists(map_path):
+					self.get_logger().error(f"Map file not found: {map_path}")
+					return
+					
+				# Path to your custom Nav2 params file
+				params_path = os.path.expanduser("~/sora_ws/src/ProjectSora_Ros/src/sora_slam/config/nav2_params.yaml")
+				
+				cmd = [
+					"ros2",
+					"launch",
+					"nav2_bringup",
+					"bringup_launch.py",
+					f"map:={map_path}",
+					"use_sim_time:=false",
+					f"params_file:={params_path}",
+				]
+			else:
+				cmd = self._commands[name]
+
 			self.get_logger().info(f"Starting '{name}': {' '.join(cmd)}")
 
 			proc = subprocess.Popen(
