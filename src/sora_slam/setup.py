@@ -12,6 +12,7 @@ setup(
         ("share/" + package_name + "/launch", [
             "launch/sora_slam_toolbox.launch.py",
             "launch/sora_main_control.launch.py",
+            "launch/sora_robot_bringup.launch.py",
         ]),
         ("share/" + package_name + "/config", ["config/slam_toolbox_params.yaml"]),
     ],
