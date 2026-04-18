@@ -49,6 +49,12 @@ def generate_launch_description():
 		}],
 	)
 
+	launch_control = Node(
+		package="sora_slam",
+		executable="launch_control",
+		output="screen",
+	)
+
 	# If the ZED publishes odom->zedm_base_link (common default), this bridges it to the
 	# robot model by making base_link a child of zedm_base_link (no TF conflicts).
 	# Assumes the ZED "base" frame is collocated with the physical camera center.
