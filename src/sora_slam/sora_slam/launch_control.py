@@ -162,6 +162,12 @@ class LaunchControl(Node):
 					self.get_logger().error(f"Map file not found: {map_path}")
 					return
 					
+				# Stop teleop if it is currently running
+				teleop_proc = self._procs.get("teleop")
+				if teleop_proc is not None and teleop_proc.poll() is None:
+					self.get_logger().info("Stopping active 'teleop' before starting navigation...")
+					self.stop("teleop")
+					
 				# Implicitly start the lidar and sensors if not already running
 				sensors_proc = self._procs.get("sensors")
 				if sensors_proc is None or sensors_proc.poll() is not None:

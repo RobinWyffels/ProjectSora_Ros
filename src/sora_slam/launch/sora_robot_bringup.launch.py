@@ -69,6 +69,21 @@ def generate_launch_description():
         arguments=['-0.160', '0', '-0.069', '0', '0', '0', zed_parent_frame, 'base_link']
     )
 
+    mecanum_kinematics = Node(
+        package='sora_base_control',
+        executable='mecanum_kinematics',
+        name='mecanum_kinematics',
+        output='screen',
+        parameters=[{'use_sim_time': use_sim_time}]
+    )
+
+    motor_driver = Node(
+        package='sora_motor_driver',
+        executable='motor_driver_node',
+        name='motor_driver_node',
+        output='screen'
+    )
+
     return LaunchDescription([
         DeclareLaunchArgument("use_sim_time", default_value="false"),
         DeclareLaunchArgument("enable_rviz", default_value="false"),
@@ -105,4 +120,6 @@ def generate_launch_description():
         ydlidar_node,
         rviz_node,
         zed_tf_node,
+        mecanum_kinematics,
+        motor_driver,
     ])
