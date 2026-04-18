@@ -1,0 +1,108 @@
+from launch import LaunchDescription
+from launch.actions import DeclareLaunchArgument
+from launch.conditions import IfCondition
+from launch.substitutions import LaunchConfiguration, Command, PathJoinSubstitution
+from launch_ros.actions import Node
+from launch_ros.substitutions import FindPackageShare
+
+
+def generate_launch_description():
+    use_sim_time = LaunchConfiguration("use_sim_time")
+    lidar_params_file = LaunchConfiguration("lidar_params_file")
+    enable_rviz = LaunchConfiguration("enable_rviz")
+    start_robot_state_publisher = LaunchConfiguration("start_robot_state_publisher")
+
+    # Frames can be overridden to avoid conflicts with other TF publishers (e.g. ZED on another machine).
+    # LiDAR-only mapping: set odom_frame==base_frame so slam_toolbox publishes map->base_link directly.
+    map_frame = LaunchConfiguration("map_frame")
+    odom_frame = LaunchConfiguration("odom_frame")
+    base_frame = LaunchConfiguration("base_frame")
+
+    robot_description_share = FindPackageShare("robot_description")
+    urdf_file = PathJoinSubstitution([robot_description_share, "urdf", "sora.urdf"])
+
+    ydlidar_share = FindPackageShare("ydlidar_ros2_driver")
+    # Use the Tmini profile by default (stable front-facing scan for your setup).
+    default_lidar_params = PathJoinSubstitution([ydlidar_share, "params", "Tmini.yaml"])
+
+    robot_state_publisher = Node(
+        package="robot_state_publisher",
+        executable="robot_state_publisher",
+        name="robot_state_publisher",
+        output="screen",
+        condition=IfCondition(start_robot_state_publisher),
+        parameters=[{
+            "robot_description": Command(["cat ", urdf_file]),
+            "use_sim_time": use_sim_time,
+        }],
+    )
+
+    ydlidar_node = Node(
+        package="ydlidar_ros2_driver",
+        executable="ydlidar_ros2_driver_node",
+        name="ydlidar_ros2_driver_node",
+        output="screen",
+        emulate_tty=True,
+        parameters=[lidar_params_file],
+    )
+
+    rviz_node = Node(
+        package="rviz2",
+        executable="rviz2",
+        name="rviz2",
+        output="screen",
+        condition=IfCondition(enable_rviz),
+    )
+
+    # Must exactly match the ZED node's base_frame (this is what the Jetson ZED node considers its base)
+    zed_parent_frame = 'zedm_base_link' 
+    
+    # CRITICAL TF FIX: The Jetson publishes odom -> zedm_base_link. 
+    # To prevent 'zedm_base_link' from having two parents (which breaks Foxglove tracking),
+    # we must make the robot's base_link a CHILD of the camera's base frame!
+    # The physical ZED mount is at x=0.160, z=0.069 from base_link. 
+    # Therefore, base_link is at x=-0.160, z=-0.069 relative to the camera.
+    zed_tf_node = Node(
+        package='tf2_ros',
+        executable='static_transform_publisher',
+        name='zed_to_base_link',
+        arguments=['-0.160', '0', '-0.069', '0', '0', '0', zed_parent_frame, 'base_link']
+    )
+
+    return LaunchDescription([
+        DeclareLaunchArgument("use_sim_time", default_value="false"),
+        DeclareLaunchArgument("enable_rviz", default_value="false"),
+
+        DeclareLaunchArgument(
+            "start_robot_state_publisher",
+            default_value="true",
+            description="Start robot_state_publisher (set false if another bringup already publishes TF/URDF)",
+        ),
+
+        DeclareLaunchArgument(
+            "lidar_params_file",
+            default_value=default_lidar_params,
+            description="YDLidar driver params (Tmini.yaml by default).",
+        ),
+
+        DeclareLaunchArgument(
+            "map_frame",
+            default_value="slam_map",
+            description="SLAM map frame (use slam_map to avoid TF conflicts with other map/odom publishers).",
+        ),
+        DeclareLaunchArgument(
+            "odom_frame",
+            default_value="odom", 
+            description="Odometry frame from Jetson ZED",
+        ),
+        DeclareLaunchArgument(
+            "base_frame",
+            default_value="base_link", 
+            description="Robot base frame.",
+        ),
+
+        robot_state_publisher,
+        ydlidar_node,
+        rviz_node,
+        zed_tf_node,
+    ])

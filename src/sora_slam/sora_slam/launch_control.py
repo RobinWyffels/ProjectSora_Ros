@@ -13,7 +13,7 @@ class LaunchControl(Node):
 	def __init__(self):
 		super().__init__("launch_control")
 
-		self._lock = threading.Lock()
+		self._lock = threading.RLock()
 		self._procs: dict[str, subprocess.Popen] = {}
 
 		# Friendly name -> ros2 launch command
@@ -23,6 +23,14 @@ class LaunchControl(Node):
 				"launch",
 				"sora_slam",
 				"sora_slam_toolbox.launch.py",
+				"enable_rviz:=false",
+				"start_robot_state_publisher:=false",
+			],
+			"sensors": [
+				"ros2",
+				"launch",
+				"sora_slam",
+				"sora_robot_bringup.launch.py",
 				"enable_rviz:=false",
 				"start_robot_state_publisher:=false",
 			],
@@ -37,7 +45,7 @@ class LaunchControl(Node):
 		self.create_subscription(String, "/launch_control/command", self._on_command, 10)
 		self.get_logger().info(
 			"LaunchControl ready on /launch_control/command (std_msgs/String). "
-			"Use: 'start slam', 'stop slam', 'start teleop', 'stop teleop', 'start nav <mapname>', 'stop nav', 'save map <name> [timeout_s]'."
+			"Use: 'start slam', 'stop slam', 'start sensors', 'stop sensors', 'start teleop', 'start nav <mapname>', 'stop nav', 'save map <name> [timeout_s]'."
 		)
 
 	def _on_command(self, msg: String) -> None:
@@ -154,7 +162,16 @@ class LaunchControl(Node):
 					self.get_logger().error(f"Map file not found: {map_path}")
 					return
 					
-				# Path to your custom Nav2 params file
+				# Implicitly start the lidar and sensors if not already running
+				sensors_proc = self._procs.get("sensors")
+				if sensors_proc is None or sensors_proc.poll() is not None:
+					self.get_logger().info("Starting sensors implicitly for navigation...")
+					sensors_cmd = self._commands["sensors"]
+					self._procs["sensors"] = subprocess.Popen(
+						sensors_cmd, env=os.environ.copy(), stdout=None, stderr=None, start_new_session=True
+					)
+					
+				# Path to custom Nav2 params file
 				params_path = os.path.expanduser("~/sora_ws/src/ProjectSora_Ros/src/sora_slam/config/nav2_params.yaml")
 				
 				cmd = [
@@ -186,15 +203,39 @@ class LaunchControl(Node):
 			if proc is None or proc.poll() is not None:
 				self.get_logger().info(f"'{name}' not running")
 				self._procs.pop(name, None)
+				
+				# If we're stopping nav, let's also stop implicitly launched sensors if they are running
+				if name == "nav" and "sensors" in self._procs:
+					self.get_logger().info("Also stopping implicitly launched 'sensors'")
+					self._stop_child("sensors")
+					
 				return
 
 			self.get_logger().info(f"Stopping '{name}' (SIGINT)")
-			try:
-				os.killpg(proc.pid, signal.SIGINT)
-			except ProcessLookupError:
-				self._procs.pop(name, None)
-				return
+			self._send_sigint(proc, name)
+			
+			# If we're stopping nav, also stop implicitly launched sensors
+			if name == "nav":
+				sensors_proc = self._procs.get("sensors")
+				if sensors_proc and sensors_proc.poll() is None:
+					self.get_logger().info("Also stopping implicitly launched 'sensors'")
+					self._send_sigint(sensors_proc, "sensors")
 
+		self._wait_and_kill(name, proc)
+		
+		# Now ensure sensors is also cleanly killed if we were stopping nav
+		if name == "nav":
+			sensors_proc = self._procs.get("sensors")
+			if sensors_proc:
+				self._wait_and_kill("sensors", sensors_proc)
+				
+	def _send_sigint(self, proc, name: str) -> None:
+		try:
+			os.killpg(proc.pid, signal.SIGINT)
+		except ProcessLookupError:
+			self._procs.pop(name, None)
+
+	def _wait_and_kill(self, name: str, proc) -> None:
 		timeout_s = 5.0
 		t0 = time.time()
 		while time.time() - t0 < timeout_s:
@@ -212,6 +253,12 @@ class LaunchControl(Node):
 			pass
 		with self._lock:
 			self._procs.pop(name, None)
+
+	def _stop_child(self, name: str) -> None:
+		proc = self._procs.get(name)
+		if proc and proc.poll() is None:
+			self._send_sigint(proc, name)
+			self._wait_and_kill(name, proc)
 
 	def destroy_node(self) -> None:
 		for name in list(self._procs.keys()):
