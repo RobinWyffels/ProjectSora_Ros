@@ -43,13 +43,9 @@ def generate_launch_description():
 		parameters=[{
 			"port": foxglove_port,
 			"address": foxglove_address,
-		}],
-	)
-
-	launch_control = Node(
-		package="sora_slam",
-		executable="launch_control",
-		output="screen",
+                        # Suppress errors from missing zed_interfaces on the Pi
+                        "topic_whitelist": [r"^(?!/zedm/zed_node/depth/depth_info$).*"],
+                        "service_whitelist": [r"^(?!/zedm/zed_node/(set_pose|set_roi|start_svo_rec)$).*"],
 	)
 
 	# If the ZED publishes odom->zedm_base_link (common default), this bridges it to the
