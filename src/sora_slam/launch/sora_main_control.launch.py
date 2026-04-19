@@ -22,6 +22,15 @@ def generate_launch_description():
 	zed_to_base_roll = LaunchConfiguration("zed_to_base_roll")
 	zed_to_base_pitch = LaunchConfiguration("zed_to_base_pitch")
 	zed_to_base_yaw = LaunchConfiguration("zed_to_base_yaw")
+	# Only runs when use_sim_time is true, bridging Twist down to flat Float64MultiArray for Isaac Sim
+	twist_bridge_node = Node(
+		package="sora_base_control",
+		executable="twist_to_array",
+		name="twist_bridge",
+		output="screen",
+		condition=IfCondition(use_sim_time),
+		parameters=[{"use_sim_time": use_sim_time}],
+	)
 
 	bringup_launch = PathJoinSubstitution(
 		[FindPackageShare("robot_description"), "launch", "bringup.launch.py"]
@@ -141,4 +150,5 @@ def generate_launch_description():
 		foxglove,
 		launch_control,
 		zed_tf_bridge,
+		twist_bridge_node,
 	])
