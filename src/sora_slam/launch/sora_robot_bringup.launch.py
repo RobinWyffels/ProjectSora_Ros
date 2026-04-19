@@ -8,6 +8,7 @@ from launch_ros.substitutions import FindPackageShare
 
 def generate_launch_description():
     use_sim_time = LaunchConfiguration("use_sim_time")
+    use_hardware = LaunchConfiguration("use_hardware")
     lidar_params_file = LaunchConfiguration("lidar_params_file")
     enable_rviz = LaunchConfiguration("enable_rviz")
     start_robot_state_publisher = LaunchConfiguration("start_robot_state_publisher")
@@ -43,6 +44,7 @@ def generate_launch_description():
         name="ydlidar_ros2_driver_node",
         output="screen",
         emulate_tty=True,
+        condition=IfCondition(use_hardware),
         parameters=[lidar_params_file],
     )
 
@@ -81,11 +83,13 @@ def generate_launch_description():
         package='sora_motor_driver',
         executable='motor_driver_node',
         name='motor_driver_node',
-        output='screen'
+        output='screen',
+        condition=IfCondition(use_hardware),
     )
 
     return LaunchDescription([
         DeclareLaunchArgument("use_sim_time", default_value="false"),
+        DeclareLaunchArgument("use_hardware", default_value="true"),
         DeclareLaunchArgument("enable_rviz", default_value="false"),
 
         DeclareLaunchArgument(

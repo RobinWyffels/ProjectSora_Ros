@@ -147,3 +147,19 @@ def generate_launch_description():
         rviz_node,
         zed_tf_node,
     ])
+
+    # Simulations
+    sim_slam = [
+        "ros2", "launch", "sora_slam", "sora_slam_toolbox.launch.py",
+        "enable_rviz:=false", "start_robot_state_publisher:=false",
+        "use_sim_time:=true", "use_hardware:=false",
+    ]
+    sim_sensors = [
+        "ros2", "launch", "sora_slam", "sora_robot_bringup.launch.py",
+        "enable_rviz:=false", "start_robot_state_publisher:=false",
+        "use_sim_time:=true", "use_hardware:=false",
+    ]
+    sim_teleop = [
+        "ros2", "launch", "sora_base_control", "teleop.launch.py",
+        "use_sim_time:=true",
+    ]

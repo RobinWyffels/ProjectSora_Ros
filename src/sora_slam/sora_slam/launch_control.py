@@ -141,9 +141,9 @@ class LaunchControl(Node):
 
 	def start(self, name: str, args: list[str]) -> None:
 		with self._lock:
-			if name not in self._commands and name != "nav":
+			if name not in self._commands and name not in ["nav", "sim_nav"]:
 				self.get_logger().error(
-					f"Unknown launch '{name}'. Known: {sorted(self._commands.keys()) + ['nav']}"
+					f"Unknown launch '{name}'. Known: {sorted(self._commands.keys()) + ['nav', 'sim_nav']}"
 				)
 				return
 
@@ -152,9 +152,9 @@ class LaunchControl(Node):
 				self.get_logger().info(f"'{name}' already running")
 				return
 
-			if name == "nav":
+			if name in ["nav", "sim_nav"]:
 				if not args:
-					self.get_logger().warn("Start nav format: 'start nav <mapname>'")
+					self.get_logger().warn(f"Start format: 'start {name} <mapname>'")
 					return
 				map_name = args[0]
 				map_path = os.path.expanduser(f"~/maps/{map_name}.yaml")
@@ -163,30 +163,32 @@ class LaunchControl(Node):
 					return
 					
 				# Stop teleop if it is currently running
-				teleop_proc = self._procs.get("teleop")
+				teleop_command = "sim_teleop" if name == "sim_nav" else "teleop"
+				teleop_proc = self._procs.get(teleop_command)
 				if teleop_proc is not None and teleop_proc.poll() is None:
-					self.get_logger().info("Stopping active 'teleop' before starting navigation...")
-					self.stop("teleop")
+					self.get_logger().info(f"Stopping active '{teleop_command}' before starting navigation...")
+					self.stop(teleop_command)
 					
 				# Implicitly start the lidar and sensors if not already running
-				sensors_proc = self._procs.get("sensors")
+				sensors_command = "sim_sensors" if name == "sim_nav" else "sensors"
+				sensors_proc = self._procs.get(sensors_command)
 				if sensors_proc is None or sensors_proc.poll() is not None:
-					self.get_logger().info("Starting sensors implicitly for navigation...")
-					sensors_cmd = self._commands["sensors"]
-					self._procs["sensors"] = subprocess.Popen(
+					self.get_logger().info(f"Starting {sensors_command} implicitly for navigation...")
+					sensors_cmd = self._commands[sensors_command]
+					self._procs[sensors_command] = subprocess.Popen(
 						sensors_cmd, env=os.environ.copy(), stdout=None, stderr=None, start_new_session=True
 					)
 					
 				# Path to custom Nav2 params file
 				params_path = os.path.expanduser("~/sora_ws/src/ProjectSora_Ros/src/sora_slam/config/nav2_params.yaml")
 				
+				# Enable sim time based on if sim_nav was called
+				sim_time_arg = "use_sim_time:=true" if name == "sim_nav" else "use_sim_time:=false"
+
 				cmd = [
-					"ros2",
-					"launch",
-					"nav2_bringup",
-					"bringup_launch.py",
+					"ros2", "launch", "nav2_bringup", "bringup_launch.py",
 					f"map:={map_path}",
-					"use_sim_time:=false",
+					sim_time_arg,
 					f"params_file:={params_path}",
 				]
 			else:
