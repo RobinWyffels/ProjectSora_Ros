@@ -2,31 +2,34 @@
 import rclpy
 from rclpy.node import Node
 from geometry_msgs.msg import Twist
-from geometry_msgs.msg import Point
+import socket
+import struct
 
-class TwistBridge(Node):
+class TwistUDPBridge(Node):
     def __init__(self):
-        super().__init__('twist_bridge')
+        super().__init__('twist_udp_bridge')
+        # CHANGE '192.168.x.x' to your Windows PC's exact IP address on the network!
+        self.target_ip = "192.168.x.x"  
+        self.target_port = 5005
+        self.sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        
         self.sub = self.create_subscription(Twist, '/cmd_vel', self.cb, 10)
-        # Publish a Point instead of an Array!
-        self.pub = self.create_publisher(Point, '/cmd_vel_point', 10)
-        self.get_logger().info("Twist to Point bridge started for Isaac Sim!")
+        self.get_logger().info(f"UDP Bridge broadcasting /cmd_vel to {self.target_ip}:{self.target_port}")
 
     def cb(self, msg):
-        pt = Point()
-        pt.x = msg.linear.x   # Forward
-        pt.y = msg.linear.y   # Strafe
-        pt.z = msg.angular.z  # Spin
-        self.pub.publish(pt)
+        # Pack the 3 floats (x, y, z) into exactly 24 bytes of raw binary
+        data = struct.pack('ddd', msg.linear.x, msg.linear.y, msg.angular.z)
+        self.sock.sendto(data, (self.target_ip, self.target_port))
 
 def main(args=None):
     rclpy.init(args=args)
-    node = TwistBridge()
+    node = TwistUDPBridge()
     try:
         rclpy.spin(node)
     except KeyboardInterrupt:
         pass
     finally:
+        node.sock.close()
         node.destroy_node()
         if rclpy.ok():
             rclpy.shutdown()
