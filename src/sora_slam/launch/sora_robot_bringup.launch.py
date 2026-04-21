@@ -68,7 +68,16 @@ def generate_launch_description():
         package='tf2_ros',
         executable='static_transform_publisher',
         name='zed_to_base_link',
-        arguments=['-0.160', '0', '-0.069', '0', '0', '0', zed_parent_frame, 'base_link']
+        arguments=['-0.160', '0', '-0.069', '0', '0', '0', zed_parent_frame, 'base_link'],
+        condition=IfCondition(LaunchConfiguration('use_hardware'))
+    )
+
+    isaac_tf_node = Node(
+        package='tf2_ros',
+        executable='static_transform_publisher',
+        name='isaac_to_base_link',
+        arguments=['0', '0', '0', '3.14159265359', '0', '0', 'base_link_isaac', 'base_link'],
+        condition=IfCondition(LaunchConfiguration('use_sim_time'))
     )
 
     mecanum_kinematics = Node(
@@ -124,6 +133,7 @@ def generate_launch_description():
         ydlidar_node,
         rviz_node,
         zed_tf_node,
+        isaac_tf_node,
         mecanum_kinematics,
         motor_driver,
     ])
