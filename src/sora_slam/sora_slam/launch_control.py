@@ -26,6 +26,16 @@ class LaunchControl(Node):
 				"enable_rviz:=false",
 				"start_robot_state_publisher:=false",
 			],
+			"sim_slam": [
+				"ros2",
+				"launch",
+				"sora_slam",
+				"sora_slam_toolbox.launch.py",
+				"enable_rviz:=false",
+				"start_robot_state_publisher:=false",
+				"use_sim_time:=true",
+				"use_hardware:=false",
+			],
 			"sensors": [
 				"ros2",
 				"launch",
@@ -34,11 +44,29 @@ class LaunchControl(Node):
 				"enable_rviz:=false",
 				"start_robot_state_publisher:=false",
 			],
+			"sim_sensors": [
+				"ros2",
+				"launch",
+				"sora_slam",
+				"sora_robot_bringup.launch.py",
+				"enable_rviz:=false",
+				"start_robot_state_publisher:=false",
+				"use_sim_time:=true",
+				"use_hardware:=false",
+			],
 			"teleop": [
 				"ros2",
 				"launch",
 				"sora_base_control",
 				"teleop.launch.py",
+			],
+			"sim_teleop": [
+				"ros2",
+				"launch",
+				"sora_base_control",
+				"teleop.launch.py",
+				"use_sim_time:=true",
+				"use_hardware:=false",
 			],
 		}
 
@@ -182,13 +210,15 @@ class LaunchControl(Node):
 				# Path to custom Nav2 params file
 				params_path = os.path.expanduser("~/sora_ws/src/ProjectSora_Ros/src/sora_slam/config/nav2_params.yaml")
 				
-				# Enable sim time based on if sim_nav was called
+				# Enable sim time and disable hardware based on if sim_nav was called
 				sim_time_arg = "use_sim_time:=true" if name == "sim_nav" else "use_sim_time:=false"
+				use_hw_arg = "use_hardware:=false" if name == "sim_nav" else "use_hardware:=true"
 
 				cmd = [
 					"ros2", "launch", "nav2_bringup", "bringup_launch.py",
 					f"map:={map_path}",
 					sim_time_arg,
+					use_hw_arg,
 					f"params_file:={params_path}",
 				]
 			else:
