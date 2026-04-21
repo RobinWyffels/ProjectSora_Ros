@@ -35,6 +35,7 @@ class LaunchControl(Node):
 				"start_robot_state_publisher:=false",
 				"use_sim_time:=true",
 				"use_hardware:=false",
+				"zed_to_base_yaw:=3.14159",
 			],
 			"sensors": [
 				"ros2",
@@ -53,6 +54,7 @@ class LaunchControl(Node):
 				"start_robot_state_publisher:=false",
 				"use_sim_time:=true",
 				"use_hardware:=false",
+				"zed_to_base_yaw:=3.14159",
 			],
 			"teleop": [
 				"ros2",
