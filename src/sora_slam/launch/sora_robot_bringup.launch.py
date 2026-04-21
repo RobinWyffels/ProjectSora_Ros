@@ -80,6 +80,14 @@ def generate_launch_description():
         condition=IfCondition(LaunchConfiguration('use_sim_time'))
     )
 
+    isaac_optical_tf_node = Node(
+        package='tf2_ros',
+        executable='static_transform_publisher',
+        name='isaac_optical_tf_node',
+        arguments=['0', '0', '0', '-1.5708', '0', '-1.5708', 'zedm_base_link', 'zedm_left_camera_optical_frame'],
+        condition=IfCondition(LaunchConfiguration('use_sim_time'))
+    )
+
     mecanum_kinematics = Node(
         package='sora_base_control',
         executable='mecanum_kinematics',
@@ -134,6 +142,7 @@ def generate_launch_description():
         rviz_node,
         zed_tf_node,
         isaac_tf_node,
+        isaac_optical_tf_node,
         mecanum_kinematics,
         motor_driver,
     ])
