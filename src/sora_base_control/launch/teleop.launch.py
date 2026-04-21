@@ -7,6 +7,7 @@ from launch.conditions import IfCondition
 
 def generate_launch_description():
     use_sim_time = LaunchConfiguration('use_sim_time')
+    use_hardware = LaunchConfiguration('use_hardware')
     use_cmd_vel_odometry = LaunchConfiguration('use_cmd_vel_odometry')
     
     pkg_share = FindPackageShare('sora_base_control')
@@ -17,6 +18,12 @@ def generate_launch_description():
             'use_sim_time',
             default_value='false',
             description='Use simulation time'
+        ),
+        
+        DeclareLaunchArgument(
+            'use_hardware',
+            default_value='true',
+            description='Launch hardware nodes (motor driver, etc)'
         ),
 
         DeclareLaunchArgument(
@@ -73,6 +80,7 @@ def generate_launch_description():
             package='sora_motor_driver',
             executable='motor_driver_node',
             name='motor_driver_node',
-            output='screen'
+            output='screen',
+            condition=IfCondition(use_hardware)
         ),
     ])
