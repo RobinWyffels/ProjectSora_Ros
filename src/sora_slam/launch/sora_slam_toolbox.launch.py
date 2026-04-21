@@ -106,6 +106,14 @@ def generate_launch_description():
         condition=IfCondition(LaunchConfiguration('use_hardware'))
     )
 
+    isaac_odom_tf_node = Node(
+        package='tf2_ros',
+        executable='static_transform_publisher',
+        name='isaac_odom_tf_node',
+        arguments=['0', '0', '0', '3.14159265359', '0', '0', 'odom', 'odom_isaac'],
+        condition=IfCondition(LaunchConfiguration('use_sim_time'))
+    )
+
     isaac_tf_node = Node(
         package='tf2_ros',
         executable='static_transform_publisher',
@@ -166,6 +174,7 @@ def generate_launch_description():
         lifecycle_manager_slam,
         rviz_node,
         zed_tf_node,
+        isaac_odom_tf_node,
         isaac_tf_node,
         isaac_optical_tf_node,
     ])
