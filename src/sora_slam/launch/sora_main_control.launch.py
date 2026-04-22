@@ -76,14 +76,10 @@ def generate_launch_description():
 		# parent: ZED base frame (e.g. zedm_base_link), child: base_link
 		# base_link->zed_camera_center in URDF is (0.160, 0.0, 0.069)
 		arguments=[
-			zed_to_base_x,
-			zed_to_base_y,
-			zed_to_base_z,
-			zed_to_base_yaw,
-			zed_to_base_pitch,
-			zed_to_base_roll,
-			zed_parent_frame,
-			zed_child_frame,
+			'--x', zed_to_base_x, '--y', zed_to_base_y, '--z', zed_to_base_z,
+			'--yaw', zed_to_base_yaw, '--pitch', zed_to_base_pitch, '--roll', zed_to_base_roll,
+			'--frame-id', zed_parent_frame,
+			'--child-frame-id', zed_child_frame,
 		],
 	)
 

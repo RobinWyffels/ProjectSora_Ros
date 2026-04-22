@@ -68,7 +68,12 @@ def generate_launch_description():
         package='tf2_ros',
         executable='static_transform_publisher',
         name='zed_to_base_link',
-        arguments=['-0.160', '0', '-0.069', '0', '0', '0', zed_parent_frame, 'base_link'],
+        arguments=[
+            '--x', '-0.160', '--y', '0', '--z', '-0.069',
+            '--yaw', '0', '--pitch', '0', '--roll', '0',
+            '--frame-id', zed_parent_frame,
+            '--child-frame-id', 'base_link'
+        ],
         condition=IfCondition(LaunchConfiguration('use_hardware'))
     )
 
@@ -77,7 +82,12 @@ def generate_launch_description():
         package='tf2_ros',
         executable='static_transform_publisher',
         name='sim_zed_to_base_link',
-        arguments=['0.160', '0', '0.069', '0', '0', '0', 'base_link', zed_parent_frame],
+        arguments=[
+            '--x', '0.160', '--y', '0', '--z', '0.069',
+            '--yaw', '0', '--pitch', '0', '--roll', '0',
+            '--frame-id', 'base_link',
+            '--child-frame-id', zed_parent_frame
+        ],
         condition=IfCondition(LaunchConfiguration('use_sim_time'))
     )
 
@@ -85,7 +95,12 @@ def generate_launch_description():
         package='tf2_ros',
         executable='static_transform_publisher',
         name='isaac_optical_tf_node',
-        arguments=['0', '0', '0', '-1.5708', '0', '-1.5708', 'zedm_base_link', 'zedm_left_camera_optical_frame'],
+        arguments=[
+            '--x', '0', '--y', '0', '--z', '0',
+            '--yaw', '-1.5708', '--pitch', '0', '--roll', '-1.5708',
+            '--frame-id', 'zedm_base_link',
+            '--child-frame-id', 'zedm_left_camera_optical_frame'
+        ],
         condition=IfCondition(LaunchConfiguration('use_sim_time'))
     )
 
