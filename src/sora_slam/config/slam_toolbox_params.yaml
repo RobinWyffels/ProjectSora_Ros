@@ -1,6 +1,5 @@
 slam_toolbox:
   ros__parameters:
-    use_sim_time: false
 
     # Nav2-friendly frame convention
     map_frame: map
