@@ -30,4 +30,4 @@ slam_toolbox:
     # A queue size of 1 will almost always overflow the tf2 message filter and
     # cause: "Message Filter dropping message ... because the queue is full".
     scan_queue_size: 50
-    restamp_tf: true
+    restamp_tf: false
