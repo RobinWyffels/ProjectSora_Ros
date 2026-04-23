@@ -103,16 +103,8 @@ def generate_launch_description():
         executable='static_transform_publisher',
         name='isaac_laser_tf_node',
         # x y z yaw pitch roll frame_id child_frame_id
-    arguments=['0.135', '0.0', '0.115', '3.14159', '0.0', '0.0', 'base_link', 'isaac_laser_frame'],
+        arguments=['0.135', '0.0', '0.115', '3.14159', '0.0', '0.0', 'base_link', 'isaac_laser_frame'],
         condition=IfCondition(LaunchConfiguration('use_sim_time'))
-    )
-
-    mecanum_kinematics = Node(
-        package='sora_base_control',
-        executable='mecanum_kinematics',
-        name='mecanum_kinematics',
-        output='screen',
-        parameters=[{'use_sim_time': use_sim_time}]
     )
 
     motor_driver = Node(
@@ -164,7 +156,6 @@ def generate_launch_description():
         isaac_optical_tf_node,
         isaac_flip_tf_node,
         isaac_laser_tf_node,
-        mecanum_kinematics,
         motor_driver,
         
     ])

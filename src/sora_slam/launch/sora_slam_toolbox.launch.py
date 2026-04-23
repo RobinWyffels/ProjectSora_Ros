@@ -90,54 +90,6 @@ def generate_launch_description():
         condition=IfCondition(enable_rviz),
     )
 
-    # Must exactly match the ZED node's base_frame (this is what the Jetson ZED node considers its base)
-    zed_parent_frame = 'zedm_base_link' 
-    
-    # CRITICAL TF FIX: The Jetson publishes odom -> zedm_base_link. 
-    # To prevent 'zedm_base_link' from having two parents (which breaks Foxglove tracking),
-    # we must make the robot's base_link a CHILD of the camera's base frame!
-    # The physical ZED mount is at x=0.160, z=0.069 from base_link. 
-    # Therefore, base_link is at x=-0.160, z=-0.069 relative to the camera.
-    zed_tf_node = Node(
-        package='tf2_ros',
-        executable='static_transform_publisher',
-        name='zed_to_base_link',
-        arguments=[
-            '--x', '-0.160', '--y', '0', '--z', '-0.069',
-            '--yaw', '0', '--pitch', '0', '--roll', '0',
-            '--frame-id', zed_parent_frame,
-            '--child-frame-id', 'base_link'
-        ],
-        condition=IfCondition(LaunchConfiguration('use_hardware'))
-    )
-
-    # Reconnect the ZED camera properly to base_link during simulation
-    sim_zed_tf_node = Node(
-        package='tf2_ros',
-        executable='static_transform_publisher',
-        name='sim_zed_to_base_link',
-        arguments=[
-            '--x', '0.160', '--y', '0', '--z', '0.069',
-            '--yaw', '0', '--pitch', '0', '--roll', '0',
-            '--frame-id', 'base_link',
-            '--child-frame-id', zed_parent_frame
-        ],
-        condition=IfCondition(LaunchConfiguration('use_sim_time'))
-    )
-
-    isaac_optical_tf_node = Node(
-        package='tf2_ros',
-        executable='static_transform_publisher',
-        name='isaac_optical_tf_node',
-        arguments=[
-            '--x', '0', '--y', '0', '--z', '0',
-            '--yaw', '-1.5708', '--pitch', '0', '--roll', '-1.5708',
-            '--frame-id', 'zedm_base_link',
-            '--child-frame-id', 'zedm_left_camera_optical_frame'
-        ],
-        condition=IfCondition(LaunchConfiguration('use_sim_time'))
-    )
-
     return LaunchDescription([
         DeclareLaunchArgument("use_sim_time", default_value="false"),
         DeclareLaunchArgument("use_hardware", default_value="true"),
@@ -181,9 +133,6 @@ def generate_launch_description():
         slam_toolbox,
         lifecycle_manager_slam,
         rviz_node,
-        zed_tf_node,
-        sim_zed_tf_node,
-        isaac_optical_tf_node,
     ])
 
     # Simulations
