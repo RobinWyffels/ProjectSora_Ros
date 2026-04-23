@@ -98,6 +98,15 @@ def generate_launch_description():
         condition=IfCondition(LaunchConfiguration('use_sim_time'))
     )
 
+    isaac_laser_tf_node = Node(
+        package='tf2_ros',
+        executable='static_transform_publisher',
+        name='isaac_laser_tf_node',
+        # x y z yaw pitch roll frame_id child_frame_id
+        arguments=['0.135', '0.0', '0.115', '0.0', '0.0', '0.0', 'base_link', 'isaac_laser_frame'],
+        condition=IfCondition(LaunchConfiguration('use_sim_time'))
+    )
+
     mecanum_kinematics = Node(
         package='sora_base_control',
         executable='mecanum_kinematics',
@@ -154,6 +163,7 @@ def generate_launch_description():
         sim_zed_tf_node,
         isaac_optical_tf_node,
         isaac_flip_tf_node,
+        isaac_laser_tf_node,
         mecanum_kinematics,
         motor_driver,
         
