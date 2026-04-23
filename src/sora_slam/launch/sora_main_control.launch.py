@@ -83,6 +83,21 @@ def generate_launch_description():
 		],
 	)
 
+	sim_robot_bringup_launch = PathJoinSubstitution(
+		[FindPackageShare("sora_slam"), "launch", "sora_robot_bringup.launch.py"]
+	)
+
+	sim_robot_bringup = IncludeLaunchDescription(
+		PythonLaunchDescriptionSource(sim_robot_bringup_launch),
+		condition=IfCondition(use_sim_time),
+		launch_arguments={
+			"use_sim_time": use_sim_time,
+			"use_hardware": "false",
+			"enable_rviz": "false",
+			"start_robot_state_publisher": "false",
+		}.items(),
+	)
+
 	return LaunchDescription([
 		DeclareLaunchArgument("use_sim_time", default_value="false"),
 		DeclareLaunchArgument(
@@ -147,4 +162,5 @@ def generate_launch_description():
 		launch_control,
 		zed_tf_bridge,
 		twist_bridge_node,
+		sim_robot_bringup,
 	])
