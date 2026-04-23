@@ -2,7 +2,7 @@ slam_toolbox:
   ros__parameters:
 
     # Nav2-friendly frame convention
-    map_frame: map
+    map_frame: slam_map
     odom_frame: odom
     base_frame: base_link
 
@@ -13,7 +13,7 @@ slam_toolbox:
     transform_publish_period: 0.02
     map_update_interval: 0.5
     tf_buffer_duration: 30.0
-    transform_timeout: 10.0
+    transform_timeout: 0.2
     
     # Increase the tolerance for slightly older or delayed LiDAR scan messages 
     # to account for network latency between Jetson TF and RPi LiDAR
@@ -22,12 +22,12 @@ slam_toolbox:
     # Mapping basics
     resolution: 0.05
     max_laser_range: 12.0
-    minimum_time_interval: 0.2
-    minimum_travel_distance: 0.1
+    minimum_time_interval: 0.05
+    minimum_travel_distance: 0.02
     minimum_travel_heading: 0.1
 
     # IMPORTANT:
     # A queue size of 1 will almost always overflow the tf2 message filter and
     # cause: "Message Filter dropping message ... because the queue is full".
-    scan_queue_size: 50
-    restamp_tf: false
+    scan_queue_size: 5
+    restamp_tf: true
