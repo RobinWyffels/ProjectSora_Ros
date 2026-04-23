@@ -103,7 +103,7 @@ def generate_launch_description():
         executable='static_transform_publisher',
         name='isaac_laser_tf_node',
         # x y z yaw pitch roll frame_id child_frame_id
-        arguments=['0.135', '0.0', '0.115', '0.0', '0.0', '0.0', 'base_link', 'isaac_laser_frame'],
+    arguments=['0.135', '0.0', '0.115', '3.14159', '0.0', '0.0', 'base_link', 'isaac_laser_frame'],
         condition=IfCondition(LaunchConfiguration('use_sim_time'))
     )
 
