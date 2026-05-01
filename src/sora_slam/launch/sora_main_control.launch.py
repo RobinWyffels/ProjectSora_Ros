@@ -1,6 +1,6 @@
 from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription
-from launch.conditions import IfCondition
+from launch.conditions import IfCondition, UnlessCondition
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import LaunchConfiguration, PathJoinSubstitution
 from launch_ros.actions import Node
@@ -42,6 +42,21 @@ def generate_launch_description():
 			"use_rviz": "false",
 			"use_ros2_control": bringup_use_ros2_control,
 			"use_joint_state_publisher": bringup_use_joint_state_publisher,
+		}.items(),
+	)
+
+	hardware_robot_bringup_launch = PathJoinSubstitution(
+		[FindPackageShare("sora_slam"), "launch", "sora_robot_bringup.launch.py"]
+	)
+
+	hardware_robot_bringup = IncludeLaunchDescription(
+		PythonLaunchDescriptionSource(hardware_robot_bringup_launch),
+		condition=UnlessCondition(use_sim_time),
+		launch_arguments={
+			"use_sim_time": use_sim_time,
+			"use_hardware": "true",
+			"enable_rviz": "false",
+			"start_robot_state_publisher": "false",
 		}.items(),
 	)
 
@@ -158,6 +173,7 @@ def generate_launch_description():
 		DeclareLaunchArgument("foxglove_port", default_value="8765"),
 		DeclareLaunchArgument("foxglove_address", default_value="0.0.0.0"),
 		bringup,
+		hardware_robot_bringup,
 		foxglove,
 		launch_control,
 		zed_tf_bridge,
