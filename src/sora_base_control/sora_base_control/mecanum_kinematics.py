@@ -54,7 +54,7 @@ class MecanumKinematics(Node):
 
         # Mecanum inverse kinematics
         # FR: front-right, FL: front-left, BR: back-right, BL: back-left
-        w_fr = (1.0 / self.r) * (vx + vy + L * wz)
+        w_fr = (1.0 / self.r) * (vx + vy - L * wz)
         w_fl = (1.0 / self.r) * (vx - vy + L * wz)
         w_br = (1.0 / self.r) * (vx - vy - L * wz)
         w_bl = (1.0 / self.r) * (vx + vy + L * wz)
