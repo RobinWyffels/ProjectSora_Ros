@@ -8,6 +8,13 @@ class MotorDriverNode(Node):
     def __init__(self):
         super().__init__('motor_driver_node')
 
+        self.declare_parameter('enable_startup_beep', True)
+        self.enable_startup_beep = (
+            self.get_parameter('enable_startup_beep')
+            .get_parameter_value()
+            .bool_value
+        )
+
         # Open GPIO chip
         self.h = lgpio.gpiochip_open(4)  # on Raspberry Pi, GPIO 0-27 are on chip 4 (BCM numbering)
 
@@ -44,6 +51,7 @@ class MotorDriverNode(Node):
         self.timer_period = 0.02  # seconds (50 Hz)
         self.current_throttles = [0.0, 0.0, 0.0, 0.0]  # [FR, FL, BR, BL]
         self.target_throttles = [0.0, 0.0, 0.0, 0.0]
+        self.startup_beep_done = False
 
         self.subscription = self.create_subscription(
             Float64MultiArray,
@@ -56,6 +64,11 @@ class MotorDriverNode(Node):
         self.timer = self.create_timer(self.timer_period, self.ramp_timer_callback)
 
         self.get_logger().info('Motor driver node started (Cytron MDD10A, using lgpio)')
+
+        if self.enable_startup_beep:
+            self.startup_beep_timer = self.create_timer(0.5, self.startup_beep_callback)
+        else:
+            self.startup_beep_timer = None
 
     def listener_callback(self, msg):
         # Expecting [FR, FL, BR, BL]
@@ -90,6 +103,36 @@ class MotorDriverNode(Node):
         set_motor(self.DIR_FL, self.pwm_fl, self.current_throttles[1])  # FL
         set_motor(self.DIR_BR, self.pwm_br, self.current_throttles[2])  # BR
         set_motor(self.DIR_BL, self.pwm_bl, self.current_throttles[3])  # BL
+
+    def startup_beep_callback(self):
+        if self.startup_beep_done:
+            return
+
+        self.startup_beep_done = True
+
+        tone_sequence = [
+            (900, 0.08, 8),
+            (1200, 0.08, 8),
+            (1500, 0.10, 10),
+        ]
+
+        pwm_pins = [self.pwm_fr, self.pwm_fl, self.pwm_br, self.pwm_bl]
+
+        for pwm_pin in pwm_pins:
+            lgpio.tx_pwm(self.h, pwm_pin, self.pwm_freq, 0)
+
+        try:
+            for freq, duration, duty in tone_sequence:
+                for pwm_pin in pwm_pins:
+                    lgpio.tx_pwm(self.h, pwm_pin, freq, duty)
+                time.sleep(duration)
+        finally:
+            for pwm_pin in pwm_pins:
+                lgpio.tx_pwm(self.h, pwm_pin, self.pwm_freq, 0)
+
+            if self.startup_beep_timer is not None:
+                self.startup_beep_timer.cancel()
+                self.startup_beep_timer = None
 
     def destroy_node(self):
         # Stop all motors and cleanup
