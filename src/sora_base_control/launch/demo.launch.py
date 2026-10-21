@@ -17,14 +17,18 @@ Then connect the Xbox controller and press **A** to start roaming, **B** to stop
 
 from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument
+from launch.conditions import IfCondition
 from launch.substitutions import LaunchConfiguration, PathJoinSubstitution
 from launch_ros.actions import Node
+from launch_ros.parameter_descriptions import ParameterValue
 from launch_ros.substitutions import FindPackageShare
 
 
 def generate_launch_description():
     use_sim_time = LaunchConfiguration("use_sim_time")
     joy_dev = LaunchConfiguration("joy_dev")
+    use_joy = LaunchConfiguration("use_joy")
+    web_port = LaunchConfiguration("web_port")
     lidar_params_file = LaunchConfiguration("lidar_params_file")
 
     ydlidar_share = FindPackageShare("ydlidar_ros2_driver")
@@ -36,6 +40,16 @@ def generate_launch_description():
             "joy_dev",
             default_value="/dev/input/js0",
             description="Joystick device for the Xbox controller.",
+        ),
+        DeclareLaunchArgument(
+            "use_joy",
+            default_value="true",
+            description="Start the joy_node for Xbox controller input (set false for web-only).",
+        ),
+        DeclareLaunchArgument(
+            "web_port",
+            default_value="8080",
+            description="Port for the phone web-control page (http://<robot-ip>:<port>/).",
         ),
         DeclareLaunchArgument(
             "lidar_params_file",
@@ -53,16 +67,29 @@ def generate_launch_description():
             parameters=[lidar_params_file],
         ),
 
-        # Xbox controller -> /joy
+        # Xbox controller -> /joy  (optional)
         Node(
             package="joy",
             executable="joy_node",
             name="joy_node",
             output="screen",
+            condition=IfCondition(use_joy),
             parameters=[{
                 "dev": joy_dev,
                 "deadzone": 0.1,
                 "autorepeat_rate": 20.0,
+                "use_sim_time": use_sim_time,
+            }],
+        ),
+
+        # Phone web control -> /demo/command  (serves the Start/Stop page)
+        Node(
+            package="sora_base_control",
+            executable="web_control",
+            name="web_control",
+            output="screen",
+            parameters=[{
+                "port": ParameterValue(web_port, value_type=int),
                 "use_sim_time": use_sim_time,
             }],
         ),

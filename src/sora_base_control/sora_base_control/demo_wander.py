@@ -29,9 +29,10 @@ from typing import List, Optional
 
 import rclpy
 from rclpy.node import Node
-from rclpy.qos import qos_profile_sensor_data
+from rclpy.qos import qos_profile_sensor_data, QoSProfile, DurabilityPolicy
 from geometry_msgs.msg import Twist
 from sensor_msgs.msg import Joy, LaserScan
+from std_msgs.msg import String
 
 
 # Simple state machine
@@ -47,6 +48,11 @@ class DemoWander(Node):
         self.declare_parameter("scan_topic", "/scan")
         self.declare_parameter("cmd_vel_topic", "/cmd_vel")
         self.declare_parameter("joy_topic", "/joy")
+
+        # Start/stop can also come from a topic (e.g. the web control node),
+        # not just the controller. State is published back so a UI can show it.
+        self.declare_parameter("command_topic", "/demo/command")
+        self.declare_parameter("state_topic", "/demo/state")
 
         # --- Controller buttons (Xbox pad via the `joy` node) -------------
         self.declare_parameter("start_button", 0)   # A
@@ -85,6 +91,8 @@ class DemoWander(Node):
         self._scan_topic = gp("scan_topic").value
         self._cmd_vel_topic = gp("cmd_vel_topic").value
         self._joy_topic = gp("joy_topic").value
+        self._command_topic = gp("command_topic").value
+        self._state_topic = gp("state_topic").value
         self._start_button = int(gp("start_button").value)
         self._stop_button = int(gp("stop_button").value)
 
@@ -127,6 +135,14 @@ class DemoWander(Node):
         )
         self.create_subscription(Joy, self._joy_topic, self._on_joy, 10)
 
+        # Latched state publisher so a late-joining UI immediately sees the
+        # current state; plus a command subscription for start/stop over a topic.
+        state_qos = QoSProfile(depth=1)
+        state_qos.durability = DurabilityPolicy.TRANSIENT_LOCAL
+        self._state_pub = self.create_publisher(String, self._state_topic, state_qos)
+        self.create_subscription(String, self._command_topic, self._on_command, 10)
+        self._publish_state()
+
         self._dt = 1.0 / control_rate
         self._timer = self.create_timer(self._dt, self._on_timer)
 
@@ -151,15 +167,41 @@ class DemoWander(Node):
             was = self._prev_buttons[index] if index < len(self._prev_buttons) else 0
             return buttons[index] == 1 and was == 0
 
-        if rising_edge(self._start_button) and self._state != STATE_ROAMING:
-            self._state = STATE_ROAMING
-            self.get_logger().info("START pressed -> ROAMING")
-        if rising_edge(self._stop_button) and self._state != STATE_STOPPED:
-            self._state = STATE_STOPPED
-            self._publish_stop()
-            self.get_logger().info("STOP pressed -> STOPPED")
+        if rising_edge(self._start_button):
+            self._start("controller")
+        if rising_edge(self._stop_button):
+            self._stop("controller")
 
         self._prev_buttons = buttons
+
+    def _on_command(self, msg: String) -> None:
+        cmd = (msg.data or "").strip().lower()
+        if cmd in ("start", "go", "roam", "a"):
+            self._start("command")
+        elif cmd in ("stop", "halt", "b"):
+            self._stop("command")
+        else:
+            self.get_logger().warn(
+                "Unknown command %r (expected 'start' or 'stop')" % msg.data
+            )
+
+    def _start(self, source: str = "") -> None:
+        if self._state != STATE_ROAMING:
+            self._state = STATE_ROAMING
+            self.get_logger().info("START (%s) -> ROAMING" % source)
+            self._publish_state()
+
+    def _stop(self, source: str = "") -> None:
+        if self._state != STATE_STOPPED:
+            self._state = STATE_STOPPED
+            self._publish_stop()
+            self.get_logger().info("STOP (%s) -> STOPPED" % source)
+            self._publish_state()
+
+    def _publish_state(self) -> None:
+        msg = String()
+        msg.data = self._state
+        self._state_pub.publish(msg)
 
     # ------------------------------------------------------------------
     # Control loop

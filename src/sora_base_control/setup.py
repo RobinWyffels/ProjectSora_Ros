@@ -30,6 +30,7 @@ setup(
             'motor_debug_mux = sora_base_control.motor_debug_mux:main',
             'cmd_vel_odometry = sora_base_control.cmd_vel_odometry:main',
             'demo_wander = sora_base_control.demo_wander:main',
+            'web_control = sora_base_control.web_control:main',
         ],
     },
 )
