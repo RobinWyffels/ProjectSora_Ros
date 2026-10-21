@@ -14,6 +14,7 @@ setup(
         ('share/' + package_name + '/launch', [
             'launch/teleop.launch.py',
             'launch/motor_debug.launch.py',
+            'launch/demo.launch.py',
         ]),
         ('share/' + package_name + '/config', ['config/teleop_joy.yaml']),
     ],
@@ -28,6 +29,7 @@ setup(
             'mecanum_kinematics = sora_base_control.mecanum_kinematics:main',
             'motor_debug_mux = sora_base_control.motor_debug_mux:main',
             'cmd_vel_odometry = sora_base_control.cmd_vel_odometry:main',
+            'demo_wander = sora_base_control.demo_wander:main',
         ],
     },
 )

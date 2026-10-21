@@ -13,9 +13,17 @@ class MecanumKinematics(Node):
         self.declare_parameter('wheel_base_length', 0.410)  # distance between front and rear wheels
         self.declare_parameter('wheel_base_width', 0.305)   # distance between left and right wheels
 
+        # Wheel angular speed (rad/s) that maps to full motor output (|cmd|=1.0).
+        # Commands are scaled uniformly against this so direction is preserved
+        # and speed stays proportional instead of saturating on any input.
+        self.declare_parameter('max_wheel_speed', 6.0)
+
         self.r = self.get_parameter('wheel_radius').get_parameter_value().double_value
         wheel_base_length = self.get_parameter('wheel_base_length').get_parameter_value().double_value
         wheel_base_width = self.get_parameter('wheel_base_width').get_parameter_value().double_value
+        self.max_wheel_speed = self.get_parameter('max_wheel_speed').get_parameter_value().double_value
+        if self.max_wheel_speed <= 0.0:
+            self.max_wheel_speed = 6.0
         
         # Calculate L for mecanum kinematics (half of wheel base diagonal)
         self.lx = wheel_base_length / 2.0
@@ -37,7 +45,10 @@ class MecanumKinematics(Node):
         )
 
         self.get_logger().info('Mecanum kinematics node started')
-        self.get_logger().info(f'Wheel radius: {self.r}m, lx: {self.lx}m, ly: {self.ly}m')
+        self.get_logger().info(
+            f'Wheel radius: {self.r}m, lx: {self.lx}m, ly: {self.ly}m, '
+            f'max_wheel_speed: {self.max_wheel_speed} rad/s'
+        )
 
     def cmd_vel_callback(self, msg: Twist):
         """
@@ -52,23 +63,28 @@ class MecanumKinematics(Node):
         # Sum of half-widths for mecanum kinematics
         L = self.lx + self.ly
 
-        # Mecanum inverse kinematics
+        # Mecanum inverse kinematics -> wheel angular velocities (rad/s)
         # FR: front-right, FL: front-left, BR: back-right, BL: back-left
         w_fr = (1.0 / self.r) * (vx + vy - L * wz)
         w_fl = (1.0 / self.r) * (vx - vy + L * wz)
         w_br = (1.0 / self.r) * (vx - vy - L * wz)
         w_bl = (1.0 / self.r) * (vx + vy + L * wz)
 
-        # Normalize wheel speeds if any exceed magnitude 1.0
-        max_mag = max(abs(w_fr), abs(w_fl), abs(w_br), abs(w_bl), 1.0)
-        w_fr /= max_mag
-        w_fl /= max_mag
-        w_br /= max_mag
-        w_bl /= max_mag
+        # Map to the motor driver's normalized [-1, 1] range by scaling against
+        # the configured max wheel speed. Scaling uniformly (rather than each
+        # wheel independently) preserves the commanded motion direction, and
+        # keeps output speed proportional to the command instead of jumping to
+        # full throttle on any non-trivial input.
+        speeds = [w_fr, w_fl, w_br, w_bl]
+        scale = 1.0 / self.max_wheel_speed
+        max_mag = max(abs(s) for s in speeds) * scale
+        if max_mag > 1.0:
+            scale /= max_mag
+        normalized = [max(min(s * scale, 1.0), -1.0) for s in speeds]
 
         # Create command message
         cmd = Float64MultiArray()
-        cmd.data = [w_fr, w_fl, w_br, w_bl]
+        cmd.data = normalized
 
         self.wheel_cmd_pub.publish(cmd)
 

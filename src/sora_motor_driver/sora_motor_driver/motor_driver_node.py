@@ -15,6 +15,16 @@ class MotorDriverNode(Node):
             .bool_value
         )
 
+        # Stiction compensation: any non-zero command is driven at least this
+        # hard (in scaled throttle units, i.e. a fraction of max_throttle).
+        # 0.0 keeps the original behaviour; raise it so slow commands still move.
+        self.declare_parameter('min_move_throttle', 0.0)
+        self.min_move_throttle = (
+            self.get_parameter('min_move_throttle')
+            .get_parameter_value()
+            .double_value
+        )
+
         # Open GPIO chip
         self.h = lgpio.gpiochip_open(4)  # on Raspberry Pi, GPIO 0-27 are on chip 4 (BCM numbering)
 
@@ -86,8 +96,12 @@ class MotorDriverNode(Node):
                 lgpio.gpio_write(self.h, dir_pin, 1)  # Forward
             else:
                 lgpio.gpio_write(self.h, dir_pin, 0)  # Backward
+            # Apply stiction floor to non-zero commands so slow speeds still move.
+            magnitude = abs(throttle)
+            if magnitude > 1e-3:
+                magnitude = max(magnitude, self.min_move_throttle)
             # Duty cycle: 0-100
-            duty = int(abs(throttle) * 100)
+            duty = int(magnitude * 100)
             lgpio.tx_pwm(self.h, pwm_pin, self.pwm_freq, duty)
 
         # Ramp each motor's throttle toward its target
