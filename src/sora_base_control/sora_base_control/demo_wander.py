@@ -84,6 +84,19 @@ class DemoWander(Node):
         self.declare_parameter("wander_change_period", 2.5)  # s between drifts
         self.declare_parameter("steer_gain", 1.2)           # side-clearance steering
 
+        # --- Modes --------------------------------------------------------
+        self.declare_parameter("mode", "curious")   # "curious" | "cute"
+        self.declare_parameter("mode_topic", "/demo/mode")
+
+        # --- Cute mode ----------------------------------------------------
+        # Stays near the start point and favours the starting orientation,
+        # with lots of standing still plus little spins / strafes / wiggles.
+        self.declare_parameter("cute_radius", 1.0)          # m, leash from start
+        self.declare_parameter("cute_forward_speed", 0.14)  # m/s gentle scoots
+        self.declare_parameter("cute_strafe_speed", 0.14)   # m/s side slides
+        self.declare_parameter("cute_spin_speed", 1.0)      # rad/s little spins
+        self.declare_parameter("cute_wiggle_speed", 0.9)    # rad/s wiggle amplitude
+
         # --- Safety -------------------------------------------------------
         self.declare_parameter("scan_timeout_s", 0.5)
 
@@ -112,6 +125,16 @@ class DemoWander(Node):
         self._wander_change_period = float(gp("wander_change_period").value)
         self._steer_gain = float(gp("steer_gain").value)
 
+        self._mode = (gp("mode").value or "curious").strip().lower()
+        if self._mode not in ("curious", "cute"):
+            self._mode = "curious"
+        self._mode_topic = gp("mode_topic").value
+        self._cute_radius = float(gp("cute_radius").value)
+        self._cute_forward_speed = float(gp("cute_forward_speed").value)
+        self._cute_strafe_speed = float(gp("cute_strafe_speed").value)
+        self._cute_spin_speed = float(gp("cute_spin_speed").value)
+        self._cute_wiggle_speed = float(gp("cute_wiggle_speed").value)
+
         self._scan_timeout_s = float(gp("scan_timeout_s").value)
 
         # --- Runtime state ------------------------------------------------
@@ -128,6 +151,18 @@ class DemoWander(Node):
         self._wander_turn = 0.0
         self._wander_elapsed = 0.0
 
+        # Open-loop pose estimate (integrated from the commanded velocity),
+        # used by cute mode to stay near the start and favour its orientation.
+        self._px = 0.0
+        self._py = 0.0
+        self._yaw = 0.0
+
+        # Cute-mode phase machine.
+        self._cute_phase: Optional[str] = None
+        self._cute_elapsed = 0.0
+        self._cute_duration = 0.0
+        self._cute_dir = 1.0
+
         # --- ROS interfaces ----------------------------------------------
         self._cmd_pub = self.create_publisher(Twist, self._cmd_vel_topic, 10)
         self.create_subscription(
@@ -141,6 +176,7 @@ class DemoWander(Node):
         state_qos.durability = DurabilityPolicy.TRANSIENT_LOCAL
         self._state_pub = self.create_publisher(String, self._state_topic, state_qos)
         self.create_subscription(String, self._command_topic, self._on_command, 10)
+        self.create_subscription(String, self._mode_topic, self._on_mode, 10)
         self._publish_state()
 
         self._dt = 1.0 / control_rate
@@ -185,10 +221,31 @@ class DemoWander(Node):
                 "Unknown command %r (expected 'start' or 'stop')" % msg.data
             )
 
+    def _on_mode(self, msg: String) -> None:
+        m = (msg.data or "").strip().lower()
+        if m not in ("curious", "cute"):
+            self.get_logger().warn(
+                "Unknown mode %r (expected 'curious' or 'cute')" % msg.data
+            )
+            return
+        if m != self._mode:
+            self._mode = m
+            # Treat "here" as the new home when switching modes.
+            self._reset_pose()
+            self._cute_phase = None
+            self.get_logger().info("mode -> %s" % m)
+
+    def _reset_pose(self) -> None:
+        self._px = 0.0
+        self._py = 0.0
+        self._yaw = 0.0
+
     def _start(self, source: str = "") -> None:
         if self._state != STATE_ROAMING:
             self._state = STATE_ROAMING
-            self.get_logger().info("START (%s) -> ROAMING" % source)
+            self._reset_pose()
+            self._cute_phase = None
+            self.get_logger().info("START (%s) -> ROAMING [mode=%s]" % (source, self._mode))
             self._publish_state()
 
     def _stop(self, source: str = "") -> None:
@@ -222,8 +279,48 @@ class DemoWander(Node):
             return
 
         front, left, right = self._sector_clearances(self._scan)
-        cmd = self._compute_command(front, left, right)
+        if self._mode == "cute":
+            cmd = self._cute_command(front, left, right)
+        else:
+            cmd = self._compute_command(front, left, right)
         self._cmd_pub.publish(cmd)
+        self._integrate_pose(cmd)
+
+    @staticmethod
+    def _wrap(a: float) -> float:
+        return (a + math.pi) % (2.0 * math.pi) - math.pi
+
+    def _integrate_pose(self, cmd: Twist) -> None:
+        """Dead-reckon the pose from the commanded velocity (open loop)."""
+        vx = cmd.linear.x
+        vy = cmd.linear.y
+        wz = cmd.angular.z
+        c = math.cos(self._yaw)
+        s = math.sin(self._yaw)
+        self._px += (vx * c - vy * s) * self._dt
+        self._py += (vx * s + vy * c) * self._dt
+        self._yaw = self._wrap(self._yaw + wz * self._dt)
+
+    def _avoidance_command(self, front: float, left: float, right: float):
+        """Shared obstacle reaction. Returns a Twist, or None if the way is clear."""
+        if front <= self._stop_distance:
+            if front <= self._backup_distance or abs(self._avoid_turn_dir) < 0.5:
+                self._avoid_turn_dir = 1.0 if left >= right else -1.0
+
+        if front <= self._backup_distance:
+            cmd = Twist()
+            cmd.linear.x = -self._reverse_speed
+            cmd.angular.z = self._avoid_turn_dir * self._turn_speed
+            return cmd
+
+        if front <= self._stop_distance:
+            cmd = Twist()
+            cmd.angular.z = self._avoid_turn_dir * self._turn_speed
+            return cmd
+
+        # Way is clear; release the avoidance commitment.
+        self._avoid_turn_dir = 0.0
+        return None
 
     def _sector_clearances(self, scan: LaserScan):
         """Return (front, left, right) nearest valid range per sector (metres).
@@ -262,28 +359,13 @@ class DemoWander(Node):
         return front, left, right
 
     def _compute_command(self, front: float, left: float, right: float) -> Twist:
+        """Curious mode: the default roaming/obstacle-avoiding behaviour."""
+        avoid = self._avoidance_command(front, left, right)
+        if avoid is not None:
+            self._reset_wander()
+            return avoid
+
         cmd = Twist()
-
-        # Pick / hold the turn direction toward the more open side.
-        # Hysteresis: only re-evaluate the direction once we are actually
-        # committed to avoiding, so the robot doesn't dither between sides.
-        if front <= self._stop_distance:
-            if front <= self._backup_distance or abs(self._avoid_turn_dir) < 0.5:
-                self._avoid_turn_dir = 1.0 if left >= right else -1.0
-
-        if front <= self._backup_distance:
-            # Too close: back off while rotating toward the open side.
-            cmd.linear.x = -self._reverse_speed
-            cmd.angular.z = self._avoid_turn_dir * self._turn_speed
-            self._reset_wander()
-            return cmd
-
-        if front <= self._stop_distance:
-            # Blocked ahead: rotate in place toward the open side.
-            cmd.linear.x = 0.0
-            cmd.angular.z = self._avoid_turn_dir * self._turn_speed
-            self._reset_wander()
-            return cmd
 
         # Path is reasonably clear: cruise.
         if front >= self._slow_distance:
@@ -307,6 +389,95 @@ class DemoWander(Node):
         cmd.angular.z = steer + wander
         # Release the avoidance commitment now that the way is clear.
         self._avoid_turn_dir = 0.0
+        return cmd
+
+    # ------------------------------------------------------------------
+    # Cute mode
+    # ------------------------------------------------------------------
+    def _cute_command(self, front: float, left: float, right: float) -> Twist:
+        """Cute mode: stay near the start, stand still often, do little moves."""
+        avoid = self._avoidance_command(front, left, right)
+        if avoid is not None:
+            # Obstacle takes priority; re-pick a cute phase once clear.
+            self._cute_phase = None
+            return avoid
+
+        self._cute_elapsed += self._dt
+        if self._cute_phase is None or self._cute_elapsed >= self._cute_duration:
+            self._pick_cute_phase()
+
+        return self._execute_cute_phase(front, left, right)
+
+    def _pick_cute_phase(self) -> None:
+        self._cute_elapsed = 0.0
+        self._cute_dir = random.choice([-1.0, 1.0])
+
+        # If we have drifted beyond the leash, head back toward the start.
+        if math.hypot(self._px, self._py) > self._cute_radius:
+            self._cute_phase = "RETURN"
+            self._cute_duration = random.uniform(0.8, 1.6)
+            return
+
+        # Otherwise pick a cute phase, weighted heavily toward standing still.
+        phase = random.choice(
+            ["IDLE", "IDLE", "IDLE", "WIGGLE", "SPIN", "STRAFE", "SCOOT", "NOD"]
+        )
+        self._cute_phase = phase
+        self._cute_duration = {
+            "IDLE": random.uniform(1.5, 3.0),
+            "WIGGLE": random.uniform(1.0, 1.8),
+            "SPIN": random.uniform(0.6, 1.3),
+            "STRAFE": random.uniform(0.8, 1.5),
+            "SCOOT": random.uniform(0.5, 1.1),
+            "NOD": random.uniform(1.0, 1.6),
+        }[phase]
+
+    def _execute_cute_phase(self, front: float, left: float, right: float) -> Twist:
+        cmd = Twist()
+        phase = self._cute_phase
+        two_pi = 2.0 * math.pi
+
+        if phase == "IDLE":
+            # Stand still, drifting gently back to the starting orientation.
+            yaw_err = self._wrap(0.0 - self._yaw)
+            if abs(yaw_err) > 0.12:
+                cmd.angular.z = max(-0.6, min(0.6, 1.2 * yaw_err))
+
+        elif phase == "WIGGLE":
+            cmd.angular.z = self._cute_wiggle_speed * math.sin(
+                two_pi * (self._cute_elapsed / 0.5)
+            )
+
+        elif phase == "SPIN":
+            cmd.angular.z = self._cute_dir * self._cute_spin_speed
+
+        elif phase == "STRAFE":
+            left_open = left > self._stop_distance
+            right_open = right > self._stop_distance
+            d = self._cute_dir
+            if d > 0 and not left_open and right_open:
+                d = -1.0
+            elif d < 0 and not right_open and left_open:
+                d = 1.0
+            if (d > 0 and left_open) or (d < 0 and right_open):
+                cmd.linear.y = d * self._cute_strafe_speed
+            # else: boxed in on both sides, just stay put
+
+        elif phase == "SCOOT":
+            cmd.linear.x = self._cute_forward_speed
+
+        elif phase == "NOD":
+            cmd.linear.x = self._cute_forward_speed * 0.6 * math.sin(
+                two_pi * (self._cute_elapsed / 0.6)
+            )
+
+        elif phase == "RETURN":
+            bearing = math.atan2(-self._py, -self._px)
+            yaw_err = self._wrap(bearing - self._yaw)
+            cmd.angular.z = max(-self._turn_speed, min(self._turn_speed, 1.5 * yaw_err))
+            if abs(yaw_err) < 0.5 and front > self._stop_distance:
+                cmd.linear.x = self._cute_forward_speed
+
         return cmd
 
     def _update_wander(self) -> float:

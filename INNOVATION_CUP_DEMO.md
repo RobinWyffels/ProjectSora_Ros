@@ -22,6 +22,29 @@ Start/stop can come from either input, which both feed the same behaviour:
 | Phone web page | **START ROAMING** button | **STOP** button |
 | Xbox controller | **A** | **B** |
 
+### Modes (web page dropdown)
+
+| Mode | Behaviour |
+|---|---|
+| **Curious** (default) | The normal wander: drives around, gently wanders, avoids obstacles. |
+| **Cute** | Stays within a short leash of its start point and favours its starting orientation. Stands still often, and does little spins, left/right strafes, wiggles and scoots — still avoiding obstacles. Uses an open-loop pose estimate integrated from the commanded velocity (no odometry needed); the "home" resets on each START and whenever the mode changes. |
+
+### Chirps & mood (web page)
+
+A **Chirps** toggle makes the robot emit little PWM "chirp" sounds every so
+often (same technique as the startup beep, played on the motor PWM pins). A
+**Mood** dropdown (Curious / Excited / Happy / Sad / Sleepy) picks which set of
+chirps and how frequently. Chirps only ever play while the robot is standing
+still, so they never interrupt or delay motion; the toggle off means silence.
+
+### Network tab
+
+A second tab has one button that switches the robot off its own `SORA-DEMO`
+access point and back onto the home WiFi (`WAROLIDI`) so its code can be
+updated — it runs the detached `systemd-run … nmcli` switch. Pressing it
+disconnects the page (the robot leaves its own network); reboot to return to
+demo/AP mode.
+
 ## Run it
 
 ```bash
@@ -127,6 +150,15 @@ All behaviour is parameterised on the `demo_wander` node — adjust in
 | `stop_distance` | 0.50 m | rotate in place below this |
 | `backup_distance` | 0.30 m | reverse while turning below this |
 | `front_half_angle_deg` | 35 | half-width of the front cone |
+| `mode` | curious | startup mode (`curious` / `cute`) |
+| `cute_radius` | 1.0 m | leash from start in cute mode |
+| `cute_forward_speed` | 0.14 m/s | cute scoot speed |
+| `cute_strafe_speed` | 0.14 m/s | cute side-slide speed |
+| `cute_spin_speed` | 1.0 rad/s | cute spin speed |
+
+Chirp/mood params live on `motor_driver_node`: `chirp_enabled` (default false),
+`mood` (default curious). The web page toggles these at runtime over
+`/demo/chirp_enable` and `/demo/mood`.
 
 Two control-scheme improvements back this demo (both backward compatible):
 

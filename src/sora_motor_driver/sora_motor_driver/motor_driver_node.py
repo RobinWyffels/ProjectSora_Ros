@@ -1,8 +1,48 @@
 import rclpy
 from rclpy.node import Node
-from std_msgs.msg import Float64MultiArray
+from rclpy.qos import QoSProfile, DurabilityPolicy
+from std_msgs.msg import Float64MultiArray, Bool, String
 import lgpio
 import time
+import threading
+import random
+
+
+# Short PWM "chirp" tone sequences per mood: list of (freq_hz, duration_s, duty).
+# Duty is kept low (a tone, not a drive command). Each chirp is kept well under
+# a second so it can be aborted quickly if a drive command arrives.
+MOOD_CHIRPS = {
+    "curious": [
+        [(1200, 0.08, 9), (1600, 0.08, 9), (2000, 0.10, 10)],
+        [(1400, 0.07, 9), (1100, 0.07, 9), (1700, 0.12, 10)],
+    ],
+    "excited": [
+        [(1800, 0.05, 10), (2200, 0.05, 10), (1900, 0.05, 10), (2500, 0.09, 10)],
+        [(2000, 0.05, 10), (2400, 0.05, 10), (2800, 0.08, 10)],
+    ],
+    "happy": [
+        [(1500, 0.09, 9), (2000, 0.09, 9), (2500, 0.13, 10)],
+        [(1600, 0.08, 9), (1900, 0.08, 9), (2300, 0.08, 9), (2600, 0.12, 10)],
+    ],
+    "sad": [
+        [(1000, 0.16, 8), (820, 0.18, 7), (640, 0.26, 6)],
+        [(900, 0.18, 7), (700, 0.22, 6), (560, 0.30, 6)],
+    ],
+    "sleepy": [
+        [(1000, 0.14, 6), (880, 0.20, 5), (760, 0.28, 5)],
+        [(950, 0.16, 6), (820, 0.24, 5)],
+    ],
+}
+
+# Random seconds between chirps per mood (min, max).
+MOOD_INTERVAL = {
+    "curious": (5.0, 12.0),
+    "excited": (3.0, 7.0),
+    "happy": (4.0, 9.0),
+    "sad": (9.0, 18.0),
+    "sleepy": (12.0, 22.0),
+}
+
 
 class MotorDriverNode(Node):
     def __init__(self):
@@ -61,7 +101,19 @@ class MotorDriverNode(Node):
         self.timer_period = 0.02  # seconds (50 Hz)
         self.current_throttles = [0.0, 0.0, 0.0, 0.0]  # [FR, FL, BR, BL]
         self.target_throttles = [0.0, 0.0, 0.0, 0.0]
-        self.startup_beep_done = False
+        # If the startup beep is disabled, treat it as already done so chirps
+        # (which wait for it) are not blocked forever.
+        self.startup_beep_done = not self.enable_startup_beep
+
+        # --- Chirp / mood system -----------------------------------------
+        self.declare_parameter('chirp_enabled', False)
+        self.declare_parameter('mood', 'curious')
+        self._chirp_enabled = self.get_parameter('chirp_enabled').value
+        self._mood = self.get_parameter('mood').value
+        if self._mood not in MOOD_CHIRPS:
+            self._mood = 'curious'
+        self._chirping = False          # True while a chirp is playing on the pins
+        self._next_chirp = time.monotonic() + self._chirp_interval()
 
         self.subscription = self.create_subscription(
             Float64MultiArray,
@@ -70,8 +122,18 @@ class MotorDriverNode(Node):
             10
         )
 
+        # Latched so the current chirp/mood settings survive a late/restarted
+        # web_control (and vice-versa).
+        latched = QoSProfile(depth=1)
+        latched.durability = DurabilityPolicy.TRANSIENT_LOCAL
+        self.create_subscription(Bool, '/demo/chirp_enable', self._on_chirp_enable, latched)
+        self.create_subscription(String, '/demo/mood', self._on_mood, latched)
+
         # Timer for ramping
         self.timer = self.create_timer(self.timer_period, self.ramp_timer_callback)
+
+        # Timer that occasionally fires a chirp (only when the motors are idle).
+        self.chirp_timer = self.create_timer(0.3, self.chirp_tick)
 
         self.get_logger().info('Motor driver node started (Cytron MDD10A, using lgpio)')
 
@@ -90,6 +152,11 @@ class MotorDriverNode(Node):
         self.target_throttles = [max(min(v, 1.0), -1.0) * self.max_throttle for v in msg.data]
 
     def ramp_timer_callback(self):
+        # While a chirp is sounding the motors are idle and the chirp worker
+        # owns the PWM pins, so skip driving them this tick.
+        if self._chirping:
+            return
+
         # Helper function to set motor direction and speed
         def set_motor(dir_pin, pwm_pin, throttle):
             if throttle >= 0:
@@ -117,6 +184,59 @@ class MotorDriverNode(Node):
         set_motor(self.DIR_FL, self.pwm_fl, self.current_throttles[1])  # FL
         set_motor(self.DIR_BR, self.pwm_br, self.current_throttles[2])  # BR
         set_motor(self.DIR_BL, self.pwm_bl, self.current_throttles[3])  # BL
+
+    # ------------------------------------------------------------------
+    # Chirp / mood
+    # ------------------------------------------------------------------
+    def _chirp_interval(self):
+        lo, hi = MOOD_INTERVAL.get(self._mood, (5.0, 12.0))
+        return random.uniform(lo, hi)
+
+    def _on_chirp_enable(self, msg):
+        self._chirp_enabled = bool(msg.data)
+        if self._chirp_enabled:
+            self._next_chirp = time.monotonic() + self._chirp_interval()
+        self.get_logger().info('chirps %s' % ('ON' if self._chirp_enabled else 'OFF'))
+
+    def _on_mood(self, msg):
+        m = (msg.data or '').strip().lower()
+        if m in MOOD_CHIRPS:
+            self._mood = m
+            self.get_logger().info('mood -> %s' % m)
+
+    def _motors_idle(self):
+        eps = 1e-3
+        return (all(abs(t) < eps for t in self.target_throttles) and
+                all(abs(c) < eps for c in self.current_throttles))
+
+    def chirp_tick(self):
+        # Fire a chirp only when enabled, not already chirping, after the
+        # startup beep, while the robot is standing still, and the interval
+        # has elapsed. This guarantees chirps never interrupt motion.
+        if not self._chirp_enabled or self._chirping or not self.startup_beep_done:
+            return
+        if not self._motors_idle() or time.monotonic() < self._next_chirp:
+            return
+        seq = random.choice(MOOD_CHIRPS.get(self._mood, MOOD_CHIRPS['curious']))
+        self._chirping = True
+        threading.Thread(target=self._play_chirp, args=(list(seq),), daemon=True).start()
+
+    def _play_chirp(self, seq):
+        pins = [self.pwm_fr, self.pwm_fl, self.pwm_br, self.pwm_bl]
+        try:
+            for freq, dur, duty in seq:
+                # Abort instantly if chirps were turned off or a drive command
+                # arrived (so motion is never delayed by more than one step).
+                if not self._chirp_enabled or not self._motors_idle():
+                    break
+                for p in pins:
+                    lgpio.tx_pwm(self.h, p, int(freq), int(duty))
+                time.sleep(dur)
+        finally:
+            for p in pins:
+                lgpio.tx_pwm(self.h, p, self.pwm_freq, 0)
+            self._chirping = False
+            self._next_chirp = time.monotonic() + self._chirp_interval()
 
     def startup_beep_callback(self):
         if self.startup_beep_done:
