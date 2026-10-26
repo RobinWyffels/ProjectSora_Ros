@@ -23,8 +23,10 @@ Safety
   even while roaming, so a stalled LiDAR can never leave it driving blind.
 """
 
+import json
 import math
 import random
+import time
 from typing import List, Optional
 
 import rclpy
@@ -32,12 +34,13 @@ from rclpy.node import Node
 from rclpy.qos import qos_profile_sensor_data, QoSProfile, DurabilityPolicy
 from geometry_msgs.msg import Twist
 from sensor_msgs.msg import Joy, LaserScan
-from std_msgs.msg import String
+from std_msgs.msg import String, Bool, Float64
 
 
 # Simple state machine
 STATE_STOPPED = "STOPPED"
 STATE_ROAMING = "ROAMING"
+STATE_MANUAL = "MANUAL"
 
 
 class DemoWander(Node):
@@ -50,9 +53,14 @@ class DemoWander(Node):
         self.declare_parameter("joy_topic", "/joy")
 
         # Start/stop can also come from a topic (e.g. the web control node),
-        # not just the controller. State is published back so a UI can show it.
+        # not just the controller. A JSON status is published back so a UI can
+        # show state, current mode and the showmode countdown.
         self.declare_parameter("command_topic", "/demo/command")
-        self.declare_parameter("state_topic", "/demo/state")
+        self.declare_parameter("status_topic", "/demo/status")
+        self.declare_parameter("mode_cmd_topic", "/demo/mode")
+        self.declare_parameter("showmode_topic", "/demo/showmode")
+        self.declare_parameter("showmode_interval_topic", "/demo/showmode_interval")
+        self.declare_parameter("manual_topic", "/demo/manual_cmd")
 
         # --- Controller buttons (Xbox pad via the `joy` node) -------------
         self.declare_parameter("start_button", 0)   # A
@@ -86,7 +94,13 @@ class DemoWander(Node):
 
         # --- Modes --------------------------------------------------------
         self.declare_parameter("mode", "curious")   # "curious" | "cute"
-        self.declare_parameter("mode_topic", "/demo/mode")
+
+        # --- Showmode (auto-alternate modes on a timer) -------------------
+        self.declare_parameter("showmode", False)
+        self.declare_parameter("showmode_interval_s", 300.0)   # default 5 minutes
+
+        # --- Manual drive -------------------------------------------------
+        self.declare_parameter("manual_timeout_s", 0.5)  # zero out if commands stop
 
         # --- Cute mode ----------------------------------------------------
         # Stays near the start point and favours the starting orientation,
@@ -105,7 +119,11 @@ class DemoWander(Node):
         self._cmd_vel_topic = gp("cmd_vel_topic").value
         self._joy_topic = gp("joy_topic").value
         self._command_topic = gp("command_topic").value
-        self._state_topic = gp("state_topic").value
+        self._status_topic = gp("status_topic").value
+        self._mode_cmd_topic = gp("mode_cmd_topic").value
+        self._showmode_topic = gp("showmode_topic").value
+        self._showmode_interval_topic = gp("showmode_interval_topic").value
+        self._manual_topic = gp("manual_topic").value
         self._start_button = int(gp("start_button").value)
         self._stop_button = int(gp("stop_button").value)
 
@@ -128,19 +146,22 @@ class DemoWander(Node):
         self._mode = (gp("mode").value or "curious").strip().lower()
         if self._mode not in ("curious", "cute"):
             self._mode = "curious"
-        self._mode_topic = gp("mode_topic").value
         self._cute_radius = float(gp("cute_radius").value)
         self._cute_forward_speed = float(gp("cute_forward_speed").value)
         self._cute_strafe_speed = float(gp("cute_strafe_speed").value)
         self._cute_spin_speed = float(gp("cute_spin_speed").value)
         self._cute_wiggle_speed = float(gp("cute_wiggle_speed").value)
 
+        self._showmode = bool(gp("showmode").value)
+        self._showmode_interval = max(5.0, float(gp("showmode_interval_s").value))
+        self._manual_timeout_s = float(gp("manual_timeout_s").value)
+
         self._scan_timeout_s = float(gp("scan_timeout_s").value)
 
         # --- Runtime state ------------------------------------------------
         self._state = STATE_STOPPED
         self._scan: Optional[LaserScan] = None
-        self._last_scan_time = self.get_clock().now()
+        self._last_scan_mono = time.monotonic()
         self._prev_buttons: List[int] = []
 
         # Turn direction while avoiding, with hysteresis to avoid dithering.
@@ -163,6 +184,14 @@ class DemoWander(Node):
         self._cute_duration = 0.0
         self._cute_dir = 1.0
 
+        # Showmode auto-switch timer (monotonic deadline, armed on START).
+        self._showmode_deadline: Optional[float] = None
+
+        # Manual drive state (monotonic timestamps, immune to clock steps).
+        self._manual_cmd = Twist()
+        self._last_manual_mono = time.monotonic()
+        self._last_status_mono = time.monotonic()
+
         # --- ROS interfaces ----------------------------------------------
         self._cmd_pub = self.create_publisher(Twist, self._cmd_vel_topic, 10)
         self.create_subscription(
@@ -170,14 +199,20 @@ class DemoWander(Node):
         )
         self.create_subscription(Joy, self._joy_topic, self._on_joy, 10)
 
-        # Latched state publisher so a late-joining UI immediately sees the
-        # current state; plus a command subscription for start/stop over a topic.
-        state_qos = QoSProfile(depth=1)
-        state_qos.durability = DurabilityPolicy.TRANSIENT_LOCAL
-        self._state_pub = self.create_publisher(String, self._state_topic, state_qos)
+        # Latched JSON status so a late-joining UI immediately sees current
+        # state / mode / showmode countdown.
+        status_qos = QoSProfile(depth=1)
+        status_qos.durability = DurabilityPolicy.TRANSIENT_LOCAL
+        self._status_pub = self.create_publisher(String, self._status_topic, status_qos)
         self.create_subscription(String, self._command_topic, self._on_command, 10)
-        self.create_subscription(String, self._mode_topic, self._on_mode, 10)
-        self._publish_state()
+        self.create_subscription(Twist, self._manual_topic, self._on_manual, 10)
+        # Settings are published latched by web_control; match transient_local
+        # so a late-matched subscriber still receives the current values.
+        self.create_subscription(String, self._mode_cmd_topic, self._on_mode, status_qos)
+        self.create_subscription(Bool, self._showmode_topic, self._on_showmode, status_qos)
+        self.create_subscription(
+            Float64, self._showmode_interval_topic, self._on_showmode_interval, status_qos)
+        self._publish_status()
 
         self._dt = 1.0 / control_rate
         self._timer = self.create_timer(self._dt, self._on_timer)
@@ -192,7 +227,7 @@ class DemoWander(Node):
     # ------------------------------------------------------------------
     def _on_scan(self, msg: LaserScan) -> None:
         self._scan = msg
-        self._last_scan_time = self.get_clock().now()
+        self._last_scan_mono = time.monotonic()
 
     def _on_joy(self, msg: Joy) -> None:
         buttons = list(msg.buttons)
@@ -228,12 +263,50 @@ class DemoWander(Node):
                 "Unknown mode %r (expected 'curious' or 'cute')" % msg.data
             )
             return
+        self._set_mode(m, "command")
+
+    def _set_mode(self, m: str, source: str) -> None:
         if m != self._mode:
             self._mode = m
             # Treat "here" as the new home when switching modes.
             self._reset_pose()
             self._cute_phase = None
-            self.get_logger().info("mode -> %s" % m)
+            self.get_logger().info("mode -> %s (%s)" % (m, source))
+            self._publish_status()
+
+    def _on_showmode(self, msg: Bool) -> None:
+        self._showmode = bool(msg.data)
+        self.get_logger().info("showmode %s" % ("ON" if self._showmode else "OFF"))
+        if self._showmode and self._state == STATE_ROAMING:
+            self._arm_showmode()
+        elif not self._showmode:
+            self._showmode_deadline = None
+        self._publish_status()
+
+    def _on_showmode_interval(self, msg: Float64) -> None:
+        self._showmode_interval = max(5.0, float(msg.data))
+        self.get_logger().info("showmode interval -> %.0fs" % self._showmode_interval)
+        # Re-arm from now if a countdown is already running.
+        if self._showmode_deadline is not None:
+            self._arm_showmode()
+        self._publish_status()
+
+    def _on_manual(self, msg: Twist) -> None:
+        self._manual_cmd = msg
+        self._last_manual_mono = time.monotonic()
+        if self._state != STATE_MANUAL:
+            self._state = STATE_MANUAL
+            self._showmode_deadline = None
+            self.get_logger().info("-> MANUAL")
+            self._publish_status()
+
+    def _arm_showmode(self) -> None:
+        self._showmode_deadline = time.monotonic() + self._showmode_interval
+
+    def _showmode_remaining(self) -> float:
+        if self._showmode_deadline is None or self._state != STATE_ROAMING:
+            return -1.0
+        return max(0.0, self._showmode_deadline - time.monotonic())
 
     def _reset_pose(self) -> None:
         self._px = 0.0
@@ -245,31 +318,64 @@ class DemoWander(Node):
             self._state = STATE_ROAMING
             self._reset_pose()
             self._cute_phase = None
+            # Showmode auto-switch timer starts only on START (per spec).
+            if self._showmode:
+                self._arm_showmode()
+            else:
+                self._showmode_deadline = None
             self.get_logger().info("START (%s) -> ROAMING [mode=%s]" % (source, self._mode))
-            self._publish_state()
+            self._publish_status()
 
     def _stop(self, source: str = "") -> None:
         if self._state != STATE_STOPPED:
             self._state = STATE_STOPPED
+            self._showmode_deadline = None
             self._publish_stop()
             self.get_logger().info("STOP (%s) -> STOPPED" % source)
-            self._publish_state()
+            self._publish_status()
 
-    def _publish_state(self) -> None:
+    def _publish_status(self) -> None:
         msg = String()
-        msg.data = self._state
-        self._state_pub.publish(msg)
+        msg.data = json.dumps({
+            "state": self._state,
+            "mode": self._mode,
+            "showmode": self._showmode,
+            "interval": self._showmode_interval,
+            "remaining": round(self._showmode_remaining(), 1),
+        })
+        self._status_pub.publish(msg)
+        self._last_status_mono = time.monotonic()
 
     # ------------------------------------------------------------------
     # Control loop
     # ------------------------------------------------------------------
     def _on_timer(self) -> None:
+        now = time.monotonic()
+
+        # Periodically republish status so the UI countdown updates.
+        if now - self._last_status_mono >= 0.5:
+            self._publish_status()
+
+        if self._state == STATE_MANUAL:
+            # Drive the last manual command, zeroed if it has gone stale
+            # (button released / connection lost).
+            age = now - self._last_manual_mono
+            self._cmd_pub.publish(self._manual_cmd if age <= self._manual_timeout_s else Twist())
+            return
+
         if self._state != STATE_ROAMING:
             self._publish_stop()
             return
 
+        # Showmode: once the countdown elapses, flip the mode and re-arm.
+        if self._showmode and self._showmode_deadline is not None:
+            if now >= self._showmode_deadline:
+                new_mode = "cute" if self._mode == "curious" else "curious"
+                self._set_mode(new_mode, "showmode")
+                self._arm_showmode()
+
         # Watchdog: without a fresh scan we refuse to drive.
-        age = (self.get_clock().now() - self._last_scan_time).nanoseconds / 1e9
+        age = now - self._last_scan_mono
         if self._scan is None or age > self._scan_timeout_s:
             self._publish_stop()
             self.get_logger().warn(

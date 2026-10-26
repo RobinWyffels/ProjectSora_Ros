@@ -29,6 +29,24 @@ Start/stop can come from either input, which both feed the same behaviour:
 | **Curious** (default) | The normal wander: drives around, gently wanders, avoids obstacles. |
 | **Cute** | Stays within a short leash of its start point and favours its starting orientation. Stands still often, and does little spins, left/right strafes, wiggles and scoots — still avoiding obstacles. Uses an open-loop pose estimate integrated from the commanded velocity (no odometry needed); the "home" resets on each START and whenever the mode changes. |
 
+### Showmode (auto-switch, web page toggle)
+
+A **Showmode** toggle on the Control tab. When it's **on**, pressing **START**
+arms a timer; each time it elapses the robot **alternates** between Curious and
+Cute (cute→curious→cute…). A live countdown is shown on the Control tab. The
+switch period is set on the **Network** tab (default **5 min**). Toggling
+Showmode off leaves the robot in whatever mode it's currently in. The timer uses
+a monotonic clock, so it's immune to the Pi's wall-clock steps.
+
+### Manual tab (drive by hand)
+
+A **Manual** tab gives a d-pad: forward / back (`▲▼`), strafe left / right
+(`◀▶`), twist left / right (`⟲⟳`), and a stop (`■`). Press-and-hold to move;
+releasing (or losing the connection) stops within `manual_timeout_s` (0.5 s).
+Manual drive takes over from roaming and has **no obstacle avoidance** — it's
+direct control — so speeds are kept modest. Press **START** (Control tab) to go
+back to autonomous roaming, or **STOP** to halt.
+
 ### Chirps & mood (web page)
 
 A **Chirps** toggle makes the robot emit little PWM "chirp" sounds every so
@@ -39,11 +57,11 @@ still, so they never interrupt or delay motion; the toggle off means silence.
 
 ### Network tab
 
-A second tab has one button that switches the robot off its own `SORA-DEMO`
-access point and back onto the home WiFi (`WAROLIDI`) so its code can be
-updated — it runs the detached `systemd-run … nmcli` switch. Pressing it
-disconnects the page (the robot leaves its own network); reboot to return to
-demo/AP mode.
+The **Network** tab has the Showmode **switch period** setting, plus one button
+that switches the robot off its own `SORA-DEMO` access point and back onto the
+home WiFi (`WAROLIDI`) so its code can be updated — it runs the detached
+`systemd-run … nmcli` switch. Pressing it disconnects the page (the robot
+leaves its own network); reboot to return to demo/AP mode.
 
 ## Run it
 
@@ -87,7 +105,8 @@ from a terminal:
 ```bash
 ros2 topic pub --once /demo/command std_msgs/String "{data: start}"
 ros2 topic pub --once /demo/command std_msgs/String "{data: stop}"
-ros2 topic echo /demo/state      # STOPPED / ROAMING (latched)
+ros2 topic pub --once /demo/mode std_msgs/String "{data: cute}"
+ros2 topic echo /demo/status     # JSON: state, mode, showmode, interval, remaining (latched)
 ```
 
 ## Autostart on the Raspberry Pi
